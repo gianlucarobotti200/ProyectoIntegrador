@@ -22,7 +22,7 @@ const Productos = () => {
       {productos.map((producto) => 
         <CardProducto
           key={producto.id} 
-          imgUrl={" "} 
+          imgUrl={`./src/components/img/fotosTours/${producto.id}/foto1.jpeg`}  
           provincia={producto.provincia} 
           titulo={producto.titulo} 
           descripcion={producto.descripcion} 
