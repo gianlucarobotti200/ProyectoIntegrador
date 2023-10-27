@@ -13,7 +13,7 @@ const Productos = () => {
 
   useEffect(() => {
     getProductos()
-  })
+  },[])
 
   return (
     <>
