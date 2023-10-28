@@ -12,7 +12,7 @@ const FormTours = () => {
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
     const [imagenes, setImagenes] = useState(null);
-    const [id, setId] =useState('')
+    const [id, setId] =useState('1')
 
     const handleFileChange = (e) => {
         setImagenes(e.target.files);
