@@ -6,43 +6,60 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 const StyledCategorias = styled.div `
 
-.categorias{
-  display: flex;
-  height: 330px; 
-}
+  .categorias{
+    display: flex;
+    width: 98.5vw ; 
+  }
 
-h2{
-  text-align: left;
-  font-size: 30px;
-  margin: 30px;
-}
+  h2{
+    text-align: left;
+    font-size: 3vw;
+    margin: 3vh;
+  }
 
-.title{
-  background: none;
-}
+  .title{
+    background: none;
+  }
 
-.css-dasnyc-MuiImageListItemBar-title{
-  display: flex;
-  color: white;
-  font-size: 40px;
-  texAlign: center;
-  justify-content: center;
-  margin: 0 auto;
-  padding: 0px 0px 120px;
-  font-weight: bold;
-}
+  .css-dasnyc-MuiImageListItemBar-title{
+    display: flex;
+    color: white;
+    font-size: 3vw;
+    texAlign: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 3vh 2vh 20vh;
+    font-weight: bold;
+  }
 
-img.foto{
-  border-radius: 5px;
-  box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-  border: 1px solid grey;
-}
+  img.foto{
+    border-radius: 5px;
+    box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+    border: 1px solid grey;
+  }
 
-li{
-  width: 25%;
-  margin: 1%;
-}
+  li{
+    width: 25%;
+    margin: 1%;
+  }
 
+  @media (max-width: 600px) {
+
+  h2{  
+    font-size: 8vw;
+    margin: 3vh;
+  }
+
+  .css-dasnyc-MuiImageListItemBar-title{
+    font-size: 6vw;
+    padding: 0 auto;
+    margin: 0 auto;
+  }
+
+  li{
+    width: 50vw;
+  }
+}
 
 `
 
