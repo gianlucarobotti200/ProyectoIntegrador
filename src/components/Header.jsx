@@ -1,139 +1,90 @@
-import React from 'react'
-import {Link} from "react-router-dom"; 
-import styled from "styled-components"
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const StyledHeader = styled.header`
-    
-    background-image: linear-gradient(120deg, rgb(248 248 248), rgb(195 217 240) 60%);
+  background-image: linear-gradient(120deg, #ADC5DB, rgb(195 217 240) 90%);
+  display: flex;
+  justify-content: space-between;
 
-    nav {
-        display: flex;
-        width: 100%;
-        height: 30%;
-        z-index: 1;
-        background-color: white;
-        justify-content: space-around;
-    }
+  .logo-eslogan {
+    display: flex;
+  }
 
-    .lema {
-        display: flex;
-        font-size: 2em;
-        align-items:center;
-        justify-content:center;
-        padding: 0px;
-    
-    }
+  .logo-eslogan img {
+    width: 6rem;
+    height: 6rem;
+    padding: 0.5rem 1rem;
+  }
 
-    .logo {
-        width: 40%;
-        height: 100%;
-        align-items: center;
-        text-align: center;
-        margin: 0px;
-        padding: 0px 20px 0px 0px;
-    }
+  a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
 
-    a.nav-a {
-        color: black;
-    }
+  span {
+    padding-top: 3rem;
+  }
 
-    .nav-ul {
-        display: flex;
-        width: 40%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        text-align: center;   
-    }
+  .profile-icon:hover .menu {
+    display: block;
+  }
 
-    li {
-        display:inline-flex;
-        padding: 2rem;
-        list-style: none;
-        font-size: 25px;
-        text-decoration: none;
-    }
+  .menu {
+    display: none;
+    position: absolute;
+    top: 75%;
+    right: 50%;
+    width: 9rem;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
+    border-radius: 20px;
+  }
 
-    button {
-        font-size: 25px;
-        border-radius: 5px;
-        width: 180px;
-        height: 45px;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        color: yellow;
-        transition: border-color 0.25s;
-        margin: 5rem 20px 5rem 0px; 
-        box-shadow: lightgreen 0px 0px 4px, hrey 0px 8px 31px;
-        border: 1px solid transparent grey;
-    }
+  .menu button {
+    display: block;
+    margin: 5px 0;
+    background-color: white;
+    border-style: none;
+  }
 
-    button:hover {
-        border: 2px solid blue;  
-    }
+  .menu button a{
+    color: #24306E;
+    font-size: 1.2rem;
+  }
 
-    button:focus-visible {
-        outline: 4px auto -webkit-focus-ring-color;
-    }
-
-    .btn-cta {
-        color: black;
-    }
-
-    .theme {
-        width: 5%;
-    }
-
-    @media (max-width: 600px) {
-        Header {
-            height: 70px;
-        }
-        nav {
-            
-            flex-direction: column;
-        }
-
-        .logo {
-            width: 50%;
-            border-radius: 5px;
-            align-self: center;
-            text-align: center;
-            justify-content: center;
-            padding: 0px 10px 0px 0px;
-            order: 1;
-        
-        }
-
-        .lema {
-            order: 2;
-            align-self: center;
-            width: 80%;
-            font-size: 0.8em;
-        }
-
-    }
-`
+  .profile-icon {
+    width: 4rem;
+    padding: 1rem 3rem 1rem 0rem ;
+    position: relative;
+  }
+`;
 
 function Header() {
+  return (
+    <StyledHeader>
+      <Link className="logo-eslogan" to="/inicio">
+        <img className="logo" src="./src/components/img/image.png" alt="Logo SectArg tour" />{' '}
+        <span>Más que un tour</span>
+      </Link>
 
-    return (
-        <StyledHeader>
-            <nav>
-                <div className='lema'>
-                    <Link className='nav-a' to="/inicio">
-                        <img className='logo' src='./src/components/img/image.png' alt='Logo SectArg tour' />Más que un tour...
-                    </Link>
-                </div>
-                <button className='btn-cta'>
-                    <Link to="">Crear cuenta</Link>
-                </button>
-                <button>
-                    <Link to="">Iniciar sesión</Link>
-                </button>
-            </nav>
-        </StyledHeader>
-    );
+      <div className="profile-icon">
+        <img className="profile-icon" src="./src/components/img/profile-logo.svg" alt="" />
+        <div className="menu">
+          <button>
+            <Link to="/">Iniciar sesión</Link>
+          </button>
+          <button>
+            <Link to="/">Crear cuenta</Link>
+          </button>
+        </div>
+      </div>
+    </StyledHeader>
+  );
 }
 
 export default Header;
