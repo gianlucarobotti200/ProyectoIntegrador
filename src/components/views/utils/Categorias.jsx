@@ -7,14 +7,18 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 const StyledCategorias = styled.div `
 
   .categorias{
-    display: flex;
-    width: 98.5vw ; 
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 70vw;
+    gap: 2%; 
+    margin: 0% 0% 0% 9%;
   }
 
   h2{
     text-align: left;
-    font-size: 3vw;
-    margin: 3vh;
+    font-size: 2.5vw;
+    margin: 4% 2% 4% 9%;
+    color: rgba(36, 48, 110, 1);
   }
 
   .title{
@@ -23,27 +27,47 @@ const StyledCategorias = styled.div `
 
   .css-dasnyc-MuiImageListItemBar-title{
     display: flex;
-    color: white;
-    font-size: 3vw;
-    texAlign: center;
     justify-content: center;
-    margin: 0 auto;
-    padding: 3vh 2vh 20vh;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
     font-weight: bold;
+    padding: 0% 5% 5% 9%;
   }
 
   img.foto{
+    width: 19vw;
+    height: 45vh;
     border-radius: 5px;
     box-shadow: grey 0px 0px 5px,  0px 4px 11px;
     border: 1px solid grey;
+    padding: 1%;
   }
 
   li{
     width: 25%;
-    margin: 1%;
+    margin: 0%;
   }
 
   @media (max-width: 600px) {
+
+    .categorias{
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 90vw;
+      gap: 1%; 
+      margin: 5%;
+    }
+
+    img.foto{
+      width: 90vw;
+      height: 40vh;
+      border-radius: 5px;
+      box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+      border: 1px solid grey;
+      padding: 1%;
+      margin: 2%;
+    }
 
   h2{  
     font-size: 8vw;
@@ -57,7 +81,7 @@ const StyledCategorias = styled.div `
   }
 
   li{
-    width: 50vw;
+    width: 30vw;
   }
 }
 
