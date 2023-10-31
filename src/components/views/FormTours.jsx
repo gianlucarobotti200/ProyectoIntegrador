@@ -11,9 +11,16 @@ const FormTours = () => {
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
+    const [imagenes, setImagenes] = useState(null);
+    const [id, setId] =useState('1')
+
+    const handleFileChange = (e) => {
+        setImagenes(e.target.files);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let formDataImagenes = null;
 
         const formData = {
             provincia,
@@ -33,6 +40,8 @@ const FormTours = () => {
             });
 
             if (response.ok) {
+                const jsonResponse = await response.json();
+                setId(jsonResponse.id);
                 console.log('El tour se ha agregado exitosamente.');
             } else {
                 console.error('Error al agregar el tour.');
@@ -40,6 +49,24 @@ const FormTours = () => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
+        if (imagenes && imagenes.length > 0) {
+            formDataImagenes = new FormData();
+            for (let i = 0; i < imagenes.length; i++) {
+                formDataImagenes.append('file', imagenes[i]);
+            }
+        }
+        try {
+            const imageResponse = await fetch(`http://localhost:8081/tours/subirfotos/${id}`, {
+                method: 'POST',
+                body: formDataImagenes,
+            });
+            if (imageResponse.ok) {
+                console.log('Las imágenes se han agregado exitosamente.');
+            } else {
+                console.error('Error al subir las imágenes.');}}
+                catch (error) {
+                    console.error('Error al subir las imágenes:', error);}    
+
     };
 
     return (
@@ -79,7 +106,7 @@ const FormTours = () => {
                 <option value="Tierra del Fuego">Tierra del Fuego</option>
                 <option value="Tucumán">Tucumán</option>
             </select>
-            <input type="file" placeholder='Subir imágenes' multiple/>
+            <input type="file" onChange={handleFileChange} placeholder='Subir imágenes' multiple/>
             <textarea
                 type="text"
                 placeholder='Descripción'
