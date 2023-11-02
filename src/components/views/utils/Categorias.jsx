@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from "styled-components"
-<<<<<<< Updated upstream
-=======
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
@@ -78,12 +76,7 @@ const StyledCategorias = styled.div `
       width: 50vw;
       
     }
-}
->>>>>>> Stashed changes
-
-const StyledCategorias = styled.div`
-    
-`
+}`
 
 const Categorias = () => {
   const categorias = ['Destinos', 'Categoria 2', 'Categoria 3'];
@@ -92,19 +85,6 @@ const Categorias = () => {
   
     <>
     <StyledCategorias>
-<<<<<<< Updated upstream
-      <h2>Categorías</h2>
-      <ul>
-        {categorias.map((categoria, index) => (
-          <li key={index}>{categoria}</li>
-        ))}
-      </ul>
-    </StyledCategorias>
-  );
-}
-
-export default Categorias;
-=======
       <div className='div-categorias'>
         <div className='div-h2'>
 
@@ -154,4 +134,3 @@ const Categoria = [
 export default Categorias;
 
 
->>>>>>> Stashed changes

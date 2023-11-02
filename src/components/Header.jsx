@@ -21,32 +21,6 @@ import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 
 const StyledHeader = styled.header`
-<<<<<<< Updated upstream
-  background-image: linear-gradient(120deg, #ADC5DB, rgb(195 217 240) 90%);
-  display: flex;
-  justify-content: space-between;
-
-  .logo-eslogan {
-    display: flex;
-  }
-
-  .logo-eslogan img {
-    width: 6rem;
-    height: 6rem;
-    padding: 0.5rem 1rem;
-  }
-
-  a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-
-  span {
-    padding-top: 3rem;
-  }
-=======
     
     nav {
         display: flex;
@@ -80,7 +54,6 @@ const StyledHeader = styled.header`
         padding: 0px;
         margin: 0px;
     }
->>>>>>> Stashed changes
 
   .profile-icon:hover .menu {
     display: block;
@@ -99,48 +72,6 @@ const StyledHeader = styled.header`
     border-radius: 20px;
   }
 
-<<<<<<< Updated upstream
-  .menu button {
-    display: block;
-    margin: 5px 0;
-    background-color: white;
-    border-style: none;
-  }
-
-  .menu button a{
-    color: #24306E;
-    font-size: 1.2rem;
-  }
-
-  .profile-icon {
-    width: 4rem;
-    padding: 1rem 3rem 1rem 0rem ;
-    position: relative;
-  }
-`;
-
-function Header() {
-  return (
-    <StyledHeader>
-      <Link className="logo-eslogan" to="/inicio">
-        <img className="logo" src="./src/components/img/image.png" alt="Logo SectArg tour" />{' '}
-        <span>Más que un tour</span>
-      </Link>
-
-      <div className="profile-icon">
-        <img className="profile-icon" src="./src/components/img/profile-logo.svg" alt="" />
-        <div className="menu">
-          <button>
-            <Link to="/">Iniciar sesión</Link>
-          </button>
-          <button>
-            <Link to="/">Crear cuenta</Link>
-          </button>
-        </div>
-      </div>
-    </StyledHeader>
-  );
-=======
     .theme {
         width: 5%;
     }
@@ -257,7 +188,6 @@ function Header() {
                 {/* </div> */}
             </StyledHeader></>
     );
->>>>>>> Stashed changes
 }
 
 export default Header;
