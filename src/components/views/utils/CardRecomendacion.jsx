@@ -6,82 +6,53 @@ import ImageListItem from '@mui/material/ImageListItem';
 const StyledCardRecomendacion = styled.div `
 
     .card-grid{
-     display: grid;
-     grid-template-columns: 1fr 1fr;
-     gap: 3%;
-     margin: 0% 0% 0% 2%;
-     whidth: 50%;
-   }
+      display: grid;
+      width: 40vw;
+      grid-template-columns: 1fr 1fr;
+      gap: 3%;
+      margin: 0% 0% 0% 2%;
+  }
 
+   .recomendacion{
+      border-radius: 5px;
+      box-shadow: grey 0px 0px 5px,  0px 4px 8px;
+      border: 2px solid grey;
+      height: auto;
+  }
 
-    h2.reco{
+   .recomendacion img{
+      width: 34vw;
+      height: 70vh;
+      padding: 2% 2% 5% 2%;
+  }
+
+    h2.card-reco{
       display: flex;
       text-align: left;
-      font-size: 2.5vw;
-      margin: 4% 2% 4% 8%;       
+      font-size: 1.6vw;
+      margin: 3% 0% 1% 9%;       
       color: rgba(36, 48, 110, 1);
   }
 
-   h2{
-     display: flex;
-     text-align: left;
-     font-size: 2.5vw;
-     margin: 0% 0% 0% 0% ;
-     color: rgba(36, 48, 110, 1);
-   }
+    p.card-desc{
+      display: flex;
+      text-align: left;
+      font-size: 1.6vw;
+      margin: 0% 0% 0% 9% ;
+      color: rgba(36, 48, 110, 1);
+  }
 
-   img.foto-rec{
-     width: 80%;
-     height: 40vh;
-     border-radius: 5px;
-     box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-     border: 1px solid grey;
-     padding: 5% 5% 5% 5%;
-     margin: 0% 0% 0% 5%;
-     background-color: white;
-     position: relative;
-   }
-
-   li{
-    width: 40vw;
-   }
-
-   .texto-imagen{
-     position: absolute;
-     width: 40vw;
-     top: 5%;   
-     transform: translate(-50%, -50%);
-     color: rgba(36, 48, 110, 1);
-     font-weight: bold;
-     font-size: 5vw;
-   }
-   .precio{
-     font-size: 1.3vw;
-     color: rgba(36, 48, 110, 1);
-     font-weight: bold;
-     position: absolute;
-     bottom: 5%;
-     top: 860%;
-     right: -20%;
-   }
-   .foto-rec{
-     position: relative;
-   }
-   .reloj{
-     position: absolute;
-     bottom: left;
-     left: 10%;
-     font-size: 1.2vw;
-     color: white;
-     background-color: rgba(36, 48, 110, 0.8);
-     border-radius: 3px;
-     padding: 5px;
-     top: 84%;
-   }
-  
-   .horario{
-     margin-left: 10px;
-   }
+   .card-footer{
+      display: flex;
+      aling-items: center;
+      justify-content: space-around;
+      width: 40vw;
+      padding: 1% 1% 4% 8%;
+      margin: 0% 0% 0% -8%;
+      color: rgba(36, 48, 110, 1);
+      font-weight: bold;
+      font-size: 1.5vw;
+  }
 
 
    @media (max-width: 600px) {
@@ -142,19 +113,14 @@ const CardRecomendacion = ({ id, provincia, titulo, descripcion, linkFotos, prec
   return (
 <StyledCardRecomendacion>
           <div className='recomendacion'>
-            <div>
-              <h2 className='reco'>{titulo}</h2>
-            </div>
-            <div>
-                <ImageListItem  key={id}>
-                  <img className='foto-rec'alt={titulo} src={linkFotos[0]} />
-                </ImageListItem>
-            </div>
-            <div>
-              <span>{cantHoras}</span>
-              <span>{precio}</span>
-            </div>
-            </div>
+                  <h2 className='card-reco'>{titulo}</h2>
+                  <p className='card-desc'>{descripcion}</p>
+                  <img src='./src/components/img/1/foto1.jpg'/>       
+             <div className='card-footer'>
+                <span>Cant Horas: {cantHoras}:00 hs</span>
+                <span>Precio: ${precio}</span>
+             </div>
+          </div>
         </StyledCardRecomendacion>
   )
 }

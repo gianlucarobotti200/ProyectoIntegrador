@@ -15,13 +15,12 @@ h2.reco-reco{
 
 .card-grid{
   display: grid;
+  width: 45;
   grid-template-columns: 1fr 1fr;
-  gap: 3%;
-  margin: 0% 0% 0% 2%;
-  whidth: 50%;
+  gap: 5%;
+  margin: 0% 5% 15% 5%;
+
 }
-
-
 
 `
 
@@ -35,7 +34,7 @@ useEffect(() =>{
       const jsonData = await response.json();
 
       setData(jsonData);
-
+      console.log(data);
       console.log("Datos obtenidos.");
     } catch (error) {
       console.error('Error al obtener los datos de la API:', error);
@@ -46,30 +45,31 @@ useEffect(() =>{
 }, [])
 
 
-    return (
-      <StyledRecomendaciones>
+  return (
+    <StyledRecomendaciones>
       <>
-      <div>
-        <h2 className='reco-reco'>Recomendaciones</h2>
-      </div>
-      <div className='card-grid'>
-        {data.map((tour) =>(
-        <CardRecomendacion key={tour.id}  
-        provincia={tour.name} 
-        titulo={tour.titulo} 
-        descipcion={tour.descripcion} 
-        linkFotos={tour.linkFotos} 
-        precio={tour.precio} 
-        cantHoras={tour.cantHoras} id={tour.id}
-        />
-      )
-    )}
-      </div>
+        <div>
+          <h2 className='reco-reco'>Recomendaciones</h2>
+        </div>
+        <div className='card-grid'>
+          {data.map((tour) => (
+            <CardRecomendacion key={tour.id}
+              provincia={tour.name}
+              titulo={tour.titulo}
+              descripcion={tour.descripcion}
+              linkFotos={tour.linkFotos[0]}
+              precio={tour.precio}
+              cantHoras={tour.cantHoras}
+              id={tour.id}
+            />
+          )
+          )}
+        </div>
       </>
-      </StyledRecomendaciones>
-    );
-  };
-    
-   
+    </StyledRecomendaciones>
+  );
+};
+
+
 export default Recomendaciones;
 

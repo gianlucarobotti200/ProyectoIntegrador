@@ -39,7 +39,7 @@ const StyledCategorias = styled.div `
     width: 19vw;
     height: 45vh;
     border-radius: 5px;
-    box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+    box-shadow: grey 0px 0px 5px,  0px 3px 4px;
     border: 1px solid grey;
     padding: 1%;
   }
