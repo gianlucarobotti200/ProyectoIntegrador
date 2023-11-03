@@ -57,54 +57,59 @@ const StyledCardRecomendacion = styled.div `
 
    @media (max-width: 600px) {
 
-     .recomendacion{
-       display: grid;
-       grid-template-columns: 1fr;
-       width: 90vw;
-       gap: 0%; 
-       margin: 5%;
-     }
+    .card-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 90vw;
+      gap: 5%; 
+      margin: 0%;
+    }
 
-     img.foto-rec{
-       width: 90vw;
-       height: 40vh;
-       border-radius: 5px;
-       box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-       border: 1px solid grey;
-       padding: 1%;
-       margin: 0%;
-     }
+    .recomendacion img{
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 80vw;
+      height: 40vh;
+      border-radius: 5px;
+      box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+      border: 1px solid grey;
+      padding:0%;
+      margin: 15% 1% 1% 5%;
+    }
 
-     h2{  
-       font-size: 8vw;
-       margin: 6vh;
+    h2.card-reco{
+      font-size: 6vw;     
+      color: rgba(36, 48, 110, 1);
+
+    }
+
+    p.card-desc{
+      display: flex;
+      text-align: left;
+      font-size: 5vw;
+      margin: 1%;
+      padding: 1%;
+      color: rgba(36, 48, 110, 1);
+    }
+
+    .card-footer{  
+       font-size: 6vw;
+       margin: 0vh;
+       width: 80vw;
        padding: 1vh;
      }
   
-     li{
-       width: 30vw;
-     }
-
-   .texto-imagen{
-     position: absolute;
-     width: 40vw;
-     top: 1%;
-     left: 68%;
-     transform: translate(-50%, -50%);
-     color: black;
-     font-weight: bold;
-     font-size: 2vw;
+    p.card-desc{
+      position: absolute;
+      width: 40vw;
+      top: 1%;
+      left: 68%;
+      transform: translate(-50%, -50%);
+      color: black;
+      font-weight: bold;
+      font-size: 2vw;
    }
 
-   .precio{
-     font-size: 3vw;
-     color: black;
-     font-weight: bold;
-     position: absolute;
-     bottom: 5%;
-     top: 1400%;
-     right: -95%;
-   }
 
 `
 

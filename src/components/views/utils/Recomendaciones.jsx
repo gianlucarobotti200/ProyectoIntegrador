@@ -15,10 +15,30 @@ h2.reco-reco{
 
 .card-grid{
   display: grid;
-  width: 45;
+  width: 45vw;
   grid-template-columns: 1fr 1fr;
   gap: 5%;
   margin: 0% 5% 15% 5%;
+
+}
+
+@media (max-width: 600px) {
+  display: grid;
+  aling-items: center;
+  justify-content: center;
+
+  .card-grid{
+    grid-template-columns: 1fr;
+    width: 90vw;
+    gap: 1%;
+    margin: 0% 5% 15% 2%;
+  }
+
+  h2.reco-reco{
+    width: 90vw;
+    font-size: 9vw;
+    margin: 8% 0% 6% 3%
+  }
 
 }
 
