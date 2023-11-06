@@ -14,7 +14,7 @@ const StyledCategorias = styled.div `
   .categorias{
     display: flex;
     justify-content: space-between;
-    width: 1330px;
+    gap: 16px
   }
 
   .div-h2{
@@ -51,7 +51,7 @@ const StyledCategorias = styled.div `
   }
 
   li{
-    width: 300px;
+    width: 272px;
     height: 150px !important;
   }
 
@@ -60,7 +60,6 @@ const StyledCategorias = styled.div `
     .categorias{
       display: flex;
       justify-content: space-between;
-      width: 1260px;
     }
   }
   @media (max-width: 600px) {

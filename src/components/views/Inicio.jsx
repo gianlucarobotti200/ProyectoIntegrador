@@ -15,7 +15,7 @@ const Inicio = () => {
             <Buscador />
             <Categorias />
             <Recomendaciones />
-            <Productos/>
+            {/* <Productos/> */}
         </StyledInicio>
     )
 }
