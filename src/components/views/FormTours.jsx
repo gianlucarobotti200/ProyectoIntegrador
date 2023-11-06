@@ -2,16 +2,63 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 
 const StyledForm = styled.form`
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    background-image: linear-gradient(120deg, #ADC5DB, rgb(195 217 240) 90%);
+    justify-content: space-around;
+
+    input, button{
+        background-color: #FAFAFA;
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: 1px solid #ffffff;
+        border-radius: 5px;
+        margin: 2px 0;
+        width: 20%;
+    }
+
+    select{
+        background-color: #FAFAFA;
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: 1px solid #ffffff;
+        border-radius: 5px;
+        margin: 2px 0;
+        width: 23%;
+    }
+
+    textarea{
+        background-color: #FAFAFA;
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: 1px solid #ffffff;
+        border-radius: 5px;
+        width: 20%;
+        margin: 2px 0;
+        resize: none;
+    }
+
+    input, label, textarea{
+        margin: 2rem 0;
+    }
 `
 
-const FormTours = () => {
+const FormTours = ({onCloseModal}) => {
     const [titulo, setTitulo] = useState('');
     const [provincia, setProvincia] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
-    const [imagenes, setImagenes] = useState(null);
+    const [imagenes, setImagenes] = useState([]);
     const [id, setId] =useState('1')
 
     const handleFileChange = (e) => {
@@ -43,6 +90,7 @@ const FormTours = () => {
                 const jsonResponse = await response.json();
                 setId(jsonResponse.id);
                 console.log('El tour se ha agregado exitosamente.');
+                onCloseModal();
             } else {
                 console.error('Error al agregar el tour.');
             }
