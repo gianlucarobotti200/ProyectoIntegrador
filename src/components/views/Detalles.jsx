@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Galeria from './Galeria';
 
 
 
@@ -55,7 +56,7 @@ const Detalles = () => {
   useEffect(() =>{
    const getTourDetails = async () => {
      try {
-       const response = await fetch(`http://localhost:8081/tours/${id}`);
+       const response = await fetch(`http://localhost:8081/tours/todos`);
        if (response.ok) {
        const jsonData = await response.json();
         setTourDetails(jsonData);
@@ -83,6 +84,9 @@ const Detalles = () => {
          <h2 className='detail'>{tourDetails.titulo}</h2>
          <p>{tourDetails.descripcion}</p>
          <img src={tourDetails.imagenUrl} alt={tourDetails.titulo} />
+         <Link to = {`/galeria`}>
+         <button>Ver mas</button>
+         </Link>
        </div>
        </>
      </StyledDetalles>   
