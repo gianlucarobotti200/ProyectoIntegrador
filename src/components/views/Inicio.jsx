@@ -14,9 +14,8 @@ const StyledInicio = styled.main`
 const StyledBuscador = styled.div`
 
     img {
-        width: 20%;
+        width: 50%;
         height: auto; /* Esto asegura que la proporción de la imagen se mantenga */
-        display: block; /*
     }
 `;
 const ContenedorDeImagenes = styled.div`
@@ -46,7 +45,7 @@ const Inicio = () => {
             </StyledBuscador>
             <Categorias />
             <Recomendaciones />
-            <Productos/>
+         
         </StyledInicio>
     )
 }

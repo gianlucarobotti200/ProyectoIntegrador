@@ -62,7 +62,20 @@ const StyledHeader = styled.header`
     padding: 1rem 3rem 1rem 0rem ;
     position: relative;
   }
-`;
+
+
+  
+@media (max-width: 600px) {
+  display: grid;
+  aling-items: center;
+  justify-content: center;
+}
+
+  sc-pNWRh.jode{
+    width: 90%;
+  }
+
+`
 
 function Header() {
   return (

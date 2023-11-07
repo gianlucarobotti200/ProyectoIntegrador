@@ -1,197 +1,141 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components"
-import ImageListItem from '@mui/material/ImageListItem';
-
-
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import CardRecomendacion from './CardRecomendacion';
+import { Link } from 'react-router-dom';
 
 const StyledRecomendaciones = styled.div `
 
-.recomendacion{
-    display: grid;
-    width: 85vw;
-    height: 163vh;
-    grid-template-columns: 1fr 1fr;
-    gap: 7%;
-    margin: 0% 0% 0% 7%;
-  }
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
 
-  h2{
-    text-align: left;
-    font-size: 2.5vw;
-    margin: 4% 2% 4% 8% ;
-    color: rgba(36, 48, 110, 1);
-  }
-
-  .title{
-    background: none;
-  }
-
-  img.foto-rec{
-    width: 98%;
-    height: 49vh;
-    border-radius: 5px;
-    box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-    border: 1px solid grey;
-    padding: 15% 5% 15% 5%;
-    margin: 0% 0% 0% 4%;
-    background-color: white;
-    position: relative;
-  }
-
-  li{
-   width: 34vw;
-  }
-
-  .texto-imagen{
-    position: absolute;
-    width: 27vw;
-    top: 5%;
-    left: 48%;
-    transform: translate(-50%, -50%);
-    color: rgba(36, 48, 110, 1);
-    font-weight: bold;
-    font-size: 1.4vw;
-  }
-
-  .precio{
-    font-size: 1.3vw;
-    color: rgba(36, 48, 110, 1);
-    font-weight: bold;
-    position: absolute;
-    bottom: 5%;
-    top: 860%;
-    right: -20%;
-  }
-
-  .foto-rec{
-    position: relative;
-  }
-
-  .reloj{
-    position: absolute;
-    bottom: left;
-    left: 10%;
-    font-size: 1.2vw;
-    color: white;
-    background-color: rgba(36, 48, 110, 0.8);
-    border-radius: 3px;
-    padding: 5px;
-    top: 84%;
-  }
-  
-  .horario{
-    margin-left: 10px;
-  }
-
-
-  @media (max-width: 600px) {
-
-    .recomendacion{
-      display: grid;
-      grid-template-columns: 1fr;
-      width: 90vw;
-      gap: 0%; 
-      margin: 5%;
+    .div-h2{
+        display: flex;
+        justify-content: flex-start;
+      }
+    .div-recomendaciones{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    img.foto-rec{
-      width: 90vw;
-      height: 40vh;
-      border-radius: 5px;
-      box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-      border: 1px solid grey;
-      padding: 1%;
-      margin: 0%;
+    .recomendaciones{
+        display: flex;
+        justify-content: space-between;
+    }
+    .img-recomendado{
+      width: 100%;
     }
 
-    h2{  
-      font-size: 8vw;
-      margin: 6vh;
-      padding: 1vh;
+    .card-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-  
-    li{
-      width: 30vw;
+    
+    .card-item {
+      width: calc(50% - 8px);
     }
 
-  .texto-imagen{
-    position: absolute;
-    width: 40vw;
-    top: 1%;
-    left: 68%;
-    transform: translate(-50%, -50%);
-    color: black;
-    font-weight: bold;
-    font-size: 2vw;
-  }
+    h6{
+      display: flex;
+      justify-content: flex-start;
+      margin-left: 10px;
+    }
 
-  .precio{
-    font-size: 3vw;
-    color: black;
-    font-weight: bold;
-    position: absolute;
-    bottom: 5%;
-    top: 1400%;
-    right: -95%;
-  }
+    .precio-duracion{
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between; 
+    }
 
+    CardContent{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 `
 
-function Recomendaciones() {
+function Recomendaciones () {
+  const [data, setData] = useState([]); 
 
-    return (
-        <StyledRecomendaciones>
-          <div>
-            <h2>Recomendaciones</h2>
-          </div>
-          <div className='recomendacion'>
-            { Recomendacion.map((item) => (
-              <ImageListItem  key={item.img}>
-                <img className='foto-rec'alt={item.title} data-horario={item.horario}
-                  srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                  loading="lazy"
-                />
-                <p className='texto-imagen'>{item.title}<span className='precio'>${item.price}</span></p>
-                <p><span className='reloj'>{item.horario}</span></p>
-              </ImageListItem>
-            ))}
-            </div>
-        </StyledRecomendaciones>
-    );
-  };
+  useEffect(() =>{
+    const getTours = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/tours/todos');
+        const jsonData = await response.json();
+  
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error al obtener los datos de la API:', error);
+      }
+    };
     
-    const Recomendacion = [
-      {
-        img: 'https://www.guiadecabanias.com/imgs/galerias/postal_1030.jpg',
-        title: 'Paseos en lanchas - conociendo las garras del Tigre ',
-        price: '85000,00',
-        horario:'De 09:00 a 17:00 hrs.',
+    getTours();
+  }, [])
+  console.log(data);
 
-      },
-      {
-        img: 'https://cdn.discordapp.com/attachments/1162206131888869456/1167551418647982151/a8GQ9c_x_1256x620__2.webp?ex=654e89fe&is=653c14fe&hm=ef549287ff4b50f3ff80b9d8b12212f4dd2347e5d000bdf144c3f1f985fcf3aa&',
-        title: 'Visita guiada - visitando los viñedos del Valle de Uco',
-        price: '95000,50',
-        horario:'De 07:00 a 18:00 hrs.',
+  console.log("Datos obtenidos.");
 
-      },
-      {
-        img: 'https://i.pinimg.com/736x/74/e5/55/74e5557fce67fffa50e3eaf128a550e8.jpg',
-        title: 'Experimente del micro clima - dentro de una colonia Suiza en La Cumbrecita  ',
-        price: '65000,50',
-        horario:'De 10:00 a 19:00 hrs.',
+  return (
+    <>
 
-      },
-      {
-        img: 'https://cdn.pixabay.com/photo/2015/05/28/22/54/argentina-patagonia-788744_1280.jpg',
-        title: 'El sur majestuoso - donde encontrar paisajes de ensueño',
-        price: '185000,00',
-        horario:'De 07:00 a 19:30 hrs.',
+    <StyledRecomendaciones>
+      <div className='div-recomendaciones'>
+        <div className='div-h2'>
+          <h2>Recomendaciones</h2>
+        </div>
+        <div className='recomendaciones'>
+          <div className='card-row'>
+            {data.map((tour, index) => (
+              <div key={index} className='card-item'>
+       
+                <Card>
+                  <Typography variant="h6">{tour.titulo}</Typography>
+                    <Link to = {`/detalles/todos`}>
+                  <CardMedia
+                    component="img"
+                    alt={tour.titulo}
+                    height="140"
+                    image={tour.linkFotos[0]}
+                  />
+                    </Link>
+                  <CardContent>
+                    <Typography variant="body2" color="textSecondary">
+                      {tour.descripcion}
+                    </Typography>
+                    <div className='precio-duracion'>
 
-      }, 
-      
-    ];
-   
+                    <Typography variant="body1" color="textPrimary">
+                      Precio: ${tour.precio}
+                    </Typography>
+                    <Typography variant="body1" color="textPrimary">
+                      Duración: {tour.cantHoras}hs
+                    </Typography>
+                    </div>
+
+                  </CardContent>
+                </Card>
+    
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </StyledRecomendaciones>
+
+    </>
+  );
+}
 
 export default Recomendaciones;
+
+
