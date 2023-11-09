@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -8,7 +8,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 
 const StyledForm = styled.form`
     .row1{
@@ -56,7 +58,7 @@ const VisuallyHiddenInput = styled('input')({
     left: 0,
     whiteSpace: 'nowrap',
     width: 1,
-  });
+});
 
 const FormTours = ({ onCloseModal }) => {
     const [titulo, setTitulo] = useState('');
@@ -65,7 +67,30 @@ const FormTours = ({ onCloseModal }) => {
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
     const [imagenes, setImagenes] = useState(null);
-    const [id, setId] =useState('1')
+    const [id, setId] = useState('1')
+    const [categorias, setCategorias] = useState([])
+    const [caracteristicas, setCaracteristicas] = useState([])
+    const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
+    const [caracteristicasSeleccionadas, setCaracteristicasSeleccionadas] = useState([]);
+
+    const getCaracteristicasYCategorias = async () => {
+        try {
+            const response1 = await fetch("http://localhost:8081/caracteristicas");
+            const response2 = await fetch("http://localhost:8081/categorias")
+            const jsonData1 = await response1.json();
+            const jsonData2 = await response2.json();
+            setCaracteristicas(jsonData1);
+            setCategorias(jsonData2);
+        } catch (error) {
+            console.error("Error al obtener los datos de la API: ", error);
+        }
+    }
+
+    useEffect(() => {
+        getCaracteristicasYCategorias();
+    }, []);
+
+
 
     const handleFileChange = (e) => {
         setImagenes(e.target.files);
@@ -79,8 +104,8 @@ const FormTours = ({ onCloseModal }) => {
             provincia,
             titulo,
             descripcion,
-            precio: parseInt(precio), 
-            cantHoras: parseInt(duracion), 
+            precio: parseInt(precio),
+            cantHoras: parseInt(duracion),
         };
 
         try {
@@ -95,6 +120,22 @@ const FormTours = ({ onCloseModal }) => {
             if (response.ok) {
                 const jsonResponse = await response.json();
                 setId(jsonResponse.id);
+
+                fetch(`http://localhost:8081/tours/${jsonResponse.id}/categorias`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id))
+                })
+
+                fetch(`http://localhost:8081/tours/${jsonResponse.id}/caracteristicas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id))
+                })
                 console.log('El tour se ha agregado exitosamente.');
                 onCloseModal();
             } else {
@@ -117,95 +158,135 @@ const FormTours = ({ onCloseModal }) => {
             if (imageResponse.ok) {
                 console.log('Las imágenes se han agregado exitosamente.');
             } else {
-                console.error('Error al subir las imágenes.');}}
-                catch (error) {
-                    console.error('Error al subir las imágenes:', error);}    
+                console.error('Error al subir las imágenes.');
+            }
+        }
+        catch (error) {
+            console.error('Error al subir las imágenes:', error);
+        }
 
     };
 
     return (
         <>
-        
-        <StyledForm onSubmit={handleSubmit}>
-            <div className='row1'>
 
-            <TextField id="outlined-controlled"  InputLabelProps={{shrink: true,}} label="Título" size="small" variant="outlined" value={titulo}
-                onChange={(e) => setTitulo(e.target.value)} />
-            </div>
-            <div className='row2'>
-                
-                <Autocomplete
-                    id="size-small-outlined"
-                    size="small"
-                    options={top100Films}
-                    onChange={(e, newValue) => {
-                        console.log(newValue.title)
-                        setProvincia(newValue.title);
-                    }}
-                    getOptionLabel={(option) => option.title}
-                    renderInput={(params) => (
-                    <TextField {...params} label="Seleccionar Provincia" />
-                    )}
-                />
+            <StyledForm onSubmit={handleSubmit}>
+                <div className='row1'>
 
-                <Autocomplete
-                    id="size-small-outlined"
-                    size="small"
-                    options={top100Films}
-                    onChange={(e, newValue) => {
-                        console.log(newValue.title)
-                        setProvincia(newValue.title);
-                    }}
-                    getOptionLabel={(option) => option.title}
-                    renderInput={(params) => (
-                    <TextField {...params} label="Seleccionar Categoría" />
-                    )}
-                />
-            </div>
-            <div className='row2'>
-            
-            
-            <FormControl onChange={(e)=> setPrecio(e.target.value)}  size="small" fullWidth sx={{ m: 1 }}>
-                <InputLabel onChange={(e)=> setPrecio(e.target.value)} htmlFor="outlined-adornment-amount">Precio</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-amount"
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    label="Amount"
-                />
-            </FormControl>
-            
-            <FormControl onChange={(e)=> setDuracion(e.target.value)} size="small" fullWidth sx={{ m: 1 }}>
-                <InputLabel  htmlFor="outlined-adornment-amount">Duración</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-amount"
-                    startAdornment={<InputAdornment position="start">hs</InputAdornment>}
-                    label="Amount"
-                    
-                />
-            </FormControl>
-            <Button component="label" onChange={handleFileChange} variant="contained"  startIcon={<CloudUploadIcon />}>
-                Subir archivo
-                <VisuallyHiddenInput multiple type="file" />
-            </Button>
-            </div>
-            <div className='row3'>
+                    <TextField id="outlined-controlled" InputLabelProps={{ shrink: true, }} label="Título" size="small" variant="outlined" value={titulo}
+                        onChange={(e) => setTitulo(e.target.value)} />
+                </div>
+                <div className='row2'>
 
-            <TextField
-                id="outlined-multiline-static"
-                label="Descripción"
-                multiline
-                rows={4}
-                value={descripcion}
-                InputLabelProps={{shrink: true,}} 
-                onChange={(e) => setDescripcion(e.target.value)}
-            />
-            </div>
-            <div className='row4'>
+                    <Autocomplete
+                        id="size-small-outlined"
+                        size="small"
+                        options={top100Films}
+                        onChange={(e, newValue) => {
+                            console.log(newValue.title)
+                            setProvincia(newValue.title);
+                        }}
+                        getOptionLabel={(option) => option.title}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Seleccionar Provincia" />
+                        )}
+                    />
 
-                <Button variant="outlined" type="submit">Guardar</Button>
-            </div>
-            
-        </StyledForm>
+                    <div>
+                        <h5>Categorías</h5>
+                        <FormGroup>
+                            {categorias.map((categoria) => (
+                                <FormControlLabel
+                                    key={categoria.id}
+                                    control={
+                                        <Checkbox
+                                            inputProps={{ 'aria-label': `Checkbox ${categoria.nombre}` }}
+                                            checked={categoriasSeleccionadas.some((seleccionada) => seleccionada.id === categoria.id)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setCategoriasSeleccionadas([...categoriasSeleccionadas, categoria]);
+                                                } else {
+                                                    setCategoriasSeleccionadas(categoriasSeleccionadas.filter((seleccionada) => seleccionada.id !== categoria.id));
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label={categoria.nombre}
+                                />
+                            ))}
+                        </FormGroup>
+                    </div>
+
+                    <div>
+                        <h5>Características</h5>
+                        <FormGroup>
+                            {caracteristicas.map((caracteristica) => (
+                                <FormControlLabel
+                                    key={caracteristica.id}
+                                    control={
+                                        <Checkbox
+                                            inputProps={{ 'aria-label': `Checkbox ${caracteristica.nombre}` }}
+                                            checked={caracteristicasSeleccionadas.some((seleccionada) => seleccionada.id === caracteristica.id)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setCaracteristicasSeleccionadas([...caracteristicasSeleccionadas, caracteristica]);
+                                                } else {
+                                                    setCaracteristicasSeleccionadas(caracteristicasSeleccionadas.filter((seleccionada) => seleccionada.id !== caracteristica.id));
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label={caracteristica.nombre}
+                                />
+                            ))}
+                        </FormGroup>
+                    </div>
+
+                </div>
+                <div className='row2'>
+
+
+                    <FormControl onChange={(e) => setPrecio(e.target.value)} size="small" fullWidth sx={{ m: 1 }}>
+                        <InputLabel onChange={(e) => setPrecio(e.target.value)} htmlFor="outlined-adornment-amount">Precio</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-amount"
+                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                            label="Amount"
+                        />
+                    </FormControl>
+
+                    <FormControl onChange={(e) => setDuracion(e.target.value)} size="small" fullWidth sx={{ m: 1 }}>
+                        <InputLabel htmlFor="outlined-adornment-amount">Duración</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-amount"
+                            startAdornment={<InputAdornment position="start">hs</InputAdornment>}
+                            label="Amount"
+
+                        />
+                    </FormControl>
+                    <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
+                        Subir archivo
+                        <VisuallyHiddenInput multiple type="file" />
+                    </Button>
+                </div>
+                <div className='row3'>
+
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Descripción"
+                        multiline
+                        rows={4}
+                        value={descripcion}
+                        InputLabelProps={{ shrink: true, }}
+                        onChange={(e) => setDescripcion(e.target.value)}
+                    />
+                </div>
+                <div className='row4'>
+
+                    <Button variant="outlined" type="submit">Guardar</Button>
+                </div>
+
+            </StyledForm>
         </>
     );
 }
@@ -213,26 +294,26 @@ const FormTours = ({ onCloseModal }) => {
 export default FormTours;
 
 const top100Films = [
-    { title: 'Buenos Aires'},
+    { title: 'Buenos Aires' },
     { title: 'Santa Fe' },
     { title: 'Mendoza' },
     { title: 'Córdoba' },
     { title: 'Entre Ríos' },
-    { title: "Corrientes"},
-    { title: 'Misiones'},
-    { title: 'Formosa'},
-    { title: 'Chaco'},
-    { title: 'Salta'},
-    { title: 'Jujuy'},
-    { title: 'Catamarca'},
-    { title: 'La Rioja'},
-    { title: 'San Juan'},
-    { title: 'San Luis'},
-    { title: 'Neuquén'},
-    { title: 'La Pampa'},
-    { title: 'Río Negro'},
-    { title: 'Chubut'},
-    { title: 'Santa Cruz'},
-    { title: 'Tierra del Fuego'},
-    { title: 'Tucumán'}
+    { title: "Corrientes" },
+    { title: 'Misiones' },
+    { title: 'Formosa' },
+    { title: 'Chaco' },
+    { title: 'Salta' },
+    { title: 'Jujuy' },
+    { title: 'Catamarca' },
+    { title: 'La Rioja' },
+    { title: 'San Juan' },
+    { title: 'San Luis' },
+    { title: 'Neuquén' },
+    { title: 'La Pampa' },
+    { title: 'Río Negro' },
+    { title: 'Chubut' },
+    { title: 'Santa Cruz' },
+    { title: 'Tierra del Fuego' },
+    { title: 'Tucumán' }
 ]

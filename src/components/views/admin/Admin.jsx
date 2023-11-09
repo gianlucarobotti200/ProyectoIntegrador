@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
-import CardTourAdmin from './CardTourAdmin';
-import BasicModal from './BasicModal';
+import { Outlet } from 'react-router-dom';
 
 
 
@@ -19,49 +18,9 @@ const StyledAdministracion = styled.div`
 `
 
 const Admin = () => {
-    const [tours, setTours] = useState([]);
-    const getTours = async () => {
-        try {
-            const response = await fetch("http://localhost:8081/tours/todos");
-            const jsonData = await response.json();
-
-            setTours(jsonData);
-        } catch (error) {
-            console.error("Error al obtener los datos de la API: ", error);
-        }
-    }
-
-    const refreshTours = () => {
-        getTours();
-    }
-
-    useEffect(() => {
-        getTours();
-    }, []);
-
+    
     return (
-        <StyledAdministracion>
-            <h1>Administración</h1>
-            <BasicModal onTourAdded={refreshTours}/>
-            <div className='header-table'>
-                <span className='id'>ID</span>
-                <span className='nombre'>Título</span>
-                <span>GESTIÓN</span>
-            </div>
-            {tours.map((tour, index) => (
-                <CardTourAdmin
-                    key={index}
-                    id={tour.id}
-                    linkFotos={tour.linkFotos}
-                    titulo={tour.titulo}
-                    provincia={tour.provincia}
-                    descripcion={tour.descripcion}
-                    precio={tour.precio}
-                    cantHoras={tour.cantHoras}
-                    onDelete={refreshTours}
-                />
-            ))}
-        </StyledAdministracion>
+        <Outlet/>
     );
 };
 
