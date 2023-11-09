@@ -83,20 +83,23 @@
   }
 
 
-    return (
-      <StyledDetalles>
+  return (
+    <StyledDetalles>
       <>
         <div className='card-grid'>
           <h2 className='detail'>{tourDetails.titulo}</h2>
           <p>{tourDetails.descripcion}</p>
-          <img src={tourDetails.linkFotos} alt={tourDetails.titulo} />
-          <Link to = {`/galeria`}>
-          <button>Ver mas</button>
+          {tourDetails.linkFotos && tourDetails.linkFotos.map((tour, index) => (
+            <img key={index} src={tour}  />
+          ))}
+          <Link to={`/galeria`}>
+            <button>Ver más</button>
           </Link>
         </div>
-        </>
-      </StyledDetalles>   
-    );
+      </>
+    </StyledDetalles>
+  );
+  
   };
 
   export default Detalles;
