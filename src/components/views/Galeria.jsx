@@ -1,128 +1,220 @@
-import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
-import IconButton from '@mui/material/IconButton';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import React, { useEffect, useState } from 'react';
+import styled from "styled-components";
+import Card from "@mui/material/Card"; 
+import Typography from "@mui/material/Typography"; 
 
-function srcset(image, width, height, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${width * cols}&h=${
-      height * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
 
-export default function CustomImageList() {
-  return (
-    <ImageList
-      sx={{
-        width: 500,
-        height: 450,
-        // Promote the list into its own layer in Chrome. This costs memory, but helps keeping high FPS.
-        transform: 'translateZ(0)',
-      }}
-      rowHeight={200}
-      gap={1}
-    >
-      {itemData.map((item) => {
-        const cols = item.featured ? 2 : 1;
-        const rows = item.featured ? 2 : 1;
 
-        return (
-          <ImageListItem key={item.img} cols={cols} rows={rows}>
-            <img
-              {...srcset(item.img, 250, 200, rows, cols)}
-              alt={item.title}
-              loading="lazy"
-            />
-            <ImageListItemBar
-              sx={{
-                background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
-                  'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-              }}
-              title={item.title}
-              position="top"
-              actionIcon={
-                <IconButton
-                  sx={{ color: 'white' }}
-                  aria-label={`star ${item.title}`}
-                >
-                  <StarBorderIcon />
-                </IconButton>
-              }
-              actionPosition="left"
-            />
-          </ImageListItem>
-        );
-      })}
-    </ImageList>
+const StyledGaleria= styled.div `
+
+
+    .div-h2{
+      display: flex;
+      justify-content: flex-start;
+      margin: 1% 0% 1% 3%;       
+      color: rgba(36, 48, 110, 1);
+  }
+
+    // .img-container-1 {
+    //   display: flex;
+    //   flex-direction: column;
+    //   width: 41vw;
+    //   heigth: 50vh;
+    //   border-radius: 5px;
+    //   margin: 0% 0% 0% 0%;
+    // }
+
+    .card-1 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .card-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .card-item {
+      width: calc(50% - 8px);
+    }
+
+    .img-container-2 {
+      display: flex;
+      flex-direction: column 1fr 1fr;
+      width: 28vw;
+      border-radius: 5px;
+      margin: 0% 0% 0% 0%;
+    }
+
+    .img-container-2-1 {
+      display: flex;
+      flex-direction: column 1fr 1fr;
+      width: 18vw;
+      height: 30vh;
+      border-radius: 5px;
+      margin: 2% 2% 0% 0%;
+    }
+
+  img{
+    display: flex;
+    width: 40vw;
+    height: 80vh;
+    margin: 1%;
+    border-radius: 5px;
+    border: 2px solid grey;
+    box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+    border: 1px solid grey;
+  }
+
+    p.card-desc{
+      display: flex;
+      text-align: left;
+      font-size: 1.6vw;
+      color: rgba(36, 48, 110, 1);
+      box-shadow: red 0px 0px 5px,  0px 4px 11px;
+      border: 1px solid grey;
+  }
+
+   .card-footer{
+      display: flex;
+      aling-items: center;
+      justify-content: space-around;
+      width: 40vw;
+      padding: 1% 1% 4% 8%;
+      margin: 0% 0% 0% -8%;
+      color: rgba(36, 48, 110, 1);
+      font-weight: bold;
+      font-size: 1.5vw;
+  }
+
+   @media (max-width: 600px) {
+
+    .card-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 90vw;
+      gap: 5%; 
+      margin: 0%;
+    }
+
+    .recomendacion img{
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 80vw;
+      height: 40vh;
+      border-radius: 5px;
+      box-shadow: grey 0px 0px 5px,  0px 4px 11px;
+      border: 1px solid grey;
+      padding:0%;
+      margin: 15% 1% 1% 5%;
+    }
+
+    h2.card-reco{
+      font-size: 6vw;     
+      color: rgba(36, 48, 110, 1);
+
+    }
+
+    p.card-desc{
+      display: flex;
+      text-align: left;
+      font-size: 5vw;
+      margin: 1%;
+      padding: 1%;
+      color: rgba(36, 48, 110, 1);
+    }
+
+    .card-footer{  
+       font-size: 6vw;
+       margin: 0vh;
+       width: 80vw;
+       padding: 1vh;
+     }
+  
+    p.card-desc{
+      position: absolute;
+      width: 40vw;
+      top: 1%;
+      left: 68%;
+      transform: translate(-50%, -50%);
+      color: black;
+      font-weight: bold;
+      font-size: 2vw;
+   }
+
+`
+
+
+function Galeria () {
+   const [data, setData] = useState([]); 
+  
+    useEffect(() =>{
+      const getTours = async () => {
+        try {
+          const response = await fetch('http://localhost:8081/tours/todos');
+          const jsonData = await response.json();
+    
+          setData(jsonData);
+          console.log(data);
+          console.log("Datos obtenidos.");
+        } catch (error) {
+          console.error('Error al obtener los datos de la API:', error);
+        }
+      };
+      
+      getTours();
+     }, [])
+
+    console.log(data);
+    console.log("Datos obtenidos.");
+
+    return (
+        <StyledGaleria>
+             <div>
+              <div className='div-h2'>
+                  <h2>Galeria</h2>
+              </div>
+               {/* <div className='galeria'>                */}
+                          {data.map((tour, index) => (
+                            <div key={index} className='card-item'>
+                              <div className='card-row'>
+                              <Card className='img-princ'>
+                                <img src={tour.linkFotos[0]} />
+                              </Card>
+                              </div>
+                              <div className='img-container-2'>
+                              <div className='img-container-2-1'>  
+                              <Card className='card-1'>
+                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                              </Card>
+                              </div> 
+                              <div className='img-container-2-1'>  
+                              <Card className='card-2'>
+                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                              </Card>
+                              </div> 
+                              <div className='img-container-2-1'>  
+                              <Card className='card-3'>
+                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                              </Card>
+                              </div> 
+                              <div className='img-container-2-1'>  
+                              <Card className='card-4'>
+                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                              </Card>
+                              </div> 
+                              </div>                        
+                            </div>
+                          ))}
+                        </div>
+                     {/* </div> */}
+                   
+      
+        </StyledGaleria>
   );
 }
 
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-    author: '@bkristastucchio',
-    featured: true,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-    author: '@rollelflex_graphy726',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-    author: '@helloimnik',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-    author: '@nolanissac',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-    author: '@hjrc33',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-    author: '@arwinneil',
-    featured: true,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-    author: '@tjdragotta',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-    author: '@katie_wasserman',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-    author: '@silverdalex',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-    author: '@shelleypauls',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-    author: '@peterlaster',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-    author: '@southside_customs',
-  },
-];
+export default Galeria;
+

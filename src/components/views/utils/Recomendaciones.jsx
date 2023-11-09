@@ -100,13 +100,14 @@ function Recomendaciones () {
        
                 <Card>
                   <Typography variant="h6">{tour.titulo}</Typography>
-                    <Link to = {`/detalles/todos`}>
-                  <CardMedia
-                    component="img"
-                    alt={tour.titulo}
-                    height="140"
-                    image={tour.linkFotos[0]}
-                  />
+                    <Link to = {`/detalles/${tour.id}`}>
+    
+                      <CardMedia
+                        component="img"
+                        alt={tour.titulo}
+                        height="140"
+                        image={tour.linkFotos[0]}
+                      />
                     </Link>
                   <CardContent>
                     <Typography variant="body2" color="textSecondary">
