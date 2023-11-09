@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
 import BasicModal from './BasicModal';
 
+
+
 const StyledAdministracion = styled.div`
     div.header-table{
         background-color: #f5f5f5;
@@ -39,7 +41,7 @@ const Admin = () => {
 
     return (
         <StyledAdministracion>
-            <h1>Administracion</h1>
+            <h1>Administración</h1>
             <BasicModal onTourAdded={refreshTours}/>
             <div className='header-table'>
                 <span className='id'>ID</span>
