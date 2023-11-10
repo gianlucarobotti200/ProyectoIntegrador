@@ -1,7 +1,7 @@
  import React, { useState, useEffect } from 'react';
  import styled from 'styled-components';
  import { Link, useParams } from 'react-router-dom';
- import Galeria from './Galeria';
+ import Galeria from '../Galeria';
 
 
  const StyledDetalles = styled.div `
@@ -63,14 +63,7 @@
         const response = await fetch(`http://localhost:8081/tours/buscar/${id}`);
         const jsonData = await response.json();
         setData(jsonData);
-        console.log(jsonData['linkFotos'][0]);
-        // if (response.ok) {
-      
-
-        //  console.log(jsonData);
-        // } else {
-        //  console.error('Error al obtener los detalles del tour');
-        // }
+        console.log(jsonData);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
@@ -86,22 +79,24 @@
    return <div>Cargando...</div>
   }
 
-
-    return (
-      <StyledDetalles>
+  return (
+    <StyledDetalles>
       <>
         <div className='card-grid'>
           <h2 className='detail'>{tourDetails.titulo}</h2>
           <p>{tourDetails.descripcion}</p>
-          <img src={tourDetails['linkFotos'][0]} alt={tourDetails.titulo} />
-          <Link to = {`/galeria`}>
-          <button>Ver mas</button>
+          <img  src={tourDetails['linkFotos'][0]} />
+           <Link to={'/galeria'}>
+            <button>Ver más</button>
           </Link>
         </div>
-        </>
-      </StyledDetalles>   
-    );
-  };
+      </>
+    </StyledDetalles>
+  );
+ }
+ 
+   export default Detalles;
 
-  export default Detalles;
+
+
 
