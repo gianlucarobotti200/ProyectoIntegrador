@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import Admin from './components/views/admin/Admin.jsx'
+// import Admin from './components/views/admin/Admin.jsx'
+import FormTours from './components/views/FormTours.jsx'
 import Inicio from './components/views/Inicio.jsx' 
 import Detalles from './components/views/Detalles.jsx' 
 import {BrowserRouter, Routes, Route} from "react-router-dom"
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path='/' element={<App/>}>
         <Route path='/inicio' element={<Inicio/>} />
         <Route path='/admintours' element={<FormTours/>}/>
+        {/* <Route path='/admin' element={<Admin/>}/> */}
         <Route path='/detalles/:id' element={<Detalles/>}/>
         <Route path='/galeria' element={<Galeria/>}/>
       </Route>

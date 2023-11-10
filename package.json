@@ -13,12 +13,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-<<<<<<< HEAD
-    "@mui/material": "^5.14.17",
-=======
     "@mui/material": "^5.14.15",
     "dedupe": "^4.0.2",
->>>>>>> 72c9c2d7c6ddcd3a674c257d877ef138e47a3e6c
     "dom-helpers": "^5.2.1",
     "react": "^18.2.0",
     "react-datepicker": "^4.21.0",

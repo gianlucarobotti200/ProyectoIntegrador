@@ -4,8 +4,6 @@
  import Galeria from './Galeria';
 
 
-
-
  const StyledDetalles = styled.div `
 
    display: flex;
@@ -54,28 +52,34 @@
 
 
  const Detalles = () => {
-    const [tourDetails, setTourDetails] = useState([]);
+    const [tourDetails, setData] = useState([]);
     const { id } = useParams(); 
     console.log('Valor de id:', id);
+   
 
    useEffect(() =>{
     const getTourDetails = async () => {
       try {
         const response = await fetch(`http://localhost:8081/tours/buscar/${id}`);
-        if (response.ok) {
         const jsonData = await response.json();
-         setTourDetails(jsonData);
-         console.log(jsonData);
-        } else {
-         console.error('Error al obtener los detalles del tour');
-        }
+        setData(jsonData);
+        console.log(jsonData['linkFotos'][0]);
+        // if (response.ok) {
+      
+
+        //  console.log(jsonData);
+        // } else {
+        //  console.error('Error al obtener los detalles del tour');
+        // }
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
     };
-
+  
     getTourDetails();
   }, []);
+  console.log(tourDetails);
+
 
   if (!tourDetails) {
 
@@ -89,7 +93,7 @@
         <div className='card-grid'>
           <h2 className='detail'>{tourDetails.titulo}</h2>
           <p>{tourDetails.descripcion}</p>
-          <img src={tourDetails.linkFotos} alt={tourDetails.titulo} />
+          <img src={tourDetails['linkFotos'][0]} alt={tourDetails.titulo} />
           <Link to = {`/galeria`}>
           <button>Ver mas</button>
           </Link>

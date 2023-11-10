@@ -153,7 +153,7 @@ function Galeria () {
     useEffect(() =>{
       const getTours = async () => {
         try {
-          const response = await fetch('http://localhost:8081/tours/todos');
+          const response = await fetch('http://localhost:8081/tours/buscar/${id}');
           const jsonData = await response.json();
     
           setData(jsonData);
@@ -176,7 +176,6 @@ function Galeria () {
               <div className='div-h2'>
                   <h2>Galeria</h2>
               </div>
-               {/* <div className='galeria'>                */}
                           {data.map((tour, index) => (
                             <div key={index} className='card-item'>
                               <div className='card-row'>
@@ -208,10 +207,7 @@ function Galeria () {
                               </div>                        
                             </div>
                           ))}
-                        </div>
-                     {/* </div> */}
-                   
-      
+                        </div>                         
         </StyledGaleria>
   );
 }
