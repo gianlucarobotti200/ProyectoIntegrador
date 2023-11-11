@@ -63,7 +63,7 @@
         if (response.ok) {
         const jsonData = await response.json();
         setData(jsonData);
-        console.log(jsonData);
+        console.log(jsonData)};
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
