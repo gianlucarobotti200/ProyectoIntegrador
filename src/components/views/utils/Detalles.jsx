@@ -3,9 +3,6 @@
  import { Link, useParams } from 'react-router-dom';
 
 
-
-
-
  const StyledDetalles = styled.div `
 
    display: flex;
@@ -54,9 +51,10 @@
 
 
  const Detalles = () => {
-    const [tourDetails, setTourDetails] = useState([]);
+    const [tourDetails, setData] = useState([]);
     const { id } = useParams(); 
     console.log('Valor de id:', id);
+   
 
    useEffect(() =>{
     const getTourDetails = async () => {
@@ -64,18 +62,17 @@
         const response = await fetch(`http://localhost:8080/tours/${id}`);
         if (response.ok) {
         const jsonData = await response.json();
-         setTourDetails(jsonData);
-         console.log(jsonData);
-        } else {
-         console.error('Error al obtener los detalles del tour');
-        }
+        setData(jsonData);
+        console.log(jsonData);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
     };
-
+  
     getTourDetails();
   }, []);
+  console.log(tourDetails);
+
 
   if (!tourDetails) {
 
@@ -110,5 +107,4 @@
   
   };
 
-  export default Detalles;
 
