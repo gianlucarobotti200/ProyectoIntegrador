@@ -1,7 +1,7 @@
  import React, { useState, useEffect } from 'react';
  import styled from 'styled-components';
  import { Link, useParams } from 'react-router-dom';
- import Galeria from './Galeria';
+
 
 
 
@@ -61,7 +61,7 @@
    useEffect(() =>{
     const getTourDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8081/tours/buscar/${id}`);
+        const response = await fetch(`http://localhost:8080/tours/${id}`);
         if (response.ok) {
         const jsonData = await response.json();
          setTourDetails(jsonData);
@@ -86,16 +86,24 @@
   return (
     <StyledDetalles>
       <>
-        <div className='card-grid'>
-          <h2 className='detail'>{tourDetails.titulo}</h2>
-          <p>{tourDetails.descripcion}</p>
-          {tourDetails.linkFotos && tourDetails.linkFotos.map((tour, index) => (
-            <img key={index} src={tour}  />
-          ))}
-          <Link to={`/galeria`}>
-            <button>Ver más</button>
-          </Link>
+        <h1 className="title">{tourDetails.titulo}</h1>
+        <div>
+          {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
+            <>
+              <img src={tourDetails.linkFotos[0]} alt="Left Image" />
+              <div>
+                {tourDetails.linkFotos.slice(1, 5).map((image, index) => (
+                  <img key={index} src={image} alt={`Right Image ${index + 1}`} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
+        <h3 className="description">{tourDetails.descripcion}</h3>
+        <p className="price">{tourDetails.precio}</p>
+        <Link to={`/galeria`}>
+          <button>Ver más</button>
+        </Link>
       </>
     </StyledDetalles>
   );

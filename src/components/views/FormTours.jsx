@@ -58,64 +58,45 @@ const FormTours = ({onCloseModal}) => {
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
-    const [imagenes, setImagenes] = useState([]);
-    const [id, setId] =useState('1')
-
+    const [file, setFile] = useState([]);
+    
     const handleFileChange = (e) => {
-        setImagenes(e.target.files);
+        setFile(e.target.files);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let formDataImagenes = null;
-
-        const formData = {
-            provincia,
-            titulo,
-            descripcion,
-            precio: parseInt(precio), 
-            cantHoras: parseInt(duracion), 
-        };
-
+    
+        const formData = new FormData();
+        formData.append('provincia', provincia);
+        formData.append('titulo', titulo);
+        formData.append('descripcion', descripcion);
+        formData.append('precio', parseInt(precio));
+        formData.append('cantHoras', parseInt(duracion));
+    
+        // Agregar imágenes al formulario
+        for (let i = 0; i < file.length; i++) {
+            formData.append('file', file[i]);
+        }
+    
         try {
-            const response = await fetch('http://localhost:8081/tours', {
+            // Enviar todo el formulario al servidor en una sola solicitud
+            const response = await fetch('http://localhost:8080/tours', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             });
-
+    
             if (response.ok) {
-                const jsonResponse = await response.json();
-                setId(jsonResponse.id);
-                console.log('El tour se ha agregado exitosamente.');
+                console.log('El formulario se ha enviado exitosamente.');
                 onCloseModal();
             } else {
-                console.error('Error al agregar el tour.');
+                console.error('Error al enviar el formulario.');
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
-        try {
-            const imageResponse = await fetch(`http://localhost:8081/tours/subirfotos/${id}`, {
-                method: 'POST',
-                body: formDataImagenes,
-            });
-            if (imageResponse.ok) {
-                console.log('Las imágenes se han agregado exitosamente.');
-            } else {
-                console.error('Error al subir las imágenes.');}}
-                catch (error) {
-                    console.error('Error al subir las imágenes:', error);}    
-
     };
+    
 
     return (
         <StyledForm onSubmit={handleSubmit}>
@@ -154,7 +135,7 @@ const FormTours = ({onCloseModal}) => {
                 <option value="Tierra del Fuego">Tierra del Fuego</option>
                 <option value="Tucumán">Tucumán</option>
             </select>
-            <input type="file" onChange={handleFileChange} placeholder='Subir imágenes' multiple/>
+            <input type="file" name="file" onChange={handleFileChange} placeholder='Subir imágenes' multiple/>
             <textarea
                 type="text"
                 placeholder='Descripción'

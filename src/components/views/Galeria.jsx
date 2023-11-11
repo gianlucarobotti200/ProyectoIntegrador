@@ -153,7 +153,7 @@ function Galeria () {
     useEffect(() =>{
       const getTours = async () => {
         try {
-          const response = await fetch('http://localhost:8081/tours/todos');
+          const response = await fetch('http://localhost:8080/tours/todos');
           const jsonData = await response.json();
     
           setData(jsonData);
