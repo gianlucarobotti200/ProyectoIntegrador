@@ -153,11 +153,7 @@ function Galeria () {
     useEffect(() =>{
       const getTours = async () => {
         try {
-<<<<<<< HEAD
-          const response = await fetch('http://localhost:8080/tours/todos');
-=======
-          const response = await fetch('http://localhost:8081/tours/buscar/${id}');
->>>>>>> d5f272eaa0d3c49d90dcbc2d6f22fa9d15ae96ea
+          const response = await fetch(`http://localhost:8080/tours/${id}`);
           const jsonData = await response.json();
     
           setData(jsonData);
@@ -184,28 +180,28 @@ function Galeria () {
                             <div key={index} className='card-item'>
                               <div className='card-row'>
                               <Card className='img-princ'>
-                                <img src={tour.linkFotos[0]} />
+                                <img src={tour.linkFotos[i]} />
                               </Card>
                               </div>
                               <div className='img-container-2'>
                               <div className='img-container-2-1'>  
                               <Card className='card-1'>
-                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                                <img className='card-1-1' src={tour.linkFotos[i]} />
                               </Card>
                               </div> 
                               <div className='img-container-2-1'>  
                               <Card className='card-2'>
-                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                                <img className='card-1-1' src={tour.linkFotos[i]} />
                               </Card>
                               </div> 
                               <div className='img-container-2-1'>  
                               <Card className='card-3'>
-                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                                <img className='card-1-1' src={tour.linkFotos[i]} />
                               </Card>
                               </div> 
                               <div className='img-container-2-1'>  
                               <Card className='card-4'>
-                                <img className='card-1-1' src={tour.linkFotos[0]} />
+                                <img className='card-1-1' src={tour.linkFotos[i]} />
                               </Card>
                               </div> 
                               </div>                        
