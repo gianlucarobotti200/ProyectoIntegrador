@@ -98,23 +98,6 @@ const StyledRecomendaciones = styled.div `
       font-size: 11px;
     }
 
-    
-  // @media (max-width: 1340px) {
-  
-  //   .recomendaciones{
-  //     display: flex;
-  //     justify-content: space-between;
-  //     flex-direction: column;
-  //     align-items: center;
-  //   }
-
-  //   .card-row {
-  //     width: 100vw;   
-  //     justify-content: center;
-  //     flex-direction: column;
-  //     align-items: center;
-  //   }
-  // }
 
     @media (max-width: 600px) {
 
