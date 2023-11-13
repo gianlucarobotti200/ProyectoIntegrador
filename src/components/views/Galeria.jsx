@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import Card from "@mui/material/Card"; 
+import Card from "@mui/material/Card";
+import { useParams } from 'react-router-dom';  
 import Typography from "@mui/material/Typography"; 
 
 
@@ -147,70 +148,48 @@ const StyledGaleria= styled.div `
 `
 
 
-function Galeria () {
-   const [data, setData] = useState([]); 
-  
-    useEffect(() =>{
-      const getTours = async () => {
-        try {
-          const response = await fetch(`http://localhost:8080/tours/${id}`);
-          const jsonData = await response.json();
-    
-          setData(jsonData);
-          console.log(data);
-          console.log("Datos obtenidos.");
-        } catch (error) {
-          console.error('Error al obtener los datos de la API:', error);
-        }
-      };
-      
-      getTours();
-     }, [])
+function Galeria() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();  // Usa useParams dentro del componente funcional
 
-    console.log(data);
-    console.log("Datos obtenidos.");
+  useEffect(() => {
+    const getTours = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/tours/${id}`);
+        const jsonData = await response.json();
 
-    return (
-        <StyledGaleria>
-             <div>
-              <div className='div-h2'>
-                  <h2>Galeria</h2>
-              </div>
-                          {data.map((tour, index) => (
-                            <div key={index} className='card-item'>
-                              <div className='card-row'>
-                              <Card className='img-princ'>
-                                <img src={tour.linkFotos[i]} />
-                              </Card>
-                              </div>
-                              <div className='img-container-2'>
-                              <div className='img-container-2-1'>  
-                              <Card className='card-1'>
-                                <img className='card-1-1' src={tour.linkFotos[i]} />
-                              </Card>
-                              </div> 
-                              <div className='img-container-2-1'>  
-                              <Card className='card-2'>
-                                <img className='card-1-1' src={tour.linkFotos[i]} />
-                              </Card>
-                              </div> 
-                              <div className='img-container-2-1'>  
-                              <Card className='card-3'>
-                                <img className='card-1-1' src={tour.linkFotos[i]} />
-                              </Card>
-                              </div> 
-                              <div className='img-container-2-1'>  
-                              <Card className='card-4'>
-                                <img className='card-1-1' src={tour.linkFotos[i]} />
-                              </Card>
-                              </div> 
-                              </div>                        
-                            </div>
-                          ))}
-                        </div>                         
-        </StyledGaleria>
+        setData(jsonData);
+        console.log(data);
+        console.log("Datos obtenidos.");
+      } catch (error) {
+        console.error('Error al obtener los datos de la API:', error);
+      }
+    };
+
+    getTours();
+  }, [id]);  // Asegúrate de incluir id en la lista de dependencias
+
+  console.log(data);
+  console.log("Datos obtenidos.");
+
+  return (
+    <StyledGaleria>
+      <div>
+        <div className='div-h2'>
+          <h2>Galeria</h2>
+        </div>
+        {data.linkFotos && data.linkFotos.map((tour, index) => (
+          <div key={index} className='card-item'>
+            <div className='card-row'>
+              <Card className='img-princ'>
+                <img src={tour} alt={`Image ${index}`} />
+              </Card>
+            </div>
+          </div>
+        ))}
+      </div>
+    </StyledGaleria>
   );
 }
 
 export default Galeria;
-

@@ -84,8 +84,8 @@
     <StyledDetalles>
       <>
         <h1 className="title">{tourDetails.titulo}</h1>
-        <div>
-          {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
+          <div>
+           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <>
               <img src={tourDetails.linkFotos[0]} alt="Left Image" />
               <div>
@@ -98,7 +98,7 @@
         </div>
         <h3 className="description">{tourDetails.descripcion}</h3>
         <p className="price">{tourDetails.precio}</p>
-        <Link to={`/galeria`}>
+        <Link to = {`/galeria/${tourDetails.id}`}>
           <button>Ver más</button>
         </Link>
       </>
