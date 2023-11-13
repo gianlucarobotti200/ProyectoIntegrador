@@ -16,14 +16,15 @@ const StyledGaleria= styled.div `
       color: rgba(36, 48, 110, 1);
   }
 
-    // .img-container-1 {
-    //   display: flex;
-    //   flex-direction: column;
-    //   width: 41vw;
-    //   heigth: 50vh;
-    //   border-radius: 5px;
-    //   margin: 0% 0% 0% 0%;
-    // }
+    .img-container-1 {
+      display: flex;
+      aling-items: center:
+      justity-content: center;
+      width: 100%;
+      grid-template-columns: 1fr;
+      gap: 1%;
+      margin: 0% 1% 1% 1%;
+    }
 
     .card-1 {
       display: flex;

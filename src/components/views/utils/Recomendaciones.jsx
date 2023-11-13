@@ -20,8 +20,7 @@ const StyledRecomendaciones = styled.div `
     .div-recomendaciones{
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-     
+      justify-content: space-between; 
       width: 90vw;
       gap: 1px;
     }
@@ -48,8 +47,7 @@ const StyledRecomendaciones = styled.div `
       display: flex;
       width: 100%;
       flex-wrap: wrap;
-      gap: 8%;     
-   
+      gap: 8%;        
     }
     
     .card-item {

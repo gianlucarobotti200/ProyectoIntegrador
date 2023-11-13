@@ -10,21 +10,84 @@
     width: 100%;
     justify-content: center;
 
-  h2.detail{
+    .div-detalles{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between; 
+      width: 90vw;
+      gap: 1px;
+    }
+
+  .h2-title{
     display: flex;
     text-align: left;
-    font-size: 2.5vw;
-    margin: 4% 2% 4% 8%;       
+    font-size: 3vw;
+    margin: 3% 1% 0% 9%;       
     color: rgba(36, 48, 110, 1);
   }
 
-  .card-grid{
+  .card-gral{
     display: grid;
-    width: 45vw;
-    grid-template-columns: 1fr 1fr;
-    gap: 5%;
-    margin: 0% 5% 15% 5%;
+    aling-items: center:
+    justity-content: center;
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 1%;
+    margin: 0% 1% 1% 1%;
+  }
 
+  .card-ppal{
+    display: flex;
+    width: 75vw;
+    height: 80vh;
+    margin: 4% 0% 0% 8%;
+    padding: 0% 0% 0% 0%;
+    border-radius: 5px;
+    box-shadow: #80808047 3px 3px 3px 2px;
+    border: 1px solid rgba(230, 230, 230);
+  }
+
+  .card-sec{
+    display:inline-flex;
+    width: 18vw;
+    height: 28vh;
+    margin: 4% 0% 0% 1%;
+    padding: 0% 0% 0% 0%;
+    border-radius: 5px;
+    box-shadow: #80808047 3px 3px 3px 2px;
+    border: 1px solid rgba(230, 230, 230);
+  }
+
+  .description{
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    width: 76vw;
+    margin: 2% 0% 1% 10%;       
+    color: rgba(36, 48, 110, 1);
+  }
+
+  .price{
+    display: flex;
+    flex-direction: row;
+    margin: 1% 0% 3% 10%;
+    color: rgba(36, 48, 110, 1); 
+  }
+
+  .button{
+    color: #F2F2F2;
+    font-size: 12px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 80px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    margin: 10% 10% 0% -161%;
+    background-color: rgb(161, 235, 206);
+    box-shadow: rgba(0, 212, 255, 0.75) 0px 0px 4px, rgb(91, 91, 229) 0px 4px 11px;
+    border: 0.5px solid rgb(183, 197, 242);
   }
 
   @media (max-width: 600px) {
@@ -32,18 +95,53 @@
     aling-items: center;
     justify-content: center;
 
-    .card-grid{
-      grid-template-columns: 1fr;
-      width: 90vw;
-      gap: 1%;
-      margin: 0% 5% 15% 2%;
-    }
-
-    h2.detail{
+    .h2-title{
       width: 90vw;
       font-size: 9vw;
       margin: 8% 0% 6% 3%
     }
+
+    .card-ppal{
+      grid-template-columns: 1fr;
+      width: 85vw;
+      height: auto;
+      gap: 1%;
+      margin: 0% 5% 5% 2%;
+    }
+    .card-sec{
+      display:inline-flex;
+      width: 19vw;
+      height: 13vh;
+      margin: -1% 1% 1% 2%;
+      padding: 0% 0% 0% 0%;
+      border-radius: 5px;
+      box-shadow: #80808047 3px 3px 3px 2px;
+      border: 1px solid rgba(230, 230, 230);
+    }
+
+    .description{
+      display: flex;
+      justify-content: flex-start;
+      font-size: 4vw;
+      text-align: left;
+      width: 85vw;
+      margin: 3% 0% 5% 4%;       
+      color: rgba(36, 48, 110, 1);
+    }
+
+    .price{
+      display: flex;
+      flex-direction: row;
+      margin: 0% 0% 3% 5%;
+      color: rgba(36, 48, 110, 1); 
+    }
+  
+   .button{
+    margin: 0% 0% 20% -40%;
+    padding: 0% 0% 0% 0%;
+    width: 30vw;
+    height: 3vh;
+   }
 
   }
 
@@ -82,26 +180,26 @@
 
   return (
     <StyledDetalles>
-      <>
-        <h1 className="title">{tourDetails.titulo}</h1>
-          <div>
+      <div className='div-detalles'>
+        <h2 className="h2-title">{tourDetails.titulo}</h2>
+          <div className='card-gral'>
            {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <>
-              <img src={tourDetails.linkFotos[0]} alt="Left Image" />
+              <img className='card-ppal' src={tourDetails.linkFotos[0]} alt="Imagen Principal" />
               <div>
                 {tourDetails.linkFotos.slice(1, 5).map((image, index) => (
-                  <img key={index} src={image} alt={`Right Image ${index + 1}`} />
+                  <img className='card-sec' key={index} src={image} alt={`Imagenes Secundarias ${index + 1}`} />
                 ))}
               </div>
             </>
           )}
         </div>
-        <h3 className="description">{tourDetails.descripcion}</h3>
-        <p className="price">{tourDetails.precio}</p>
+        <h5 className="description">{tourDetails.descripcion}</h5>
+        <p className="price"> Precio: $ {tourDetails.precio}</p>
         <Link to = {`/galeria/${tourDetails.id}`}>
-          <button>Ver más</button>
+          <button className='button'>Ver más</button>
         </Link>
-      </>
+      </div>
     </StyledDetalles>
   );
   
