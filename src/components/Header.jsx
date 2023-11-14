@@ -20,6 +20,7 @@ import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 
 
+
 const StyledHeader = styled.header`
     
     nav {
@@ -103,12 +104,17 @@ const StyledHeader = styled.header`
 function Header() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+    // const handleRegisterClick = () => {
+    //     history.push('http://localhost:5173/registro');
+    //   };
+
     return (
         <><StyledHeader>
                 {/* <div> */}
@@ -173,10 +179,10 @@ function Header() {
                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                             >
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem component={Link} to="/login">
                                     <LoginRoundedIcon /> Iniciar sesión
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem component={Link} to="/registro" >
                                     <AppRegistrationRoundedIcon /> Registrarse
                                 </MenuItem>
                                 

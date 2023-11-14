@@ -7,8 +7,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
-const StyledRegistro = styled.div `
+const StyledLogin = styled.div `
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -40,51 +42,49 @@ export default function OutlinedCard() {
     const [password, setPassword] = React.useState('');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [showMessage, setShowMessage] = React.useState(false);
+    const [loginSuccess, setLoginSuccess] = React.useState(false);
+    const [processing, setProcessing] = React.useState(false);
 
-    const handleRegister = () => {
-        // Deshabilitar el botón y mostrar el mensaje
+    const handleLogin = () => {
+        setProcessing(true);
         setButtonDisabled(true);
-        setShowMessage(true);
-    
-        // Realizar la lógica para enviar los datos al backend
-        fetch('http://localhost:8081/users/crear', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ mail: email, pass: password }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
-            console.log('Registro exitoso:', data);
-    
-            // Limpiar el formulario después del éxito
-            setEmail('');
-            setPassword('');
-    
-            // Habilitar el botón y ocultar el mensaje después de un breve periodo (por ejemplo, 2 segundos)
+        setShowMessage(false);
+
+        setTimeout(() => {
+            // Lógica simulada de inicio de sesión
+            if (email === 'sbmartinezmartinez@gmail.com' && password === '123456') {
+                setLoginSuccess(true);
+            } else {
+                setLoginSuccess(false);
+            }
+
             setTimeout(() => {
+                setEmail('');
+                setPassword('');
                 setButtonDisabled(false);
-                setShowMessage(false);
+                setProcessing(false);
+                window.location.href = '/inicio';
+
+                if (loginSuccess) {
+                    // Redirige a la ruta deseada después de un inicio de sesión exitoso
+                    console.log(loginSuccess)
+                    setTimeout(() => {
+                        window.location.href = '/inicio';
+                    }, 2000);
+                }
+
+                setShowMessage(true);
             }, 2000);
-        })
-        .catch(error => {
-            // Manejar errores, por ejemplo, mostrar un mensaje de error
-            console.error('Error en el registro:', error);
-    
-            // En caso de error, habilitar el botón y ocultar el mensaje inmediatamente
-            setButtonDisabled(false);
-            setShowMessage(false);
-        });
+        }, 2000);
     };
+
     return (
-        <StyledRegistro>
+        <StyledLogin>
             <Box sx={{ minWidth: 275 }}>
                 <Card variant="outlined">
                     <CardContent>
                         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                            Nuevo registro
+                            ¡Bienvenido!
                         </DialogTitle>
                         <div className='row1'>
                             <TextField
@@ -95,7 +95,7 @@ export default function OutlinedCard() {
                                 variant="outlined"
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
-                                disabled={buttonDisabled}
+                                disabled={buttonDisabled || processing}
                             />
                             <TextField
                                 id="outlined-controlled"
@@ -106,24 +106,38 @@ export default function OutlinedCard() {
                                 variant="outlined"
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
-                                disabled={buttonDisabled}
+                                disabled={buttonDisabled || processing}
                             />
                         </div>
                         {showMessage && (
                             <div className='row1'>
-                                <p>Se enviará un correo electrónico para completar la activación.</p>
+                                {loginSuccess ? (
+                                    <Typography variant="body2" color="success">
+                                        Inicio de sesión exitoso
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="body2" color="error">
+                                        Credenciales incorrectas. Inténtalo de nuevo.
+                                    </Typography>
+                                )}
                             </div>
                         )}
                         <div className='row1'>
-                            <CardActions>
-                                <Button size="small" onClick={handleRegister} disabled={buttonDisabled}>
-                                    Registrar
-                                </Button>
-                            </CardActions>
+                            {processing ? (
+                                <Typography variant="body2">
+                                    Procesando...
+                                </Typography>
+                            ) : (
+                                <CardActions>
+                                    <Button size="small" onClick={handleLogin} disabled={buttonDisabled}>
+                                        Iniciar sesión
+                                    </Button>
+                                </CardActions>
+                            )}
                         </div>
                     </CardContent>
                 </Card>
             </Box>
-        </StyledRegistro>
+        </StyledLogin>
     );
 }
