@@ -15,7 +15,6 @@ const StyledRecomendaciones = styled.div `
     flex-direction: row;
     width: 100%;
     justify-content: center;
-
     
     .div-recomendaciones{
       display: flex;
@@ -23,7 +22,7 @@ const StyledRecomendaciones = styled.div `
       justify-content: space-between; 
       width: 90vw;
       gap: 1px;
-    }
+  }
 
     .div-h2{
       display: flex;
@@ -32,7 +31,7 @@ const StyledRecomendaciones = styled.div `
       font-size: 2vw;
       margin: 1% 1% 0% 3%;       
       color: rgba(36, 48, 110, 1);
-    }
+  }
 
     .recomendaciones{
       display: flex;
@@ -41,14 +40,14 @@ const StyledRecomendaciones = styled.div `
       justify-content: space-between;  
       margin: 0% 3% 6% 3%;
       padding: 0% 0% 0% 0%;
-    }
+  }
 
     .card-row {
       display: flex;
       width: 100%;
       flex-wrap: wrap;
       gap: 8%;        
-    }
+  }
     
     .card-item {
       display: flex;
@@ -60,13 +59,13 @@ const StyledRecomendaciones = styled.div `
       border-radius: 5px;
       box-shadow: #80808047 3px 3px 3px 2px;
       border: 1px solid rgba(230, 230, 230);
-    }
+  }
 
     .card-img{
       width: 90%;
       margin: 2% 4% 2% 4%;
       padding: 0% 0% 0% 0%;
-    }
+  }
 
     h6{
       display: flex;
@@ -76,7 +75,7 @@ const StyledRecomendaciones = styled.div `
       font-size: 2vw;
       margin: 1% 1% 2% 5%;       
       color: rgba(36, 48, 110, 1);
-    }
+  }
 
     .precio-duracion{
       display: flex;
@@ -84,7 +83,7 @@ const StyledRecomendaciones = styled.div `
       flex-direction: row;
       justify-content: space-between; 
       margin: 3% 2% 1% 1%; 
-    }
+  }
 
     .cardContent{
       display: flex;
@@ -94,7 +93,7 @@ const StyledRecomendaciones = styled.div `
       padding: 0% 5% 10% 0%;
       color: rgba(36, 48, 110, 1);
       font-size: 11px;
-    }
+  }
 
 
     @media (max-width: 600px) {
@@ -104,21 +103,20 @@ const StyledRecomendaciones = styled.div `
       justify-content: space-between;
       flex-direction: column;
       align-items: center;
-    }
+  }
   
     .card-row {
       width: 50vw;   
       justify-content: center;
       flex-direction: column;
       align-items: center;
-    }
+  }
 
     .div-h2{
       width: 95vw;
       font-size: 6vw;
       margin: 1% 1% 1% 10%
-    }
-
+  }
      
     .card-item {
       display: flex;
@@ -129,7 +127,7 @@ const StyledRecomendaciones = styled.div `
       border-radius: 5px;
       box-shadow: #80808047 3px 3px 3px 2px;
       border: 1px solid rgba(230, 230, 230);
-    }
+  }
 }`
 
 function Recomendaciones () {

@@ -5,18 +5,18 @@
 
  const StyledDetalles = styled.div `
 
-   display: flex;
+    display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: center;
 
-    .div-detalles{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between; 
-      width: 90vw;
-      gap: 1px;
-    }
+  .div-detalles{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    width: 90vw;
+    gap: 1px;
+  }
 
   .h2-title{
     display: flex;
@@ -99,7 +99,7 @@
       width: 90vw;
       font-size: 9vw;
       margin: 8% 0% 6% 3%
-    }
+  }
 
     .card-ppal{
       grid-template-columns: 1fr;
@@ -107,7 +107,7 @@
       height: auto;
       gap: 1%;
       margin: 0% 5% 5% 2%;
-    }
+  }
     .card-sec{
       display:inline-flex;
       width: 19vw;
@@ -117,7 +117,7 @@
       border-radius: 5px;
       box-shadow: #80808047 3px 3px 3px 2px;
       border: 1px solid rgba(230, 230, 230);
-    }
+  }
 
     .description{
       display: flex;
@@ -127,23 +127,23 @@
       width: 85vw;
       margin: 3% 0% 5% 4%;       
       color: rgba(36, 48, 110, 1);
-    }
+  }
 
     .price{
       display: flex;
       flex-direction: row;
       margin: 0% 0% 3% 5%;
       color: rgba(36, 48, 110, 1); 
-    }
-  
-   .button{
-    margin: 0% 0% 20% -40%;
-    padding: 0% 0% 0% 0%;
-    width: 30vw;
-    height: 3vh;
-   }
-
   }
+  
+    .button{
+      margin: 0% 0% 20% -40%;
+      padding: 0% 0% 0% 0%;
+      width: 30vw;
+      height: 3vh;
+  } 
+
+}
 
   `
 
@@ -196,9 +196,9 @@
         </div>
         <h5 className="description">{tourDetails.descripcion}</h5>
         <p className="price"> Precio: $ {tourDetails.precio}</p>
-        <Link to = {`/galeria/${tourDetails.id}`}>
+      
           <button className='button'>Ver más</button>
-        </Link>
+       
       </div>
     </StyledDetalles>
   );

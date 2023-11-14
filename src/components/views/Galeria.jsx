@@ -5,153 +5,101 @@ import { useParams } from 'react-router-dom';
 import Typography from "@mui/material/Typography"; 
 
 
-
 const StyledGaleria= styled.div `
 
+     display: flex;
+     flex-direction: row;
+     width: 100%;
+     justify-content: center;
 
-    .div-h2{
+
+    .div-galeria{
       display: flex;
-      justify-content: flex-start;
-      margin: 1% 0% 1% 3%;       
+      flex-wrap: wrap;
+      justify-content: space-between; 
+      width: 100vw;
+  }
+
+    .h2-title{
+      display: flex;
+      text-align: left;
+      font-size: 1rem;
+      margin: 2% 1% 0% 9%;        
       color: rgba(36, 48, 110, 1);
   }
 
-    .img-container-1 {
+    .card-gral{
       display: flex;
+      flex-wrap: wrap;
       aling-items: center:
       justity-content: center;
       width: 100%;
-      grid-template-columns: 1fr;
-      gap: 1%;
-      margin: 0% 1% 1% 1%;
-    }
+      margin: 1% 0% 0% 0%;
+      padding: 2%;
+  }
 
-    .card-1 {
+    .img-container-1{
       display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
+      flex-direction: column;
+      margin: 0% 1% 0% 1%;
+  }
 
-    .card-row {
+    .img-princ{
       display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    
-    .card-item {
-      width: calc(50% - 8px);
-    }
+      width: 45vw;
+      height: 85vh;
+      margin: 0% 0% 0% 0%;
+      padding: 0% 0% 0% 0%;
+      border-radius: 5px;
+      box-shadow: #80808047 5px 5px 5px 5px;
+      border: 1px solid grey;
+  }
 
     .img-container-2 {
       display: flex;
-      flex-direction: column 1fr 1fr;
-      width: 28vw;
+      flex-wrap: wrap;
+      width: 45vw;
+      border-radius: 3px;
+      margin: 0% 0% 0% 0%;
+      padding: 0% 0% 0% 0%;
+      gap: 2%;
+     
+  }
+    
+    .img-container-2-1{
+      display: flex;
+      width: 20vw;
+      height: 41vh;
       border-radius: 5px;
       margin: 0% 0% 0% 0%;
+      padding: 0% 0% 0% 0%;
+      box-shadow: #80808047 5px 5px 5px 5px;
+      border: 1px solid grey;
+  }
+
+  @media (min-width: 768px) {
+    .h2-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .img-princ {
+      max-width: 600px;
     }
 
     .img-container-2-1 {
-      display: flex;
-      flex-direction: column 1fr 1fr;
-      width: 18vw;
-      height: 30vh;
-      border-radius: 5px;
-      margin: 2% 2% 0% 0%;
+      max-width: 300px;
     }
-
-  img{
-    display: flex;
-    width: 40vw;
-    height: 80vh;
-    margin: 1%;
-    border-radius: 5px;
-    border: 2px solid grey;
-    box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-    border: 1px solid grey;
   }
-
-    p.card-desc{
-      display: flex;
-      text-align: left;
-      font-size: 1.6vw;
-      color: rgba(36, 48, 110, 1);
-      box-shadow: red 0px 0px 5px,  0px 4px 11px;
-      border: 1px solid grey;
-  }
-
-   .card-footer{
-      display: flex;
-      aling-items: center;
-      justify-content: space-around;
-      width: 40vw;
-      padding: 1% 1% 4% 8%;
-      margin: 0% 0% 0% -8%;
-      color: rgba(36, 48, 110, 1);
-      font-weight: bold;
-      font-size: 1.5vw;
-  }
-
-   @media (max-width: 600px) {
-
-    .card-grid{
-      display: grid;
-      grid-template-columns: 1fr;
-      width: 90vw;
-      gap: 5%; 
-      margin: 0%;
-    }
-
-    .recomendacion img{
-      display: grid;
-      grid-template-columns: 1fr;
-      width: 80vw;
-      height: 40vh;
-      border-radius: 5px;
-      box-shadow: grey 0px 0px 5px,  0px 4px 11px;
-      border: 1px solid grey;
-      padding:0%;
-      margin: 15% 1% 1% 5%;
-    }
-
-    h2.card-reco{
-      font-size: 6vw;     
-      color: rgba(36, 48, 110, 1);
-
-    }
-
-    p.card-desc{
-      display: flex;
-      text-align: left;
-      font-size: 5vw;
-      margin: 1%;
-      padding: 1%;
-      color: rgba(36, 48, 110, 1);
-    }
-
-    .card-footer{  
-       font-size: 6vw;
-       margin: 0vh;
-       width: 80vw;
-       padding: 1vh;
-     }
-  
-    p.card-desc{
-      position: absolute;
-      width: 40vw;
-      top: 1%;
-      left: 68%;
-      transform: translate(-50%, -50%);
-      color: black;
-      font-weight: bold;
-      font-size: 2vw;
-   }
+   
 
 `
 
 
 function Galeria() {
   const [data, setData] = useState([]);
-  const { id } = useParams();  // Usa useParams dentro del componente funcional
+  const { id } = useParams(); 
 
   useEffect(() => {
     const getTours = async () => {
@@ -175,22 +123,38 @@ function Galeria() {
 
   return (
     <StyledGaleria>
-      <div>
-        <div className='div-h2'>
-          <h2>Galeria</h2>
-        </div>
-        {data.linkFotos && data.linkFotos.map((tour, index) => (
-          <div key={index} className='card-item'>
-            <div className='card-row'>
-              <Card className='img-princ'>
-                <img src={tour} alt={`Image ${index}`} />
-              </Card>
+      <div className='div-galeria'>     
+          <h2 className='h2-title'>Galeria</h2>
+            <div className='card-gral'>
+              <div className='img-container-1'>
+                {data.linkFotos && data.linkFotos.slice(0, 1).map((tour, index) => (               
+                  <div key={index}>                                       
+                      <Card>
+                        <img className='img-princ' 
+                        src={tour} 
+                        alt={`Image ${index}`} 
+                      />
+                      </Card>
+                  </div>
+                ))}             
+              </div>              
+              <div className="img-container-2">
+                {data.linkFotos && data.linkFotos.slice(1, 5).map((tour, index) => (
+                  <div key={index}>
+                    <Card>
+                      <img className="img-container-2-1" 
+                      src={tour} 
+                      alt={`Image ${index}`} 
+                      />
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-    </StyledGaleria>
-  );
-}
+        </StyledGaleria>
+      );
+    }
 
 export default Galeria;
+
