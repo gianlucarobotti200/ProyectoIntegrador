@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components"
 import Card from '@mui/material/Card';
@@ -14,7 +15,6 @@ const StyledRecomendaciones = styled.div `
     flex-direction: row;
     width: 100%;
     justify-content: center;
-
     .div-h2{
         display: flex;
         justify-content: flex-start;

@@ -61,6 +61,8 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const FormTours = ({ onCloseModal }) => {
+
+
     const [titulo, setTitulo] = useState('');
     const [provincia, setProvincia] = useState('');
     const [descripcion, setDescripcion] = useState('');
@@ -89,8 +91,6 @@ const FormTours = ({ onCloseModal }) => {
     useEffect(() => {
         getCaracteristicasYCategorias();
     }, []);
-
-
 
     const handleFileChange = (e) => {
         setImagenes(e.target.files);
