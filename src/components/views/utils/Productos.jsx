@@ -6,7 +6,7 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
 
   const getProductos = async () => {
-    const res = await fetch("http://localhost:8081/tours/todos")
+    const res = await fetch("http://localhost:8080/tours/todos")
     const data = await res.json()
     setProductos(data)
   }

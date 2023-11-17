@@ -68,8 +68,7 @@ const FormTours = ({ onCloseModal }) => {
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
-    const [imagenes, setImagenes] = useState(null);
-    const [id, setId] = useState('1')
+    const [file, setFile] = useState([]);
     const [categorias, setCategorias] = useState([])
     const [caracteristicas, setCaracteristicas] = useState([])
     const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
@@ -77,8 +76,8 @@ const FormTours = ({ onCloseModal }) => {
 
     const getCaracteristicasYCategorias = async () => {
         try {
-            const response1 = await fetch("http://localhost:8081/caracteristicas");
-            const response2 = await fetch("http://localhost:8081/categorias")
+            const response1 = await fetch("http://localhost:8080/caracteristicas");
+            const response2 = await fetch("http://localhost:8080/categorias")
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
             setCaracteristicas(jsonData1);
@@ -93,35 +92,37 @@ const FormTours = ({ onCloseModal }) => {
     }, []);
 
     const handleFileChange = (e) => {
-        setImagenes(e.target.files);
+        setFile(e.target.files);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let formDataImagenes = null;
+    
 
-        const formData = {
-            provincia,
-            titulo,
-            descripcion,
-            precio: parseInt(precio),
-            cantHoras: parseInt(duracion),
-        };
+        const formData = new FormData();
+        formData.append('provincia', provincia);
+        formData.append('titulo', titulo);
+        formData.append('descripcion', descripcion);
+        formData.append('precio', parseInt(precio));
+        formData.append('cantHoras', parseInt(duracion));
+
+         
 
         try {
-            const response = await fetch('http://localhost:8081/tours', {
+            const response = await fetch('http://localhost:8080/tours', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             if (response.ok) {
-                const jsonResponse = await response.json();
-                setId(jsonResponse.id);
+                if (response.ok) {
+                    console.log('El formulario se ha enviado exitosamente.');
+                }
 
-                fetch(`http://localhost:8081/tours/${jsonResponse.id}/categorias`, {
+                fetch(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ const FormTours = ({ onCloseModal }) => {
                     body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id))
                 })
 
-                fetch(`http://localhost:8081/tours/${jsonResponse.id}/caracteristicas`, {
+                fetch(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -143,26 +144,6 @@ const FormTours = ({ onCloseModal }) => {
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
-        }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
-        try {
-            const imageResponse = await fetch(`http://localhost:8081/tours/subirfotos/${id}`, {
-                method: 'POST',
-                body: formDataImagenes,
-            });
-            if (imageResponse.ok) {
-                console.log('Las imágenes se han agregado exitosamente.');
-            } else {
-                console.error('Error al subir las imágenes.');
-            }
-        }
-        catch (error) {
-            console.error('Error al subir las imágenes:', error);
         }
 
     };
@@ -266,7 +247,7 @@ const FormTours = ({ onCloseModal }) => {
                     </FormControl>
                     <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
                         Subir archivo
-                        <VisuallyHiddenInput multiple type="file" />
+                        <VisuallyHiddenInput multiple type="file" name="files" />
                     </Button>
                 </div>
                 <div className='row3'>

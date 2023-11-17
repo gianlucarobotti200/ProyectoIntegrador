@@ -42,7 +42,7 @@ const CardCategoriaAdmin = ({ id, nombre, onDelete }) => {
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8081/categorias/${id}`, {
+            const response = await fetch(`http://localhost:8080/categorias/${id}`, {
                 method: 'DELETE',
             });
 
