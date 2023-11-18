@@ -62,7 +62,7 @@ const FormCategorias = ({ onCloseModal }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:8081/categorias', {
+            const response = await fetch('http://localhost:8080/categorias', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

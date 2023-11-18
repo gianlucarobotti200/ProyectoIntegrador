@@ -71,7 +71,7 @@ const FormCaracteristicas = ({ onCloseModal }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:8081/caracteristicas', {
+            const response = await fetch('http://localhost:8080/caracteristicas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

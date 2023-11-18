@@ -20,7 +20,7 @@ const AdminCategorias = () => {
     const [categorias, setCategorias] = useState([]);
     const getCategorias = async () => {
         try {
-            const response = await fetch("http://localhost:8081/categorias");
+            const response = await fetch("http://localhost:8080/categorias");
             const jsonData = await response.json();
 
             setCategorias(jsonData);
