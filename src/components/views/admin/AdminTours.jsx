@@ -34,7 +34,7 @@ const AdminTours = () => {
         setCurrentPage(newPage);
     };
 
-    const toursPerPage = 10;
+    const toursPerPage = 5;
 const startIndex = (currentPage - 1) * toursPerPage;
 const endIndex = startIndex + toursPerPage;
 
