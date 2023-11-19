@@ -61,23 +61,22 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const FormTours = ({ onCloseModal }) => {
-
-
     const [titulo, setTitulo] = useState('');
     const [provincia, setProvincia] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [duracion, setDuracion] = useState('');
     const [file, setFile] = useState([]);
-    const [categorias, setCategorias] = useState([])
-    const [caracteristicas, setCaracteristicas] = useState([])
+    const [id, setId] = useState('');
+    const [categorias, setCategorias] = useState([]);
+    const [caracteristicas, setCaracteristicas] = useState([]);
     const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
     const [caracteristicasSeleccionadas, setCaracteristicasSeleccionadas] = useState([]);
 
     const getCaracteristicasYCategorias = async () => {
         try {
             const response1 = await fetch("http://localhost:8080/caracteristicas");
-            const response2 = await fetch("http://localhost:8080/categorias")
+            const response2 = await fetch("http://localhost:8080/categorias");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
             setCaracteristicas(jsonData1);
@@ -85,7 +84,7 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
         }
-    }
+    };
 
     useEffect(() => {
         getCaracteristicasYCategorias();
@@ -97,7 +96,6 @@ const FormTours = ({ onCloseModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
 
         const formData = new FormData();
         formData.append('provincia', provincia);
@@ -106,14 +104,15 @@ const FormTours = ({ onCloseModal }) => {
         formData.append('precio', parseInt(precio));
         formData.append('cantHoras', parseInt(duracion));
 
-         
+        if (file && file.length > 0) {
+            for (let i = 0; i < file.length; i++) {
+                formData.append('file', file[i]);
+            }
+        }
 
         try {
             const response = await fetch('http://localhost:8080/tours', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
                 body: formData,
             });
 
@@ -122,21 +121,24 @@ const FormTours = ({ onCloseModal }) => {
                     console.log('El formulario se ha enviado exitosamente.');
                 }
 
-                fetch(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+                // Enviar categorías seleccionadas
+                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id))
-                })
+                    body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id)),
+                });
 
-                fetch(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+                // Enviar características seleccionadas
+                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id))
-                })
+                    body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
+                });
+
                 console.log('El tour se ha agregado exitosamente.');
                 onCloseModal();
             } else {
@@ -145,13 +147,14 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-
     };
+
+    
 
     return (
         <>
 
-            <StyledForm onSubmit={handleSubmit}>
+            <StyledForm onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className='row1'>
 
                     <TextField id="outlined-controlled" InputLabelProps={{ shrink: true, }} label="Título" size="small" variant="outlined" value={titulo}
@@ -247,7 +250,7 @@ const FormTours = ({ onCloseModal }) => {
                     </FormControl>
                     <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
                         Subir archivo
-                        <VisuallyHiddenInput multiple type="file" name="files" />
+                        <VisuallyHiddenInput multiple type="file" name='file' />
                     </Button>
                 </div>
                 <div className='row3'>
