@@ -22,7 +22,7 @@ const AdminCaracteristicas = () => {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const getCaracteristicas = async () => {
         try {
-            const response = await fetch("http://localhost:8081/caracteristicas");
+            const response = await fetch("http://localhost:8080/caracteristicas");
             const jsonData = await response.json();
 
             setCaracteristicas(jsonData);

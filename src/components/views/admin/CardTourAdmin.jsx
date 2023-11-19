@@ -42,7 +42,7 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8081/tours/eliminarTour/${id}`, {
+            const response = await fetch(`http://localhost:8080/tours/eliminarTour/${id}`, {
                 method: 'DELETE',
             });
 

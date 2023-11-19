@@ -47,7 +47,7 @@ export default function OutlinedCard() {
         setShowMessage(true);
     
         // Realizar la lógica para enviar los datos al backend
-        fetch('http://localhost:8081/users/crear', {
+        fetch('http://localhost:8080/users/crear', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
