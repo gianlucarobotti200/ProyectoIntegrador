@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import Card from "@mui/material/Card";
-import { useParams } from 'react-router-dom';  
-import Typography from "@mui/material/Typography"; 
+
 
 
 const StyledGaleria= styled.div `
@@ -92,14 +91,12 @@ const StyledGaleria= styled.div `
       max-width: 300px;
     }
   }
-   
-
+  
 `
 
-
-function Galeria() {
+const Galeria = () => {
   const [data, setData] = useState([]);
-  const { id } = useParams(); 
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const getTours = async () => {
@@ -116,7 +113,15 @@ function Galeria() {
     };
 
     getTours();
-  }, [id]);  // Asegúrate de incluir id en la lista de dependencias
+  }, [id]);  
+
+  const openGallery = (image) => {
+    setSelectedImage(image);
+  };
+
+  const closeGallery = () => {
+    setSelectedImage(null);
+  };
 
   console.log(data);
   console.log("Datos obtenidos.");
@@ -127,8 +132,9 @@ function Galeria() {
           <h2 className='h2-title'>Galeria</h2>
             <div className='card-gral'>
               <div className='img-container-1'>
-                {data.linkFotos && data.linkFotos.slice(0, 1).map((tour, index) => (               
-                  <div key={index}>                                       
+                {data.linkFotos && 
+                 data.linkFotos.slice(0, 1).map((tour, index) => (               
+                  <div key={index} onClick={() => openGallery(tour)}>                                       
                       <Card>
                         <img className='img-princ' 
                         src={tour} 
@@ -139,8 +145,9 @@ function Galeria() {
                 ))}             
               </div>              
               <div className="img-container-2">
-                {data.linkFotos && data.linkFotos.slice(1, 5).map((tour, index) => (
-                  <div key={index}>
+                {data.linkFotos && 
+                 data.linkFotos.slice(1, 5).map((tour, index) => (
+                  <div key={index} onClick={() => openGallery(index + 1)}>
                     <Card>
                       <img className="img-container-2-1" 
                       src={tour} 
@@ -152,6 +159,7 @@ function Galeria() {
               </div>
             </div>
           </div>
+        {selectedImage && <Modal image={selectedImage} onClose={closeGallery} />}
         </StyledGaleria>
       );
     }

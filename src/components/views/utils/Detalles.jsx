@@ -1,7 +1,7 @@
  import React, { useState, useEffect } from 'react';
  import styled from 'styled-components';
- import { Link, useParams } from 'react-router-dom';
-
+ import { useParams } from 'react-router-dom';
+ import StyledGaleria from './Galeria/StyledGaleria';
 
  const StyledDetalles = styled.div `
 
@@ -142,7 +142,6 @@
       width: 30vw;
       height: 3vh;
   } 
-
 }
 
   `
@@ -151,7 +150,10 @@
  const Detalles = () => {
     const [tourDetails, setData] = useState([]);
     const { id } = useParams(); 
-    console.log('Valor de id:', id);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const openGallery = () => {
+      setSelectedImage([...tourDetails.linkFotos]);
+    };
    
 
    useEffect(() =>{
@@ -168,15 +170,12 @@
     };
   
     getTourDetails();
-  }, []);
+  }, [id]);
   console.log(tourDetails);
 
-
-  if (!tourDetails) {
-
-   return <div>Cargando...</div>
-  }
-
+  const closeGallery = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <StyledDetalles>
@@ -185,10 +184,19 @@
           <div className='card-gral'>
            {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <>
-              <img className='card-ppal' src={tourDetails.linkFotos[0]} alt="Imagen Principal" />
+              <img className='card-ppal' 
+              src={tourDetails.linkFotos[0]} 
+              alt="Imagen Principal" 
+              onClick={openGallery}
+              />
               <div>
                 {tourDetails.linkFotos.slice(1, 5).map((image, index) => (
-                  <img className='card-sec' key={index} src={image} alt={`Imagenes Secundarias ${index + 1}`} />
+                  <img className='card-sec' 
+                  key={index} 
+                  src={image} 
+                  alt={`Imagenes Secundarias ${index + 1}`}
+                  onClick={() => openGallery()} 
+                  />
                 ))}
               </div>
             </>
@@ -196,9 +204,21 @@
         </div>
         <h5 className="description">{tourDetails.descripcion}</h5>
         <p className="price"> Precio: $ {tourDetails.precio}</p>
-      
-          <button className='button'>Ver más</button>
-       
+        {selectedImage && (
+             <StyledGaleria>
+             {selectedImage.map((image, index) => (
+              <Card key={index}>
+                <img className='img-container-2-1' 
+                src={image} 
+                alt={`Image ${index}`} />
+              </Card>
+             ))}
+               <button className='button' 
+               onClick={closeGallery}>
+              Cerrar Galería
+            </button>
+        </StyledGaleria>
+         )}
       </div>
     </StyledDetalles>
   );
