@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 
 
 
-const StyledGaleria= styled.div `
+export const StyledGaleria= styled.div `
 
      display: flex;
      flex-direction: row;
