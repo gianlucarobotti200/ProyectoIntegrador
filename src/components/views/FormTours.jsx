@@ -96,7 +96,6 @@ const FormTours = ({ onCloseModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('provincia', provincia);
         formData.append('titulo', titulo);
@@ -109,13 +108,13 @@ const FormTours = ({ onCloseModal }) => {
                 formData.append('file', file[i]);
             }
         }
-
+      
         try {
             const response = await fetch('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             if (response.ok) {
                 const jsonResponse = await response.json();
                 setId(jsonResponse.id);
@@ -141,18 +140,18 @@ const FormTours = ({ onCloseModal }) => {
                 console.log('El tour se ha agregado exitosamente.');
                 onCloseModal();
             } else {
-                console.error('Error al agregar el tour.');
+                console.error('Error al enviar el formulario.');
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
     };
+    
 
     
 
     return (
         <>
-
             <StyledForm onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className='row1'>
 
