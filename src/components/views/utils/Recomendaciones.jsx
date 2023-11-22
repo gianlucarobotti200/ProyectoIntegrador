@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardRecomendacion from './CardRecomendacion';
 import { Link } from 'react-router-dom';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledRecomendaciones = styled.div `
 
@@ -130,42 +132,49 @@ const StyledRecomendaciones = styled.div `
   }
 }`
 
-function Recomendaciones () {
-  const [data, setData] = useState([]); 
+function Recomendaciones() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() =>{
+  useEffect(() => {
     const getTours = async () => {
       try {
         const response = await fetch('http://localhost:8080/tours/todos');
         const jsonData = await response.json();
-  
+
         setData(jsonData);
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    getTours();
-  }, [])
-  console.log(data);
 
+    getTours();
+  }, []);
+
+  console.log(data);
   console.log("Datos obtenidos.");
 
   return (
-    <>
-
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
         <div className='div-h2'>
           <h2>Recomendaciones</h2>
         </div>
-        <div className='recomendaciones'>
-          <div className='card-row'>
-            {data.map((tour, index) => (
-              <div key={index} className='card-item'>
-                <Card>
-                  <Typography variant="h6">{tour.titulo}</Typography>
-                    <Link to = {`/detalles/${tour.id}`}>    
+
+        {loading ? ( // Mostrar CircularProgress solo cuando loading es true
+          <div className='loading-container'>
+            <CircularProgress color="inherit" style={{position: "absolute", top: "95%", right: "50%"}}/>
+          </div>
+        ) : (
+          <div className='recomendaciones'>
+            <div className='card-row'>
+              {data.map((tour, index) => (
+                <div key={index} className='card-item'>
+                  <Card>
+                    <Typography variant="h6">{tour.titulo}</Typography>
+                    <Link to={`/detalles/${tour.id}`}>
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
@@ -173,29 +182,27 @@ function Recomendaciones () {
                         image={tour.linkFotos[0]}
                       />
                     </Link>
-                  <CardContent className='cardContent'>
-                    <Typography variant="body3">
-                      {tour.descripcion}
-                    </Typography >
-                    <div className='precio-duracion'>
-                    <Typography variant="body1">
-                      Precio: $ {tour.precio}
-                    </Typography>
-                    <Typography variant="body1">
-                      Duración: {tour.cantHoras}hs
-                    </Typography>
-                    </div>
-                  </CardContent>
-                </Card>
-    
-              </div>
-            ))}
+                    <CardContent className='cardContent'>
+                      <Typography variant="body3">
+                        {tour.descripcion}
+                      </Typography >
+                      <div className='precio-duracion'>
+                        <Typography variant="body1">
+                          Precio: $ {tour.precio}
+                        </Typography>
+                        <Typography variant="body1">
+                          Duración: {tour.cantHoras}hs
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </StyledRecomendaciones>
-
-    </>
   );
 }
 

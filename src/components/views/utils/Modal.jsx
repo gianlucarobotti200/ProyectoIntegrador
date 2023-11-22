@@ -25,9 +25,11 @@ const StyledModal = styled.div`
     height: 100%;
     object-fit: contain;
   }
+
+  
 `;
 
-const Modal = ({ image, onClose }) => {
+const Modal = ({image, onClose }) => {
   return (
     <StyledModal onClick={onClose}>
       <div className='modal-content'>
