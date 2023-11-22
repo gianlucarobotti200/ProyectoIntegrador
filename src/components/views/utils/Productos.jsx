@@ -14,15 +14,16 @@ const Productos = () => {
   useEffect(() => {
     getProductos()
   },[])
-
+  console.log(productos)
   return (
     <>
       <div>Productos</div>
 
       {productos.map((producto) => 
+        
         <CardProducto
           key={producto.id} 
-          imgUrl={`./src/components/img/fotosTours/${producto.id}/foto1.jpeg`}  
+          imgUrl={producto.linkFotos}  
           provincia={producto.provincia} 
           titulo={producto.titulo} 
           descripcion={producto.descripcion} 

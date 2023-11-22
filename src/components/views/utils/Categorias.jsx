@@ -3,7 +3,6 @@ import styled from "styled-components"
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
-
 const StyledCategorias = styled.div `
 
   display: flex;
@@ -14,14 +13,12 @@ const StyledCategorias = styled.div `
   .categorias{
     display: flex;
     justify-content: space-between;
-    gap: 16px;
+    gap: 16px
   }
 
   .div-h2{
     display: flex;
     justify-content: flex-start;
-    text-align: left;
-    font-size: 2vw;
   }
 
   .div-categorias{
@@ -49,8 +46,7 @@ const StyledCategorias = styled.div `
 
   img.foto{
     border-radius: 5px;
-    box-shadow: #80808047 3px 3px 3px 2px;
-    border: 1px solid rgba(230, 230, 230);
+    box-shadow: #80808047 2px 2px 2px 1px;
   }
 
   li{
@@ -80,9 +76,7 @@ const StyledCategorias = styled.div `
     }
 }`
 
-const Categorias = () => {
-  const categorias = ['Destinos', 'Categoria 2', 'Categoria 3'];
-
+function Categorias() {
   return (
   
     <>
@@ -118,7 +112,6 @@ const Categoria = [
   {
     img: 'https://cdn.pixabay.com/photo/2015/05/28/22/54/argentina-patagonia-788744_1280.jpg',
     title: 'Sur',
-  
   }, 
   {
     img: 'https://www.guiadecabanias.com/imgs/galerias/postal_1030.jpg',
@@ -128,9 +121,7 @@ const Categoria = [
   {
     img: 'https://cdn.discordapp.com/attachments/1162206131888869456/1167551418647982151/a8GQ9c_x_1256x620__2.webp?ex=654e89fe&is=653c14fe&hm=ef549287ff4b50f3ff80b9d8b12212f4dd2347e5d000bdf144c3f1f985fcf3aa&',
     title: 'Oeste',
-   
   }
-  
 ];
 
 export default Categorias;

@@ -45,7 +45,6 @@ const Inicio = () => {
             </StyledBuscador>
             <Categorias />
             <Recomendaciones />
-         
         </StyledInicio>
     )
 }

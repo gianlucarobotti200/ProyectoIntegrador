@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
 
@@ -30,7 +30,7 @@ const StyledCardUsuarioAdmin = styled.article`
   }
 `;
 
-const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete }) => {
+const CardCategoriaAdmin = ({ id, nombre, onDelete }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -42,17 +42,17 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8080/tours/eliminarTour/${id}`, {
+            const response = await fetch(`http://localhost:8080/categorias/${id}`, {
                 method: 'DELETE',
             });
 
-            if (response.status === 200) {
-                onDelete();
+            if (response.ok) {
+                onDelete(); // Aquí deberías actualizar la lista después de la eliminación
             } else {
-                console.error('Error al eliminar el tour:', response.status);
+                console.error('Error al eliminar la característica:', response.status);
             }
         } catch (error) {
-            console.error('Error al eliminar el tour:', error);
+            console.error('Error al eliminar la característica:', error);
         }
 
         setIsDeleting(false);
@@ -66,12 +66,12 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
     return (
         <StyledCardUsuarioAdmin>
             <h4>{id}</h4>
-            <h4>{titulo}</h4>
+            <h4>{nombre}</h4>
             {isDeleting ? (
                 <span>Eliminando...</span>
             ) : showConfirmation ? (
                 <div>
-                    <p>¿Estás seguro de querer eliminar este tour?</p>
+                    <p>¿Estás seguro de querer eliminar esta característica?</p>
                     <button onClick={handleConfirmDelete}>Sí</button>
                     <button onClick={handleCancelDelete}>No</button>
                 </div>
@@ -80,6 +80,6 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
             )}
         </StyledCardUsuarioAdmin>
     );
-}
+};
 
-export default CardTourAdmin;
+export default CardCategoriaAdmin;
