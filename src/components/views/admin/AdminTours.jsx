@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
-import BasicModal from './Basicmodal';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
