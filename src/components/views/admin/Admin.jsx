@@ -78,28 +78,7 @@ const Admin = () => {
     }, []);
 
     return (
-        <StyledAdministracion>
-            <h1>Administración</h1>
-            <BasicModal onTourAdded={refreshTours}/>
-            <div className='header-table'>
-                <span className='id'>ID</span>
-                <span className='nombre'>Título</span>
-                <span>GESTIÓN</span>
-            </div>
-            {tours.map((tour, index) => (
-                <CardTourAdmin
-                    key={index}
-                    id={tour.id}
-                    linkFotos={tour.linkFotos}
-                    titulo={tour.titulo}
-                    provincia={tour.provincia}
-                    descripcion={tour.descripcion}
-                    precio={tour.precio}
-                    cantHoras={tour.cantHoras}
-                    onDelete={refreshTours}
-                />
-            ))}
-        </StyledAdministracion>
+        <Outlet/>
     );
 };
 

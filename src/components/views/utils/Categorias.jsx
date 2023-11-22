@@ -3,7 +3,6 @@ import styled from "styled-components"
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
-
 const StyledCategorias = styled.div `
 
   display: flex;
@@ -77,8 +76,7 @@ const StyledCategorias = styled.div `
     }
 }`
 
-const Categorias = () => {
-  const categorias = ['Destinos', 'Categoria 2', 'Categoria 3'];
+function Categorias() {
 
   return (
   
@@ -125,9 +123,7 @@ const Categoria = [
   {
     img: 'https://cdn.discordapp.com/attachments/1162206131888869456/1167551418647982151/a8GQ9c_x_1256x620__2.webp?ex=654e89fe&is=653c14fe&hm=ef549287ff4b50f3ff80b9d8b12212f4dd2347e5d000bdf144c3f1f985fcf3aa&',
     title: 'Oeste',
-   
   }
-  
 ];
 
 export default Categorias;
