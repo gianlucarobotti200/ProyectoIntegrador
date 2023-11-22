@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
+import fetchWithToken from '../login/Interceptor'
+
 
 const StyledCardUsuarioAdmin = styled.article`
   background-color: #f5f5f5;
@@ -42,7 +44,7 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8081/tours/eliminarTour/${id}`, {
+            const response = await fetchWithToken(`http://localhost:8081/tours/eliminarTour/${id}`, {
                 method: 'DELETE',
             });
 

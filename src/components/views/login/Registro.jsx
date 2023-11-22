@@ -42,12 +42,10 @@ export default function OutlinedCard() {
     const [showMessage, setShowMessage] = React.useState(false);
 
     const handleRegister = () => {
-        // Deshabilitar el botón y mostrar el mensaje
         setButtonDisabled(true);
         setShowMessage(true);
     
-        // Realizar la lógica para enviar los datos al backend
-        fetch('http://localhost:8081/users/crear', {
+        fetch('http://localhost:8081/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,24 +54,20 @@ export default function OutlinedCard() {
         })
         .then(response => response.json())
         .then(data => {
-            // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
+            
             console.log('Registro exitoso:', data);
     
-            // Limpiar el formulario después del éxito
             setEmail('');
             setPassword('');
     
-            // Habilitar el botón y ocultar el mensaje después de un breve periodo (por ejemplo, 2 segundos)
             setTimeout(() => {
                 setButtonDisabled(false);
                 setShowMessage(false);
             }, 2000);
         })
         .catch(error => {
-            // Manejar errores, por ejemplo, mostrar un mensaje de error
             console.error('Error en el registro:', error);
     
-            // En caso de error, habilitar el botón y ocultar el mensaje inmediatamente
             setButtonDisabled(false);
             setShowMessage(false);
         });

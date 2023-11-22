@@ -16,6 +16,9 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -104,6 +107,8 @@ const StyledHeader = styled.header`
 function Header() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const isLoggedIn = !!localStorage.getItem('token');
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -111,14 +116,20 @@ function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    // const handleRegisterClick = () => {
-    //     history.push('http://localhost:5173/registro');
-    //   };
 
+    React.useEffect(() => {
+        if (!isLoggedIn) {
+            navigate('/login');
+        }
+    }, [isLoggedIn, navigate]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); 
+    };
+
+    
     return (
         <><StyledHeader>
-                {/* <div> */}
-
                     <nav>
                         <div className='logo-lema'>
                             <Link className='nav-a' to="/inicio">
@@ -179,19 +190,27 @@ function Header() {
                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                             >
-                                <MenuItem component={Link} to="/login">
-                                    <LoginRoundedIcon /> Iniciar sesión
-                                </MenuItem>
-                                <MenuItem component={Link} to="/registro" >
-                                    <AppRegistrationRoundedIcon /> Registrarse
-                                </MenuItem>
+                                {isLoggedIn ? (
+                                    [
+                                    <MenuItem key="logout" onClick={handleLogout}>
+                                        <LogoutRoundedIcon /> Cerrar sesión
+                                    </MenuItem>]
+                                ) : (
+                                    [
+                                    <MenuItem key="login" component={Link} to="/login">
+                                        <LoginRoundedIcon /> Iniciar sesión
+                                    </MenuItem>,
+                                    <MenuItem key="registro" component={Link} to="/registro" >
+                                        <AppRegistrationRoundedIcon /> Registrarse
+                                    </MenuItem>]
+                                )}
+                                
                                 
                             </Menu>
                         </div>
                     </React.Fragment>
                         
                     </nav>
-                {/* </div> */}
             </StyledHeader></>
     );
 }

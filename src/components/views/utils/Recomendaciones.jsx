@@ -7,6 +7,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardRecomendacion from './CardRecomendacion';
+import fetchWithToken from '../login/Interceptor'
 
 const StyledRecomendaciones = styled.div `
 
@@ -69,7 +70,7 @@ function Recomendaciones () {
   useEffect(() =>{
     const getTours = async () => {
       try {
-        const response = await fetch('http://localhost:8081/tours/todos');
+        const response = await fetchWithToken('http://localhost:8081/tours/todos');
         const jsonData = await response.json();
   
         setData(jsonData);
@@ -80,10 +81,7 @@ function Recomendaciones () {
     
     getTours();
   }, [])
-  console.log(data);
-
-  console.log("Datos obtenidos.");
-
+  
   return (
     <>
 
