@@ -77,7 +77,6 @@ const StyledCategorias = styled.div `
 }`
 
 function Categorias() {
-
   return (
   
     <>
@@ -113,7 +112,6 @@ const Categoria = [
   {
     img: 'https://cdn.pixabay.com/photo/2015/05/28/22/54/argentina-patagonia-788744_1280.jpg',
     title: 'Sur',
-  
   }, 
   {
     img: 'https://www.guiadecabanias.com/imgs/galerias/postal_1030.jpg',

@@ -8,7 +8,7 @@ import AdminCategorias from './components/views/admin/AdminCategorias.jsx'
 import AdminCaracteristicas from './components/views/admin/AdminCaracteristicas.jsx'
 import AdminTours from './components/views/admin/AdminTours.jsx'
 import Login from './components/views/login/Login.jsx'
-
+import Detalles from './components/views/utils/Detalles.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>

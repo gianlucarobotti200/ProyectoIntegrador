@@ -1,13 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components"
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import CardRecomendacion from './CardRecomendacion';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledRecomendaciones = styled.div `
 
@@ -15,122 +13,194 @@ const StyledRecomendaciones = styled.div `
     flex-direction: row;
     width: 100%;
     justify-content: center;
-    .div-h2{
-        display: flex;
-        justify-content: flex-start;
-      }
+    
     .div-recomendaciones{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between; 
+      width: 90vw;
+      gap: 1px;
+  }
+
+    .div-h2{
+      display: flex;
+      justify-content: flex-start;
+      text-align: left;
+      font-size: 2vw;
+      margin: 1% 1% 0% 3%;       
+      color: rgba(36, 48, 110, 1);
+  }
 
     .recomendaciones{
-        display: flex;
-        justify-content: space-between;
-    }
-    .img-recomendado{
-      width: 100%;
-    }
+      display: flex;
+      width: 90vw;
+      flex-wrap: wrap;
+      justify-content: space-between;  
+      margin: 0% 3% 6% 3%;
+      padding: 0% 0% 0% 0%;
+  }
 
     .card-row {
       display: flex;
+      width: 100%;
       flex-wrap: wrap;
-      gap: 16px;
-    }
+      gap: 8%;        
+  }
     
     .card-item {
-      width: calc(50% - 8px);
-    }
+      display: flex;
+      width: calc(39vw - 8px);
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 1% 0% 5% 0%;
+      padding: 0% 0% 0% 0%;
+      border-radius: 5px;
+      box-shadow: #80808047 3px 3px 3px 2px;
+      border: 1px solid rgba(230, 230, 230);
+  }
+
+    .card-img{
+      width: 90%;
+      margin: 2% 4% 2% 4%;
+      padding: 0% 0% 0% 0%;
+  }
 
     h6{
       display: flex;
       justify-content: flex-start;
       margin-left: 10px;
-    }
+      text-align: left;
+      font-size: 2vw;
+      margin: 1% 1% 2% 5%;       
+      color: rgba(36, 48, 110, 1);
+  }
 
     .precio-duracion{
       display: flex;
-      width: 100%;
+      width: 90%;
       flex-direction: row;
       justify-content: space-between; 
-    }
+      margin: 3% 2% 1% 1%; 
+  }
 
-    CardContent{
+    .cardContent{
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-    }
-`
+      margin: 5% 0% 2% 4%;
+      padding: 0% 5% 10% 0%;
+      color: rgba(36, 48, 110, 1);
+      font-size: 11px;
+  }
 
-function Recomendaciones () {
-  const [data, setData] = useState([]); 
 
-  useEffect(() =>{
+    @media (max-width: 600px) {
+
+    .recomendaciones{
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+  }
+  
+    .card-row {
+      width: 50vw;   
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+  }
+
+    .div-h2{
+      width: 95vw;
+      font-size: 6vw;
+      margin: 1% 1% 1% 10%
+  }
+     
+    .card-item {
+      display: flex;
+      width: calc(70vw);
+      justify-content: center;
+      margin: 0% 0% 5% -20%;
+      padding: 0% 0% 0% 0%;
+      border-radius: 5px;
+      box-shadow: #80808047 3px 3px 3px 2px;
+      border: 1px solid rgba(230, 230, 230);
+  }
+}`
+
+function Recomendaciones() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     const getTours = async () => {
       try {
         const response = await fetch('http://localhost:8080/tours/todos');
         const jsonData = await response.json();
-  
+
         setData(jsonData);
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    getTours();
-  }, [])
-  console.log(data);
 
+    getTours();
+  }, []);
+
+  console.log(data);
   console.log("Datos obtenidos.");
 
   return (
-    <>
-
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
         <div className='div-h2'>
           <h2>Recomendaciones</h2>
         </div>
-        <div className='recomendaciones'>
-          <div className='card-row'>
-            {data.map((tour, index) => (
-              <div key={index} className='card-item'>
-                <Card>
-                  <Typography variant="h6">{tour.titulo}</Typography>
-                  <CardMedia
-                    component="img"
-                    alt={tour.titulo}
-                    height="140"
-                    image={tour.linkFotos[0]}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                      {tour.descripcion}
-                    </Typography>
-                    <div className='precio-duracion'>
 
-                    <Typography variant="body1" color="textPrimary">
-                      Precio: ${tour.precio}
-                    </Typography>
-                    <Typography variant="body1" color="textPrimary">
-                      Duración: {tour.cantHoras}hs
-                    </Typography>
-                    </div>
-
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
+        {loading ? ( // Mostrar CircularProgress solo cuando loading es true
+          <div className='loading-container'>
+            <CircularProgress color="inherit" style={{position: "absolute", top: "95%", right: "50%"}}/>
           </div>
-        </div>
+        ) : (
+          <div className='recomendaciones'>
+            <div className='card-row'>
+              {data.map((tour, index) => (
+                <div key={index} className='card-item'>
+                  <Card>
+                    <Typography variant="h6">{tour.titulo}</Typography>
+                    <Link to={`/detalles/${tour.id}`}>
+                      <CardMedia className='card-img'
+                        component="img"
+                        alt={tour.titulo}
+                        height="140"
+                        image={tour.linkFotos[0]}
+                      />
+                    </Link>
+                    <CardContent className='cardContent'>
+                      <Typography variant="body3">
+                        {tour.descripcion}
+                      </Typography >
+                      <div className='precio-duracion'>
+                        <Typography variant="body1">
+                          Precio: $ {tour.precio}
+                        </Typography>
+                        <Typography variant="body1">
+                          Duración: {tour.cantHoras}hs
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </StyledRecomendaciones>
-
-    </>
   );
 }
 
 export default Recomendaciones;
-
 
