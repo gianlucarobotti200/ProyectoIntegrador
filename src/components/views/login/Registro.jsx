@@ -40,11 +40,18 @@ export default function OutlinedCard() {
     const [password, setPassword] = React.useState('');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [showMessage, setShowMessage] = React.useState(false);
+    const [error, setError] = React.useState(null);
 
     const handleRegister = () => {
+        if (!email || !password) {
+            setError('Por favor, complete todos los campos.');
+            return;
+        }
+
         setButtonDisabled(true);
-        setShowMessage(true);
-    
+        // setShowMessage(true);
+        setError(null);
+
         fetch('http://localhost:8081/user/signup', {
             method: 'POST',
             headers: {
@@ -54,22 +61,17 @@ export default function OutlinedCard() {
         })
         .then(response => response.json())
         .then(data => {
-            
             console.log('Registro exitoso:', data);
-    
             setEmail('');
             setPassword('');
-    
-            setTimeout(() => {
-                setButtonDisabled(false);
-                setShowMessage(false);
-            }, 2000);
+            setShowMessage(true); // Mostrar el mensaje
         })
         .catch(error => {
             console.error('Error en el registro:', error);
-    
+            setError('Hubo un error en el registro. Por favor, inténtelo de nuevo.');
+        })
+        .finally(() => {
             setButtonDisabled(false);
-            setShowMessage(false);
         });
     };
     return (

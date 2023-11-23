@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
 import BasicModal from './Basicmodal';
+import fetchWithToken from '../login/Interceptor'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,9 +22,46 @@ const StyledAdministracion = styled.div`
 
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
+    const navigate = useNavigate();
+    let decodedData = null
+    
+    const decodeToken = (token) => {
+        const tokenParts = token.split('.');
+        if (tokenParts.length !== 3) {
+            throw new Error('Token inválido');
+        }
+    
+        const payloadBase64 = tokenParts[1];
+        const decodedPayload = atob(payloadBase64);
+    
+        const parsedPayload = JSON.parse(decodedPayload);
+        return parsedPayload;
+    };
+
+    
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login'); 
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)
+                if (decodedData.role == 0) {
+                    navigate('/inicio');
+                } else {
+                    getTours();
+                }        
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [history]);
+
     const getTours = async () => {
         try {
-            const response = await fetch("http://localhost:8081/tours");
+            const response = await fetchWithToken("http://localhost:8081/tours");
             const jsonData = await response.json();
 
             setTours(jsonData);

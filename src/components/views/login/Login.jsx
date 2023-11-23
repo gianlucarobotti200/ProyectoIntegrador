@@ -51,7 +51,7 @@ export default function OutlinedCard() {
 
     React.useEffect(() => {
         if (redirectToInicio) {
-            navigate('/inicio'); // Redirigir al inicio
+            navigate('/inicio'); 
         }
     }, [redirectToInicio, navigate]);
 
