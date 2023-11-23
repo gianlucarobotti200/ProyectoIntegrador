@@ -107,6 +107,17 @@ const Detalles = () => {
     getTourDetails();
   }, [id]);
 
+  const handleTwitterShare = () => {
+    const shareText = `Descubre el tour "${tourDetails.titulo}" en ${tourDetails.provincia}. ¡Una experiencia única por solo $${tourDetails.precio}! #SectArg #Tour`;
+    const shareUrl = `http://localhost:5173/detalles/${tourDetails.id}`;
+    const imageUrl = tourDetails.linkFotos && tourDetails.linkFotos.length > 0 ? tourDetails.linkFotos[0] : '';
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&media=${encodeURIComponent(imageUrl)}&data-card2=true`;
+
+
+    window.open(twitterUrl, '_blank');
+};
+
   return (
     <StyledDetalles>
       {loading ? (
@@ -175,6 +186,7 @@ const Detalles = () => {
           <Button style={{ margin: "0 45vw" }} variant="contained">
             RESERVAR
           </Button>
+          <button onClick={handleTwitterShare}>Compartir en Twitter</button>
         </>
       )}
     </StyledDetalles>
