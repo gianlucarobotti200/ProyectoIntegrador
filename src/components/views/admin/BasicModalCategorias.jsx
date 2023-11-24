@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCategorias from '../FormCategorias';
 
@@ -33,6 +34,14 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
 
   return (
     <React.Fragment>
+       <div>
+      <Button variant="outlined" component={Link} to="/admintours">
+        Admin Tours
+      </Button>
+      <Button variant="outlined" component={Link} to="/admincaracteristicas">
+        Admin Caracteristica
+      </Button>
+      </div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Categoría
       </Button>

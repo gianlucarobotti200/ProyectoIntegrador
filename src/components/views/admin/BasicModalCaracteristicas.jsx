@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCaracteristicas from '../FormCaracteristicas';
 
@@ -33,6 +34,15 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
 
   return (
     <React.Fragment>
+      <div>
+      <Button variant="outlined" component={Link} to="/admintours">
+        Admin Tours
+      </Button>
+      <Button variant="outlined" component={Link} to="/admincategorias">
+        Admin Categorías
+      </Button>
+      </div>
+
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Característica
       </Button>
