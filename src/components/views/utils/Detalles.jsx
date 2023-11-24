@@ -131,8 +131,7 @@ const Detalles = () => {
         </div>
       ) : (
         <><div style={{display:'flex'}}>
-          <h2 className="h2-title">{tourDetails.titulo}</h2>
-            <div>
+          <div>
             <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
             </div>        
             <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faFacebook} /></div>
@@ -150,6 +149,7 @@ const Detalles = () => {
             <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
             </a>
+            <h2 className="h2-title">{tourDetails.titulo}</h2>
           </div>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <StyledImageList
