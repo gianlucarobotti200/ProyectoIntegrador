@@ -168,16 +168,16 @@ function Recomendaciones() {
             <div className='card-row'>
               {data.map((tour, index) => (
                 <div key={index} className='card-item'>
+                  <Link to={`/detalles/${tour.id}`}>
                   <Card>
                     <Typography variant="h6">{tour.titulo}</Typography>
-                    <Link to={`/detalles/${tour.id}`}>
+                    
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
                         height="140"
                         image={tour.linkFotos[0]}
                       />
-                    </Link>
                     <CardContent className='cardContent'>
                       <Typography variant="body3">
                         {tour.descripcion}
@@ -192,6 +192,7 @@ function Recomendaciones() {
                       </div>
                     </CardContent>
                   </Card>
+                  </Link>
                 </div>
               ))}
             </div>

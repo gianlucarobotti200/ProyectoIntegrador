@@ -13,7 +13,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const StyledDetalles = styled.div`
@@ -128,8 +130,27 @@ const Detalles = () => {
           <CircularProgress color="inherit" />
         </div>
       ) : (
-        <>
+        <><div style={{display:'flex'}}>
           <h2 className="h2-title">{tourDetails.titulo}</h2>
+            <div>
+            <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
+            </div>        
+            <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faFacebook} /></div>
+            
+              <div className="fb-share-button"
+                data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
+                data-layout=""
+                data-size="">
+                <a target="_blank"
+                  href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
+                  className="fb-xfbml-parse-ignore">
+                  <FontAwesomeIcon icon={faSquareTwitter} style={{color: "#557ab9",}} />
+                </a>
+              </div>
+            <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
+            </a>
+          </div>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <StyledImageList
               sx={{ width: "70%", height: "auto", margin: "auto" }}
@@ -189,24 +210,6 @@ const Detalles = () => {
           <Button style={{ margin: "0 45vw" }} variant="contained">
             RESERVAR
           </Button>
-          <div>
-            <button onClick={handleTwitterShare}>Compartir en Twitter</button>
-            <button>
-              <div className="fb-share-button"
-                data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
-                data-layout=""
-                data-size="">
-                <a target="_blank"
-                  href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
-                  className="fb-xfbml-parse-ignore">
-                  Compartir en Facebook
-                </a>
-              </div>
-            </button>
-            <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
-            </a>
-          </div>
         </>
       )}
     </StyledDetalles>
