@@ -78,6 +78,7 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
             ) : (
                 <Delete onClick={handleDeleteClick} />
             )}
+            
         </StyledCardUsuarioAdmin>
     );
 }

@@ -12,6 +12,9 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+
 
 const StyledDetalles = styled.div`
   display: flex;
@@ -59,14 +62,14 @@ const ImageModal = ({ images, onClose }) => {
   return (
     <Modal open={true} onClose={onClose}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', display: "flex" }}>
-        <ArrowBackIosIcon style={{ color: 'white', position: 'absolute', top: '50%', transform: 'translate(-60%, -50%)'}} onClick={prevImage}/>
+        <ArrowBackIosIcon style={{ color: 'white', position: 'absolute', top: '50%', transform: 'translate(-60%, -50%)' }} onClick={prevImage} />
         <img
           src={images[currentIndex]}
           alt=""
-          style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', width: '70vw'}}
+          style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', width: '70vw' }}
         />
-        <ArrowForwardIosIcon style={{ color: 'white', position: 'absolute', top: '50%', left: '100%', transform: 'translate(-10%, -50%)'}} onClick={nextImage}/>
-        <CloseIcon style={{ color: 'white', position: 'absolute', left: '100%', transform: 'translate(0%, -80%)'}} onClick={onClose} />
+        <ArrowForwardIosIcon style={{ color: 'white', position: 'absolute', top: '50%', left: '100%', transform: 'translate(-10%, -50%)' }} onClick={nextImage} />
+        <CloseIcon style={{ color: 'white', position: 'absolute', left: '100%', transform: 'translate(0%, -80%)' }} onClick={onClose} />
       </div>
     </Modal>
   );
@@ -116,13 +119,13 @@ const Detalles = () => {
 
 
     window.open(twitterUrl, '_blank');
-};
+  };
 
   return (
     <StyledDetalles>
       {loading ? (
         <div className="loading-container">
-          <CircularProgress color="inherit"/>
+          <CircularProgress color="inherit" />
         </div>
       ) : (
         <>
@@ -186,7 +189,24 @@ const Detalles = () => {
           <Button style={{ margin: "0 45vw" }} variant="contained">
             RESERVAR
           </Button>
-          <button onClick={handleTwitterShare}>Compartir en Twitter</button>
+          <div>
+            <button onClick={handleTwitterShare}>Compartir en Twitter</button>
+            <button>
+              <div className="fb-share-button"
+                data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
+                data-layout=""
+                data-size="">
+                <a target="_blank"
+                  href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
+                  className="fb-xfbml-parse-ignore">
+                  Compartir en Facebook
+                </a>
+              </div>
+            </button>
+            <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
+            </a>
+          </div>
         </>
       )}
     </StyledDetalles>

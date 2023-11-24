@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import BasicModal from './Basicmodal';
 
 
 
