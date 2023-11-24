@@ -44,6 +44,18 @@ const StyledDetalles = styled.div`
     margin: 0 0 2rem 0;
     font-weight: bolder;
   }
+
+  .cont-icons {
+    display: flex;
+    width: calc(15vw - 15px);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2% 10% 0% 2%;
+    padding: 0% 0% 0% 0%;
+    border-radius: 5px;
+    
+  
+  }
 `
 
 const StyledImageList = styled(ImageList)`
@@ -131,6 +143,7 @@ const Detalles = () => {
         </div>
       ) : (
         <><div style={{display:'flex'}}>
+          <div className='cont-icons'>
           <div>
             <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
             </div>        
@@ -149,6 +162,7 @@ const Detalles = () => {
             <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
             </a>
+            </div>
             <h2 className="h2-title">{tourDetails.titulo}</h2>
           </div>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
