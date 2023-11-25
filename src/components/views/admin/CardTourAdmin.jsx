@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
+import EditIcon from '@mui/icons-material/Edit'
+import Swal from 'sweetalert2'
+
 
 const StyledCardUsuarioAdmin = styled.article`
   background-color: #f5f5f5;
@@ -30,9 +33,10 @@ const StyledCardUsuarioAdmin = styled.article`
   }
 `;
 
-const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete }) => {
+const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete}) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+   
 
     const handleDeleteClick = () => {
         setShowConfirmation(true);
@@ -63,6 +67,25 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setShowConfirmation(false);
     };
 
+    const handleEditClick = () => {
+        Swal.fire({
+            title: "Desea Modificar el Tour?",
+            text: "Usted Esta Por modificar el Tour!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, Modificar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+               
+              
+            }
+          });
+        console.log(`Editando tour con ID: ${id}`);
+    };
+    
+
     return (
         <StyledCardUsuarioAdmin>
             <h4>{id}</h4>
@@ -75,8 +98,11 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
                     <button onClick={handleConfirmDelete}>Sí</button>
                     <button onClick={handleCancelDelete}>No</button>
                 </div>
-            ) : (
+            ) : (<div>
+                <EditIcon onClick={handleEditClick} />
                 <Delete onClick={handleDeleteClick} />
+            
+             </div>
             )}
             
         </StyledCardUsuarioAdmin>
