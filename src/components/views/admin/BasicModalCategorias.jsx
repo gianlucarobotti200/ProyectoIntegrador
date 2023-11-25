@@ -10,6 +10,42 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCategorias from '../FormCategorias';
+// Importa el archivo CSS de estilos externos
+import './EstilosModal.css';
+
+// const StyledDetalles  = styled.div `
+// display: flex;
+// width: 100%;
+
+// .cont-ppal {
+//   display: flex;
+//   width: 100%;
+//   margin: 2rem;
+//   flex-direction: row;
+//   justify-content: space-around;
+// }
+
+// .btn-adm {
+//   /* Estilos para el botón Admin Tours */
+//   background-color: #4caf50; 
+//   color: white; 
+//   margin-right: 10px;
+// }
+
+// /* Estilos para el segundo botón en cont-ppal */
+// .cont-ppal button:nth-child(2) {
+//   background-color: #2196f3;
+//   color: white;
+// }
+
+// /* Estilos para el botón "Agregar Categoría" */
+// button:nth-child(3) {
+//   background-color: #ff9800;
+//   color: white;
+// }
+
+// `
+// ;
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -33,12 +69,14 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
+    <>
+    <StyledDetalles>
     <React.Fragment>
-       <div>
-      <Button variant="outlined" component={Link} to="/admintours">
+       <div className='cont-ppal'>
+      <Button className='btn-adm' variant="outlined" component={Link} to="/admintours">
         Admin Tours
       </Button>
-      <Button variant="outlined" component={Link} to="/admincaracteristicas">
+      <Button  variant="outlined" component={Link} to="/admincaracteristicas">
         Admin Caracteristica
       </Button>
       </div>
@@ -74,5 +112,7 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         
       </BootstrapDialog>
     </React.Fragment>
+    </StyledDetalles>
+    </>
   );
 }
