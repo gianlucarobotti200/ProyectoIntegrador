@@ -72,15 +72,21 @@ const FormTours = ({ onCloseModal }) => {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
     const [caracteristicasSeleccionadas, setCaracteristicasSeleccionadas] = useState([]);
+    const [politicas, setPoliticas] = useState([]);
+    const [politicasSeleccionadas, setPoliticasSeleccionadas] = useState([]);
 
     const getCaracteristicasYCategorias = async () => {
         try {
             const response1 = await fetch("http://localhost:8080/caracteristicas");
             const response2 = await fetch("http://localhost:8080/categorias");
+            const response3 = await fetch("http://localhost:8080/politicas");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
+            const jsonData3 = await response3.json();
             setCaracteristicas(jsonData1);
             setCategorias(jsonData2);
+            setPoliticas(jsonData3);
+
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
         }
@@ -224,8 +230,35 @@ const FormTours = ({ onCloseModal }) => {
                             ))}
                         </FormGroup>
                     </div>
+                
 
                 </div>
+                    <div>
+                        <h5>Politicas</h5>
+                        <FormGroup>
+                            {politicas.map((politica) => (
+                                <FormControlLabel
+                                    key={politica.id}
+                                    control={
+                                        <Checkbox
+                                            inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
+                                            checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
+                                                } else {
+                                                    setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label={politica.nombre}
+                                />
+                            ))}
+                        </FormGroup>
+                    </div>
+
+
                 <div className='row2'>
 
 
