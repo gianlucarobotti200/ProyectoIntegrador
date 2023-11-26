@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCategorias from '../FormCategorias';
 // Importa el archivo CSS de estilos externos
-import './EstilosModal.css';
+import './EstilosBasicModal.css';
 
 
 

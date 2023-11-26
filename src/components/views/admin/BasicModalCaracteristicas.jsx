@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCaracteristicas from '../FormCaracteristicas';
 // Importa el archivo CSS de estilos externos
-import './EstilosModal.css';
+import './EstilosBasicModal.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {

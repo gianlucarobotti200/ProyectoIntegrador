@@ -1,0 +1,35 @@
+/* estilosBotones.css */
+
+.cont-ppal {
+    display: flex;
+    width: 90vw;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2% 0% 3% 4%;
+    margin: 5% 0% 5% 1%;
+
+  }
+
+.btn-car1,
+.btn-cat2,
+.btn-tour3 {
+
+    border-radius: 5px;
+    background-color: #aecdd9;
+    box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
+    border: 0,5px solid #7fd2f2;
+    padding: 0% 0% 0% 0%;
+    margin: 2% 2% 3% 1%;
+  }
+  
+.btn-car1:hover ,
+.btn-cat2:hover ,
+.btn-tour3:hover {
+    border: 1px solid  #7fd2f2;  
+  }
+  
+
+
+ 
+
+ 

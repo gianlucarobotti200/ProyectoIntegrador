@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormTours from '../FormTours';
 // Importa el archivo CSS de estilos externos
-import './EstilosModal.css';
+import './EstilosBasicModal.css';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -38,18 +38,18 @@ export default function BasicModal({onTourAdded}) {
   return (
     <React.Fragment>
       <div className='cont-ppal' >
-        <div>
-      <Button className='btn-car1' variant="outlined" component={Link} to="/admincaracteristicas">
+        <div  className='btn-car1'>
+      <Button variant="outlined" component={Link} to="/admincaracteristicas">
         Admin Características
       </Button>
         </div>
-        <div>
-      <Button className='btn-cat2' variant="outlined" component={Link} to="/admincategorias">
+        <div className='btn-cat2'>
+      <Button  variant="outlined" component={Link} to="/admincategorias">
         Admin Categorías
       </Button> 
         </div>
-        <div>    
-      <Button className='btn-tour3' variant="outlined" onClick={handleClickOpen}>
+        <div className='btn-tour3'>    
+      <Button  variant="outlined" onClick={handleClickOpen}>
         Agregar tour
       </Button>
         </div>
