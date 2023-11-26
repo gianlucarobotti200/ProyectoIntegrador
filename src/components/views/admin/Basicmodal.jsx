@@ -23,7 +23,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function BasicModal({onTourAdded}) {
+export default function BasicModal({ onTourAdded }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -38,20 +38,20 @@ export default function BasicModal({onTourAdded}) {
   return (
     <React.Fragment>
       <div className='cont-ppal' >
-        <div  className='btn-car1'>
-      <Button variant="outlined" component={Link} to="/admincaracteristicas">
-        Admin Características
-      </Button>
+        <div className='btn-tour3'>
+          <Button variant="outlined" onClick={handleClickOpen}>
+            Agregar tour
+          </Button>
+        </div>
+        <div className='btn-car1'>
+          <Button variant="outlined" component={Link} to="/admincaracteristicas">
+            Admin Características
+          </Button>
         </div>
         <div className='btn-cat2'>
-      <Button  variant="outlined" component={Link} to="/admincategorias">
-        Admin Categorías
-      </Button> 
-        </div>
-        <div className='btn-tour3'>    
-      <Button  variant="outlined" onClick={handleClickOpen}>
-        Agregar tour
-      </Button>
+          <Button variant="outlined" component={Link} to="/admincategorias">
+            Admin Categorías
+          </Button>
         </div>
       </div>
       <BootstrapDialog
@@ -75,12 +75,12 @@ export default function BasicModal({onTourAdded}) {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-        {/* <Box > */}
-            <FormTours onCloseModal={handleClose}/>   
-        {/* </Box> */}
-          
+          {/* <Box > */}
+          <FormTours onCloseModal={handleClose} />
+          {/* </Box> */}
+
         </DialogContent>
-        
+
       </BootstrapDialog>
     </React.Fragment>
   );
