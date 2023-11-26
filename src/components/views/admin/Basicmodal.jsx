@@ -7,8 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormTours from '../FormTours';
+// Importa el archivo CSS de estilos externos
+import './EstilosModal.css';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -34,9 +37,23 @@ export default function BasicModal({onTourAdded}) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <div className='cont-ppal' >
+        <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admincaracteristicas">
+        Admin Características
+      </Button>
+        </div>
+        <div>
+      <Button className='btn-cat2' variant="outlined" component={Link} to="/admincategorias">
+        Admin Categorías
+      </Button> 
+        </div>
+        <div>    
+      <Button className='btn-tour3' variant="outlined" onClick={handleClickOpen}>
         Agregar tour
       </Button>
+        </div>
+      </div>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -68,6 +85,8 @@ export default function BasicModal({onTourAdded}) {
     </React.Fragment>
   );
 }
+
+
 
 
 

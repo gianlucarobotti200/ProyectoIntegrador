@@ -1,14 +1,17 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCaracteristicas from '../FormCaracteristicas';
+// Importa el archivo CSS de estilos externos
+import './EstilosModal.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -33,6 +36,15 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
 
   return (
     <React.Fragment>
+      <div>
+      <Button variant="outlined" component={Link} to="/admintours">
+        Admin Tours
+      </Button>
+      <Button variant="outlined" component={Link} to="/admincategorias">
+        Admin Categorías
+      </Button>
+      </div>
+
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Característica
       </Button>
