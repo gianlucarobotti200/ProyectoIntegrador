@@ -8,13 +8,23 @@ import Stack from '@mui/material/Stack';
 
 
 const StyledAdministracion = styled.div`
+
+    .adm-tours {
+        color: #24306E;
+        padding: 2% 0% 2% 0%;
+        margin: 4% 5% 0% 6%;
+        font-weight: bolder;
+        font: 2rem/1rem "Open Sans", sans-serif;
+        border-bottom: 2px solid rgba(36, 48, 110, 1);
+    }
+
     div.header-table{
         background-color: #f5f5f5;
         border: 1px solid #ccc;
         border-radius: 5px;
-        padding: 1rem;
-        margin: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2% 2% 2% 3%;
+        margin: 0% 2% 3% 2%;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
         display: flex;
         justify-content: space-around;
     }
@@ -59,11 +69,11 @@ const endIndex = startIndex + toursPerPage;
 
     return (
         <StyledAdministracion>
-            <h1>Administración Tours</h1>
+            <h1 className='adm-tours'>Administración Tours</h1>
             <BasicModal onTourAdded={refreshTours}/>
             <div className='header-table'>
                 <span className='id'>ID</span>
-                <span className='nombre'>Título</span>
+                <span className='nombre'>TÍTULO</span>
                 <span>GESTIÓN</span>
             </div>
             {tours.slice(startIndex, endIndex).map((tour, index) => (
