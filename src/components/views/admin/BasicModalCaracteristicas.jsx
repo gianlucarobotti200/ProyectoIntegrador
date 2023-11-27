@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import FormCaracteristicas from '../FormCaracteristicas';
 // Importa el archivo CSS de estilos externos
 import './EstilosBasicModal.css';
+import './EstilosAdmin.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -36,18 +37,23 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
 
   return (
     <React.Fragment>
+      <div className='cont-ppal ' >
       <div>
-      <Button variant="outlined" component={Link} to="/admintours">
-        Admin Tours
-      </Button>
-      <Button variant="outlined" component={Link} to="/admincategorias">
-        Admin Categorías
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
+        ADMIN TOURS
       </Button>
       </div>
-
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Agregar Característica
+      <div>
+      <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
+        AGREGAR CARACTERÍSTICAS
       </Button>
+      </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admincategorias">
+        ADMIN CATEGORÍAS
+      </Button>
+      </div>   
+      </div>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

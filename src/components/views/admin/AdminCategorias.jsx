@@ -5,7 +5,7 @@ import BasicModalCategorias from './BasicModalCategorias';
 
 const StyledAdministracion = styled.div`
     div.header-table{
-        background-color: #f5f5f5;
+     
         border: 1px solid #ccc;
         border-radius: 5px;
         padding: 1rem;

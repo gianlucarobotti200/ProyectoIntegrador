@@ -4,30 +4,15 @@ import CardTourAdmin from './CardTourAdmin';
 import BasicModal from './Basicmodal';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import './EstilosAdmin.css';
 
 
 
 const StyledAdministracion = styled.div`
 
-    .adm-tours {
-        color: #24306E;
-        padding: 2% 0% 2% 0%;
-        margin: 4% 5% 0% 6%;
-        font-weight: bolder;
-        font: 2rem/1rem "Open Sans", sans-serif;
-        border-bottom: 2px solid rgba(36, 48, 110, 1);
-    }
+   
 
-    div.header-table{
-        background-color: #f5f5f5;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 2% 2% 2% 3%;
-        margin: 0% 2% 3% 2%;
-        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-around;
-    }
+ 
 
     div.pagination-container {
         display: flex;
