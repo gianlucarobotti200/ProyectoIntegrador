@@ -40,17 +40,17 @@ export default function BasicModal({ onTourAdded }) {
       <div className='cont-ppal' >
         <div className='btn-tour3'>
           <Button variant="outlined" onClick={handleClickOpen}>
-            Agregar tour
+            AGREGAR TOURS
           </Button>
         </div>
         <div className='btn-car1'>
           <Button variant="outlined" component={Link} to="/admincaracteristicas">
-            Admin Características
+            ADMIN CARACTERÍSTICAS
           </Button>
         </div>
         <div className='btn-cat2'>
           <Button variant="outlined" component={Link} to="/admincategorias">
-            Admin Categorías
+            ADMIN CATEGORÍAS
           </Button>
         </div>
       </div>

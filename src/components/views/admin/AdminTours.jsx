@@ -8,17 +8,8 @@ import './EstilosAdmin.css';
 
 
 
-const StyledAdministracion = styled.div`
+const StyledAdministracion = styled.div` 
 
-   
-
- 
-
-    div.pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;  
-    }
 `
 
 const AdminTours = () => {
