@@ -23,6 +23,7 @@
 .btn-car1,
 .btn-cat2,
 .btn-tour3 {
+ 
     display: flex;
     border-radius: 5px;
     box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;

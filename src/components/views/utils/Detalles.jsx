@@ -340,14 +340,12 @@ const Detalles = () => {
             RESERVAR
           </Button>
           <div>
-            <h3 className='politicas'>Políticas</h3>
-            <ul>
-              {politicasData.map((politica, index) => (
-                <li key={index}>
-                  <strong>{politica.nombre}</strong>: {politica.contenido}
-                </li>
-              ))}
-            </ul>
+          <Stack>
+                {tourDetails.politicasData &&
+                  tourDetails.politicasData.map((politicas) => (
+                    <Chip key={politicas.id} label={politicas.nombre} variant="outlined" />
+                  ))}
+              </Stack>
           </div>
         </div>
       )
