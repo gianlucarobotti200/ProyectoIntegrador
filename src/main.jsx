@@ -9,13 +9,15 @@ import AdminCaracteristicas from './components/views/admin/AdminCaracteristicas.
 import AdminTours from './components/views/admin/AdminTours.jsx'
 import Login from './components/views/login/Login.jsx'
 import Detalles from './components/views/utils/Detalles.jsx';
+import Resultados from './components/views/utils/Resultados.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<App />}>
         <Route path='/inicio' element={<Inicio />} />
-        <Route path='/admintours' element={<AdminTours />} />
+        <Route path='/resultados/:search' element={<Resultados/>} />
+        <Route path='/admintours' element={<AdminTours/>} />
         <Route path='/admincaracteristicas' element={<AdminCaracteristicas />} />
         <Route path='/admincategorias' element={<AdminCategorias />} />
         <Route path='/detalles/:id' element={<Detalles/>} />
