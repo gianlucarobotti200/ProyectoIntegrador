@@ -4,8 +4,6 @@ import CardCaracteristicaAdmin from './CardCaracteristicaAdmin';
 import BasicModalCaracteristicas from './BasicModalCaracteristicas';
 import './EstilosAdmin.css';
 
-
-
 const StyledAdministracion = styled.div`
 
 `

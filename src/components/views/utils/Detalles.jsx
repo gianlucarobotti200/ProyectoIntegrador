@@ -223,6 +223,8 @@ const Detalles = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [politicasData, setPoliticasData] = useState([]);
+
 
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
@@ -241,6 +243,7 @@ const Detalles = () => {
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
+          setPoliticasData(jsonData.politicas);
         }
       } catch (error) {
         console.error("Error al obtener datos:", error);
@@ -337,37 +340,19 @@ const Detalles = () => {
             RESERVAR
           </Button>
           <div>
-            <Stack direction="row" spacing={1}>
-              <h3 className='politicas'>Políticas</h3>
-              <p>{tourDetails.politicas}</p>
-            </Stack>
+            <h3 className='politicas'>Políticas</h3>
+            <ul>
+              {politicasData.map((politica, index) => (
+                <li key={index}>
+                  <strong>{politica.nombre}</strong>: {politica.contenido}
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className='ul-politicas'>
-            <li className='li-fecha'>Fecha tope</li>
-            <li className='li-noIncluido'>No incluido</li>
-            <li className='li-documentacion'>Documentación</li>
-          </ul>
-          <ul>
-            <li className='li-fecha1'>
-              El tour tiene fecha tope de saldo: 15 días antes de la fecha de salida seleccionada en su reserva
-              (pasado dicho plazo se dará de baja a la reserva sin derecho a reembolso o reclamo alguno).
-            </li>
-
-            <li className='li-noIncluido1'>
-              NO incluye entradas a Museos, Parques Nacionales, medios de elevación, actividades de montaña, etc
-              No incluye canon turístico BUS 2023 ($ 3500 se abona al momento de embarcar)
-              No incluye Honorarios guías locales / parques nacionales BUS ($ 3500 se abona al momento de embarcar)
-            </li>
-
-            <li className='li-documentacion1'>
-              La documentación (DNI/Pasaportes/Visas/Permisos de Menores) es exclusiva responsabilidad de los pasajeros.
-              La misma debe estar en regla y en excelente estado para poder transitar dentro de nuestras fronteras o salir del país.
-              En caso de no tenerla correctamente, los gastos que existieran correrán por cuenta de los pasajeros.
-            </li>
-          </ul>
         </div>
       )
-    }
-  </StyledDetalles>
-)}
-      export default Detalles;
+      }
+    </StyledDetalles>
+  )
+}
+export default Detalles;

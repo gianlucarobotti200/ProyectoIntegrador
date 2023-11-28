@@ -4,16 +4,7 @@ import CardCategoriaAdmin from './CardCategoriaAdmin';
 import BasicModalCategorias from './BasicModalCategorias';
 
 const StyledAdministracion = styled.div`
-    div.header-table{
-     
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 1rem;
-        margin: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-around;
-    }
+
 `
 
 const AdminCategorias = () => {
@@ -40,7 +31,7 @@ const AdminCategorias = () => {
 
     return (
         <StyledAdministracion>
-            <h1>Administración Categorías</h1>
+            <h1 className='adm-categorias' >Administración Categorías</h1>
             <BasicModalCategorias onCategoriaAdded={refreshCategorias}/>
             <div className='header-table'>
                 <span className='id'>ID</span>

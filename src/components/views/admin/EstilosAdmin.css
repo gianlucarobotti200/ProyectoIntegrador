@@ -1,10 +1,11 @@
 /* estilosBotones.css */
 
 .adm-caracteristicas,
-.adm-tours {
+.adm-tours,
+.adm-categorias {
     color: #24306E;
     padding: 2% 0% 2% 0%;
-    margin: 4% 5% 0% 6%;
+    margin: 4% 5% 0% 4%;
     font-weight: bolder;
     font: 2rem/1rem "Open Sans", sans-serif;
     border-bottom: 2px solid rgba(36, 48, 110, 1);
@@ -34,10 +35,10 @@
 .btn-cat2:hover ,
 .btn-tour3:hover {
     border: 0.5px solid  #7fd2f2;
-    padding: 0% 0% 0% 0%;
-    margin: 2% 2% 2.8% 1%;
+    /* padding: 0% 0% 0% 0%; */
+    /* margin: 2% 2% 3% 1%;  */
     transition: .4s ease;
-}
+} 
   
 .header-table {
     display: flex;

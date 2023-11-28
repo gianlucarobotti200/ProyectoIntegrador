@@ -37,20 +37,25 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
-    <>
-    <StyledDetalles>
+    
     <React.Fragment>
        <div className='cont-ppal'>
-      <Button className='btn-adm' variant="outlined" component={Link} to="/admintours">
-        Admin Tours
-      </Button>
-      <Button  variant="outlined" component={Link} to="/admincaracteristicas">
-        Admin Caracteristica
+        <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
+        ADMIN TOURS
       </Button>
       </div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Agregar Categoría
+      <div>
+      <Button className='btn-car1'  variant="outlined" component={Link} to="/admincaracteristicas">
+        ADMIN CARACTERÍSTICAS
       </Button>
+      </div>
+      <div>
+      <Button className='btn-car1'  variant="outlined" onClick={handleClickOpen}>
+        AGREGAR CATEGORÍA
+      </Button>
+      </div>
+       </div>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -74,13 +79,9 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         <DialogContent dividers>
         {/* <Box > */}
             <FormCategorias onCloseModal={handleClose}/>   
-        {/* </Box> */}
-          
-        </DialogContent>
-        
+        {/* </Box> */}          
+        </DialogContent>        
       </BootstrapDialog>
     </React.Fragment>
-    </StyledDetalles>
-    </>
   );
 }
