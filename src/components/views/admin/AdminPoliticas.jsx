@@ -46,16 +46,16 @@ const AdminPoliticas = () => {
             <BasicModalPoliticas onPoliticasAdded={refreshPoliticas}/>
             <div className='header-table'>
                 <span className='id'>ID</span>
-                <span className='icono'>Ícono</span>
-                <span className='nombre'>Título</span>
+                <span className='titulo'>Titulo</span>
+                <span className='contenido'>Contenido</span>
                 <span>GESTIÓN</span>
             </div>
             {politicas.map((politica, index) => (
                 <CardPoliticasAdmin
                     key={index}
                     id={politica.id}
-                    iconoUrl={politica.icono}
                     nombre={politica.nombre}
+                    contenido={politica.contenido}
                     onDelete={refreshPoliticas}
                 />
             ))}

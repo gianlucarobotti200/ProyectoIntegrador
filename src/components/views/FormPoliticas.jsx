@@ -59,7 +59,8 @@ const FormPoliticas = ({ onCloseModal }) => {
         e.preventDefault();
 
         const formData = {
-            nombre
+            nombre,
+            contenido
         };
 
         try {
