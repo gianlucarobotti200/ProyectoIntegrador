@@ -47,6 +47,11 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
       <Button  variant="outlined" component={Link} to="/admincaracteristicas">
         Admin Caracteristica
       </Button>
+      <div>
+      <Button variant="outlined" component={Link} to="/adminpoliticas">
+        Admin Politicas
+      </Button>
+      </div>
       </div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Categoría

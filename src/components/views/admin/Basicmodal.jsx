@@ -48,6 +48,11 @@ export default function BasicModal({onTourAdded}) {
         Admin Categorías
       </Button> 
         </div>
+        <div>
+      <Button variant="outlined" component={Link} to="/adminpoliticas">
+        Admin Politicas
+      </Button>
+      </div>
         <div>    
       <Button className='btn-tour3' variant="outlined" onClick={handleClickOpen}>
         Agregar tour

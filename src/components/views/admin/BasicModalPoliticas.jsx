@@ -42,6 +42,11 @@ export default function BasicModalPoliticas({onPoliticasAdded}) {
         Admin Categorías
       </Button>
       </div>
+      <div>
+      <Button variant="outlined" component={Link} to="/adminpoliticas">
+        Admin Politicas
+      </Button>
+      </div>
 
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Politica
