@@ -3,6 +3,9 @@ import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
 import EditIcon from '@mui/icons-material/Edit'
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
+import AdminModificarTour from './AdminModificarTour'
+
 
 
 const StyledCardUsuarioAdmin = styled.article`
@@ -67,24 +70,7 @@ const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, c
         setShowConfirmation(false);
     };
 
-    const handleEditClick = () => {
-        Swal.fire({
-            title: "Desea Modificar el Tour?",
-            text: "Usted Esta Por modificar el Tour!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si, Modificar!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-               
-              
-            }
-          });
-        console.log(`Editando tour con ID: ${id}`);
-    };
-    
+      
 
     return (
         <StyledCardUsuarioAdmin>
@@ -99,11 +85,13 @@ const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, c
                     <button onClick={handleCancelDelete}>No</button>
                 </div>
             ) : (<div>
-                <EditIcon onClick={handleEditClick} />
                 <Delete onClick={handleDeleteClick} />
             
              </div>
             )}
+            <Link to={`/tours/${id}`}>
+            <EditIcon />
+            </Link>
             
         </StyledCardUsuarioAdmin>
     );

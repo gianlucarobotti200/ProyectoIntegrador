@@ -127,7 +127,7 @@ const FormTours = ({ onCloseModal }) => {
                 }
 
                 // Enviar categorías seleccionadas
-                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+                await fetch(`http://localhost:8080/tours/${response.id}/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+                await fetch(`http://localhost:8080/tours/${response.id}/caracteristicas`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
