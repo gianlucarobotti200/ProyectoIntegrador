@@ -189,6 +189,7 @@ const AdminModificarTour = () => {
     formData.append('descripcion', descripcion);
     formData.append('precio', parseInt(precio));
     formData.append('cantHoras', parseInt(duracion));
+    formData.append('id', id);
 
     if (file && file.length > 0) {
         for (let i = 0; i < file.length; i++) {
@@ -380,7 +381,7 @@ const AdminModificarTour = () => {
       <div>
       <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
       Upload file
-      <VisuallyHiddenInput type="file" name='file' />
+      <VisuallyHiddenInput  multiple type="file" name='file' />
     </Button>
       </div>
       {imagenesSubidas ? (
