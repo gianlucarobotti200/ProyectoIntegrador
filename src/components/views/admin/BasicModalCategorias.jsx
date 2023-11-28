@@ -10,6 +10,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCategorias from '../FormCategorias';
+// Importa el archivo CSS de estilos externos
+import './EstilosModal.css';
+
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -33,12 +37,14 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
+    <>
+    <StyledDetalles>
     <React.Fragment>
-       <div>
-      <Button variant="outlined" component={Link} to="/admintours">
+       <div className='cont-ppal'>
+      <Button className='btn-adm' variant="outlined" component={Link} to="/admintours">
         Admin Tours
       </Button>
-      <Button variant="outlined" component={Link} to="/admincaracteristicas">
+      <Button  variant="outlined" component={Link} to="/admincaracteristicas">
         Admin Caracteristica
       </Button>
       </div>
@@ -74,5 +80,7 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         
       </BootstrapDialog>
     </React.Fragment>
+    </StyledDetalles>
+    </>
   );
 }
