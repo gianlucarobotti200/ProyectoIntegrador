@@ -167,10 +167,18 @@ const AdminModificarTour = () => {
         await fetch(`http://localhost:8080/tours/${id}/caracteristicas`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
           },
-          body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
-        });
+          body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
+      });
+      // Enviar politicas seleccionadas
+      await fetch(`http://localhost:8080/tours/${id}/politicas`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(politicasSeleccionadas.map((policy) => policy.id)),
+      });
 
         console.log('El tour se ha agregado exitosamente.');
       } else {
@@ -209,7 +217,7 @@ const AdminModificarTour = () => {
             }
 
             // Enviar categorías seleccionadas
-            await fetch(`http://localhost:8080/tours/${response.id}/categorias`, {
+            await fetch(`http://localhost:8080/tours/${id}/categorias`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -218,12 +226,20 @@ const AdminModificarTour = () => {
             });
 
             // Enviar características seleccionadas
-            await fetch(`http://localhost:8080/tours/${response.id}/caracteristicas`, {
+            await fetch(`http://localhost:8080/tours/${id}/caracteristicas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
+                body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
+            });
+            // Enviar politicas seleccionadas
+            await fetch(`http://localhost:8080/tours/${id}/politicas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(politicasSeleccionadas.map((policy) => policy.id)),
             });
 
             console.log('El tour se ha agregado exitosamente.');
@@ -384,15 +400,11 @@ const AdminModificarTour = () => {
       <VisuallyHiddenInput  multiple type="file" name='file' />
     </Button>
       </div>
-      {imagenesSubidas ? (
-        <Button onClick={handleSubmitConImagenes} variant="contained" color="success">
-          Modificar
-        </Button>
-      ) : (
+      
         <Button onClick={handleSubmitSinImagenes} variant="contained" color="success">
           Modificar
         </Button>
-      )}
+      
         <div>
         <Link to={`/admintours`}>
           <Button variant="outlined" color="error">
