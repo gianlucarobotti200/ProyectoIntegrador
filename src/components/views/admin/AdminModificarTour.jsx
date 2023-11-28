@@ -37,7 +37,8 @@ const AdminModificarTour = () => {
   const [caracteristicasSeleccionadas, setCaracteristicasSeleccionadas] = useState([]);
   const [politicas, setPoliticas] = useState([]);
   const [politicasSeleccionadas, setPoliticasSeleccionadas] = useState([]);
-  const [tour, setTour] = useState([])
+  const [tour, setTour] = useState([]);
+  const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
 
 
@@ -131,7 +132,7 @@ const AdminModificarTour = () => {
     setFile(e.target.files);
 };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitSinImagenes = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('provincia', provincia);
@@ -140,16 +141,11 @@ const AdminModificarTour = () => {
     formData.append('precio', parseInt(precio));
     formData.append('cantHoras', parseInt(duracion));
     formData.append('id', id);
-
-    
-
-
-
+ 
     try {
       const response = await fetch('http://localhost:8080/tours/modificarTour', {
         method: 'PUT',
         body: formData,
-
 
       });
 
@@ -177,7 +173,6 @@ const AdminModificarTour = () => {
         });
 
         console.log('El tour se ha agregado exitosamente.');
-        onCloseModal();
       } else {
         console.error('Error al enviar el formulario.');
       }
@@ -186,6 +181,59 @@ const AdminModificarTour = () => {
     }
   };
 
+  const handleSubmitConImagenes = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('provincia', provincia);
+    formData.append('titulo', titulo);
+    formData.append('descripcion', descripcion);
+    formData.append('precio', parseInt(precio));
+    formData.append('cantHoras', parseInt(duracion));
+
+    if (file && file.length > 0) {
+        for (let i = 0; i < file.length; i++) {
+            formData.append('file', file[i]);
+        }
+    }
+  
+    try {
+        const response = await fetch('http://localhost:8080/tours', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            if (response.ok) {
+                console.log('El formulario se ha enviado exitosamente.');
+            }
+
+            // Enviar categorías seleccionadas
+            await fetch(`http://localhost:8080/tours/${response.id}/categorias`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id)),
+            });
+
+            // Enviar características seleccionadas
+            await fetch(`http://localhost:8080/tours/${response.id}/caracteristicas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
+            });
+
+            console.log('El tour se ha agregado exitosamente.');
+            onCloseModal();
+        } else {
+            console.error('Error al enviar el formulario.');
+        }
+    } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+    }
+};
 
   return (
     <Box
@@ -203,7 +251,7 @@ const AdminModificarTour = () => {
         <TextField
           label="Titulo"
           value={titulo}
-          variant="filled"
+          variant="outlined"
           onChange={(e) => setTitulo(e.target.value)}
         />
         <TextField
@@ -211,14 +259,14 @@ const AdminModificarTour = () => {
           label="Descripcion"
           multiline
           maxRows={10}
-          variant="filled"
+          variant="outlined"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
         <TextField
           label="Provincia"
           value={provincia}
-          variant="filled"
+          variant="outlined"
           onChange={(e) => setProvincia(e.target.value)}
         />
         <TextField
@@ -234,13 +282,13 @@ const AdminModificarTour = () => {
           InputProps={{
             readOnly: true,
           }}
-          variant="filled"
+          variant="outlined"
         />
         <TextField
           label="Duracion"
           type="number"
           value={duracion}
-          variant="filled"
+          variant="outlined"
           onChange={(e) => setDuracion(e.target.value)}
         />
         <div>
@@ -335,10 +383,16 @@ const AdminModificarTour = () => {
       <VisuallyHiddenInput type="file" name='file' />
     </Button>
       </div>
-      <div>
-        <Button onClick={handleSubmit} variant="contained" color="success">
+      {imagenesSubidas ? (
+        <Button onClick={handleSubmitConImagenes} variant="contained" color="success">
           Modificar
         </Button>
+      ) : (
+        <Button onClick={handleSubmitSinImagenes} variant="contained" color="success">
+          Modificar
+        </Button>
+      )}
+        <div>
         <Link to={`/admintours`}>
           <Button variant="outlined" color="error">
             Cancelar
