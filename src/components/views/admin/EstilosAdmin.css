@@ -16,8 +16,8 @@
     width: 90vw;
     align-items: center;
     justify-content: space-between;
-    padding: 2% 0% 3% 4%;
-    margin: 2% 0% 1% 0%;
+    padding: 3% 2% 2% 3%;
+    margin: 2% 1% 1% 1%;
 }
 
 .btn-car1,
@@ -28,7 +28,6 @@
     border-radius: 5px;
     box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
     border: 0,5px solid #7fd2f2;
-    padding: 0% 0% 0% 0%;
     margin: 2% 2% 3% 1%;
 }
   
@@ -36,8 +35,6 @@
 .btn-cat2:hover ,
 .btn-tour3:hover {
     border: 0.5px solid  #7fd2f2;
-    /* padding: 0% 0% 0% 0%; */
-    /* margin: 2% 2% 3% 1%;  */
     transition: .4s ease;
 } 
   
