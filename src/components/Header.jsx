@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import PersonIcon from '@mui/icons-material/Person';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -18,6 +19,7 @@ import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRound
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useNavigate } from 'react-router-dom';
+import { Favorite } from '@mui/icons-material';
 
 
 
@@ -109,6 +111,43 @@ function Header() {
     const open = Boolean(anchorEl);
     const isLoggedIn = !!localStorage.getItem('token');
     const navigate = useNavigate();
+    const [initials, setInitials] = React.useState('');
+    let decodedData = null
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
+    const decodeToken = (token) => {
+        const tokenParts = token.split('.');
+        if (tokenParts.length !== 3) {
+            throw new Error('Token inválido');
+        }
+    
+        const payloadBase64 = tokenParts[1];
+        const decodedPayload = atob(payloadBase64);
+    
+        const parsedPayload = JSON.parse(decodedPayload);
+        return parsedPayload;
+    };
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setInitials(<PersonIcon />); 
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                if (decodedData.nombre) {
+                    const nombre = decodedData.nombre
+                    const apellido = decodedData.apellido
+                    const firstInitial = nombre ? nombre[0].charAt(0) : '';
+                    const lastInitial = apellido ? apellido[0].charAt(0) : '';
+                    const initials = `${firstInitial}${lastInitial}`.toUpperCase();
+                    setInitials(initials);
+                }        
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [history]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -151,7 +190,9 @@ function Header() {
                                         aria-haspopup="true"
                                         aria-expanded={open ? 'true' : undefined}
                                     >
-                                        <Avatar sx={{ width: 40, height: 40, backgroundColor: '#ffffff', color:'#7DB5DC' }}></Avatar>
+                                        <Avatar sx={{ width: 40, height: 40, backgroundColor: '#ffffff', color:'#7DB5DC' }}>
+                                        {initials}
+                                        </Avatar>
                                     </IconButton>
                                 </Tooltip>
                             </Box>
@@ -192,9 +233,13 @@ function Header() {
                             >
                                 {isLoggedIn ? (
                                     [
+                                        <MenuItem key="favorite" component={Link} to="/favoritos">
+                                        <Favorite /> Mis favoritos
+                                </MenuItem>,
                                     <MenuItem key="logout" onClick={handleLogout}>
                                         <LogoutRoundedIcon /> Cerrar sesión
-                                    </MenuItem>]
+                                    </MenuItem>
+                                    ]
                                 ) : (
                                     [
                                     <MenuItem key="login" component={Link} to="/login">

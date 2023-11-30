@@ -18,5 +18,4 @@ const fetchWithToken = async (url, options = {}) => {
 };
 
 
-
 export default fetchWithToken;

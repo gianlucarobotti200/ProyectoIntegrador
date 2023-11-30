@@ -52,7 +52,7 @@ export default function OutlinedCard() {
         // setShowMessage(true);
         setError(null);
 
-        fetch('http://localhost:8081/user/signup', {
+        fetch('http://localhost:8080/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

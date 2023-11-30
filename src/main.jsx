@@ -8,7 +8,8 @@ import AdminCategorias from './components/views/admin/AdminCategorias.jsx'
 import AdminCaracteristicas from './components/views/admin/AdminCaracteristicas.jsx'
 import AdminTours from './components/views/admin/AdminTours.jsx'
 import Login from './components/views/login/Login.jsx'
-
+import Detalles from './components/views/utils/Detalles.jsx';
+import Favoritos from'./components/views/utils/Favoritos.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -18,8 +19,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/admintours' element={<AdminTours />} />
         <Route path='/admincaracteristicas' element={<AdminCaracteristicas />} />
         <Route path='/admincategorias' element={<AdminCategorias />} />
+        <Route path='/detalles/:id' element={<Detalles/>} />
         <Route path='/registro' element={<Registro />} />
         <Route path='/login' element={<Login/>}/>
+        <Route path='/favoritos' element={<Favoritos/>}/>
       </Route>
     </Routes>
   </BrowserRouter>

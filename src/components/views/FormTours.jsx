@@ -8,7 +8,10 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import fetchWithToken from '../views/login/Interceptor'
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import fetchWithToken from './login/Interceptor'
 
 
 
@@ -77,8 +80,8 @@ const FormTours = ({ onCloseModal }) => {
 
     const getCaracteristicasYCategorias = async () => {
         try {
-            const response1 = await fetch("http://localhost:8081/caracteristicas");
-            const response2 = await fetch("http://localhost:8081/categorias")
+            const response1 = await fetchWithToken("http://localhost:8080/caracteristicas");
+            const response2 = await fetchWithToken("http://localhost:8080/categorias");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
             setCaracteristicas(jsonData1);
@@ -109,7 +112,7 @@ const FormTours = ({ onCloseModal }) => {
         };
 
         try {
-            const response = await fetchWithToken('http://localhost:8081/tours', {
+            const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +124,8 @@ const FormTours = ({ onCloseModal }) => {
                 const jsonResponse = await response.json();
                 setId(jsonResponse.id);
 
-                fetch(`http://localhost:8081/tours/${jsonResponse.id}/categorias`, {
+                // Enviar categorías seleccionadas
+                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -129,7 +133,8 @@ const FormTours = ({ onCloseModal }) => {
                     body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id))
                 })
 
-                fetch(`http://localhost:8081/tours/${jsonResponse.id}/caracteristicas`, {
+                // Enviar características seleccionadas
+                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -151,7 +156,7 @@ const FormTours = ({ onCloseModal }) => {
             }
         }
         try {
-            const imageResponse = await fetch(`http://localhost:8081/tours/subirfotos/${id}`, {
+            const imageResponse = await fetch(`http://localhost:8080/tours/subirfotos/${id}`, {
                 method: 'POST',
                 body: formDataImagenes,
             });
