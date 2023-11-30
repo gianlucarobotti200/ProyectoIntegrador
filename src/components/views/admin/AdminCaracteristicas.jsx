@@ -42,6 +42,7 @@ const AdminCaracteristicas = () => {
                 <span>GESTIÓN</span>
             </div> 
             {caracteristicas.map((caracteristica, index) => (
+                <div className='card-caract' >
                 <CardCaracteristicaAdmin
                     key={index}
                     id={caracteristica.id}
@@ -49,6 +50,7 @@ const AdminCaracteristicas = () => {
                     nombre={caracteristica.nombre}
                     onDelete={refreshCaracteristicas}
                 />
+                </div>
             ))}
         </StyledAdministracion>
     );
