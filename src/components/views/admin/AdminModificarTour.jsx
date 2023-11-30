@@ -59,7 +59,7 @@ const AdminModificarTour = () => {
       setProvincia(jsonData1.provincia);
       setPrecio(jsonData1.precio);
       setDuracion(jsonData1.cantHoras);
-      setFile(jsonData1.linkFotos);
+      setImagenesSubidas(jsonData1.linkFotos);
       setPoliticasSeleccionadas(jsonData1.politicas);
       setCaracteristicasSeleccionadas(jsonData1.caracteristicas);
       setCategoriasSeleccionadas(jsonData1.categorias);
@@ -95,9 +95,18 @@ const AdminModificarTour = () => {
 
 
   const handleDeleteImage = async (imagen) => {
-    const fileNameToDelete = getFileNameFromUrl(imagen);
+    console.log(imagen);
+
+   
     try {
-      const response = await fetch(`http://localhost:8080/deleteObject?fileName=${fileNameToDelete}`, {
+      const fileNameToDelete = getFileNameFromUrl(imagen);
+
+      if (!fileNameToDelete) {
+        console.error('No se pudo obtener el nombre del archivo desde la URL:', imagen);
+        return;
+      }
+
+      const response = await fetch(`http://localhost:8080/tours/eliminarfoto?id=${id}&url=${imagen}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -106,6 +115,7 @@ const AdminModificarTour = () => {
 
       if (response.ok) {
         console.log('File deleted successfully');
+        setImagenesSubidas(imagenesSubidas.filter((img) => img !== imagen));
       } else {
         console.error('Error deleting file:', response.status);
       }
@@ -113,26 +123,27 @@ const AdminModificarTour = () => {
       console.error('Error:', error);
     }
   };
+  
+  
 
   const getFileNameFromUrl = (url) => {
-
-    const parts = url.split('fotosTours/');
-
-    if (parts.length < 2) {
-      console.error('URL no válida para extraer el nombre del archivo');
+    try {
+      const urlObj = new URL(url);
+      const pathnameParts = urlObj.pathname.split('/');
+      const fileNamePart = pathnameParts[pathnameParts.length - 1];
+      return decodeURIComponent(fileNamePart);
+    } catch (error) {
+      console.error('Error al obtener el nombre del archivo desde la URL:', error);
       return null;
     }
-
-    const fileNamePart = parts[1];
-
-    return fileNamePart;
   };
+  
 
   const handleFileChange = (e) => {
     setFile(e.target.files);
 };
 
-  const handleSubmitSinImagenes = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('provincia', provincia);
@@ -141,6 +152,9 @@ const AdminModificarTour = () => {
     formData.append('precio', parseInt(precio));
     formData.append('cantHoras', parseInt(duracion));
     formData.append('id', id);
+    uploadImage();
+
+    
  
     try {
       const response = await fetch('http://localhost:8080/tours/modificarTour', {
@@ -189,68 +203,35 @@ const AdminModificarTour = () => {
     }
   };
 
-  const handleSubmitConImagenes = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('provincia', provincia);
-    formData.append('titulo', titulo);
-    formData.append('descripcion', descripcion);
-    formData.append('precio', parseInt(precio));
-    formData.append('cantHoras', parseInt(duracion));
-    formData.append('id', id);
-
-    if (file && file.length > 0) {
-        for (let i = 0; i < file.length; i++) {
-            formData.append('file', file[i]);
-        }
-    }
+  const uploadImage = async (e) => {
+    if (file.length > 0) {
+      try {
+        const formData = new FormData();
   
-    try {
-        const response = await fetch('http://localhost:8080/tours', {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (response.ok) {
-            if (response.ok) {
-                console.log('El formulario se ha enviado exitosamente.');
-            }
-
-            // Enviar categorías seleccionadas
-            await fetch(`http://localhost:8080/tours/${id}/categorias`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id)),
-            });
-
-            // Enviar características seleccionadas
-            await fetch(`http://localhost:8080/tours/${id}/caracteristicas`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
-            });
-            // Enviar politicas seleccionadas
-            await fetch(`http://localhost:8080/tours/${id}/politicas`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(politicasSeleccionadas.map((policy) => policy.id)),
-            });
-
-            console.log('El tour se ha agregado exitosamente.');
-            onCloseModal();
-        } else {
-            console.error('Error al enviar el formulario.');
+        formData.append('id', id);
+  
+        for (let i = 0; i < file.length; i++) {
+          formData.append('file', file[i]);
         }
-    } catch (error) {
+  
+        const response = await fetch('http://localhost:8080/s3/uploadFile', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        if (response.ok) {
+          console.log('Imágenes subidas exitosamente');
+        } else {
+          console.error('Error al subir las imágenes:', response.status);
+        }
+      } catch (error) {
         console.error('Error al realizar la solicitud:', error);
+      }
+    } else {
+      console.log('No hay nuevas imágenes para subir.');
     }
-};
+  }
+ 
 
   return (
     <Box
@@ -381,11 +362,11 @@ const AdminModificarTour = () => {
           ))}
         </FormGroup>
       </div>
-      {file && file.length > 0 && (
+      {Array.isArray(imagenesSubidas) && imagenesSubidas.length > 0 && (
         <div>
           <h3>Imágenes:</h3>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-arund', }}>
-            {file.map((imagen, index) => (
+            {imagenesSubidas.map((imagen, index) => (
               <div key={index} style={{ display: 'flex', flexDirection: 'column', marginRight: '10px', textAlign: 'center' }}>
                 <img src={imagen} alt={`Imagen ${index + 1}`} style={{ width: '250px', height: 'auto' }} />
                 <button onClick={() => handleDeleteImage(imagen)}>Eliminar</button>
@@ -401,7 +382,7 @@ const AdminModificarTour = () => {
     </Button>
       </div>
       
-        <Button onClick={handleSubmitSinImagenes} variant="contained" color="success">
+        <Button onClick={handleSubmit} variant="contained" color="success">
           Modificar
         </Button>
       
