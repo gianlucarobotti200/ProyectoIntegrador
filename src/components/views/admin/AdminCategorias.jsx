@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardCategoriaAdmin from './CardCategoriaAdmin';
 import BasicModalCategorias from './BasicModalCategorias';
+import fetchWithToken from '../login/Interceptor'
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -20,7 +21,7 @@ const AdminCategorias = () => {
     const [categorias, setCategorias] = useState([]);
     const getCategorias = async () => {
         try {
-            const response = await fetch("http://localhost:8080/categorias");
+            const response = await fetchWithToken("http://localhost:8080/categorias");
             const jsonData = await response.json();
 
             setCategorias(jsonData);

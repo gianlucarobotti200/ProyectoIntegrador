@@ -11,6 +11,9 @@ import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
+import fetchWithToken from './login/Interceptor'
+
+
 
 const StyledForm = styled.form`
     .row1{
@@ -75,8 +78,8 @@ const FormTours = ({ onCloseModal }) => {
 
     const getCaracteristicasYCategorias = async () => {
         try {
-            const response1 = await fetch("http://localhost:8080/caracteristicas");
-            const response2 = await fetch("http://localhost:8080/categorias");
+            const response1 = await fetchWithToken("http://localhost:8080/caracteristicas");
+            const response2 = await fetchWithToken("http://localhost:8080/categorias");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
             setCaracteristicas(jsonData1);
@@ -110,7 +113,7 @@ const FormTours = ({ onCloseModal }) => {
         }
       
         try {
-            const response = await fetch('http://localhost:8080/tours', {
+            const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
             });
@@ -120,7 +123,7 @@ const FormTours = ({ onCloseModal }) => {
                 setId(jsonResponse.id);
 
                 // Enviar categorías seleccionadas
-                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -129,7 +132,7 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetch(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -144,6 +147,26 @@ const FormTours = ({ onCloseModal }) => {
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
+        }
+        if (imagenes && imagenes.length > 0) {
+            formDataImagenes = new FormData();
+            for (let i = 0; i < imagenes.length; i++) {
+                formDataImagenes.append('file', imagenes[i]);
+            }
+        }
+        try {
+            const imageResponse = await fetch(`http://localhost:8080/tours/subirfotos/${id}`, {
+                method: 'POST',
+                body: formDataImagenes,
+            });
+            if (imageResponse.ok) {
+                console.log('Las imágenes se han agregado exitosamente.');
+            } else {
+                console.error('Error al subir las imágenes.');
+            }
+        }
+        catch (error) {
+            console.error('Error al subir las imágenes:', error);
         }
     };
     
