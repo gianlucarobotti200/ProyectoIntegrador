@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import BasicModal from './Basicmodal';
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -66,7 +67,7 @@ const AdminTours = () => {
         setCurrentPage(newPage);
     };
 
-    const toursPerPage = 10;
+    const toursPerPage = 5;
 const startIndex = (currentPage - 1) * toursPerPage;
 const endIndex = startIndex + toursPerPage;
 
