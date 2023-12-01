@@ -11,6 +11,7 @@ import Login from './components/views/login/Login.jsx'
 import Detalles from './components/views/utils/Detalles.jsx';
 import AdminModificarTour from './components/views/admin/AdminModificarTour.jsx'
 import AdminPoliticas from './components/views/admin/AdminPoliticas.jsx'
+import ReservaTour from './components/views/utils/ReservarTour.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/detalles/:id' element={<Detalles/>}/>
         <Route path='/tours/:id' element={<AdminModificarTour/>}/>
         <Route path='/modificartour/:id' element={<AdminModificarTour/>}/>
+        <Route path='/reservartour/:id' element={<ReservaTour/>}/>
       </Route>
     </Routes>
   </BrowserRouter>

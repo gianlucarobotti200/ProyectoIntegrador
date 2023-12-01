@@ -15,6 +15,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+
 
 
 
@@ -93,8 +96,10 @@ const Detalles = () => {
   const [tourDetails, setData] = useState([]);
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReservaOpen, setIsReservaOpen] = useState(false);
+  const [calificacion, setCalificacion] = useState(0);
 
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
@@ -121,6 +126,18 @@ const Detalles = () => {
       }
     };
 
+    const getCalificacion = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/tours/${id}/calificacion`);
+        if (response.ok) {
+          const calificacion = await response.json();
+          setCalificacion(calificacion);
+        }
+      } catch (error) {
+        console.error("Error al obtener la calificación:", error);
+      }
+    };
+
     getTourDetails();
   }, [id]);
 
@@ -133,6 +150,9 @@ const Detalles = () => {
 
 
     window.open(twitterUrl, '_blank');
+  };
+  const handleReserveClick = () => { 
+  setIsReservaOpen(true);
   };
 
   return (
@@ -164,6 +184,10 @@ const Detalles = () => {
             </a>
             </div>
             <h2 className="h2-title">{tourDetails.titulo}</h2>
+            <Stack spacing={1}>
+      
+      <Rating name="size-large" value={calificacion} size="large" />
+    </Stack>
           </div>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <StyledImageList
@@ -221,9 +245,13 @@ const Detalles = () => {
               </Stack>
             </div>
           </section>
+          <Link to={`/reservartour/${id}`}>
           <Button style={{ margin: "0 45vw" }} variant="contained">
             RESERVAR
           </Button>
+          </Link>
+          
+  
         </>
       )}
     </StyledDetalles>

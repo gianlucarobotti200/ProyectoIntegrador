@@ -8,3 +8,4 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 Hay que instalar esto: npm install sweetalert2, npm install --save @fortawesome/react-fontawesome,  npm install --save @fortawesome/free-solid-svg-icons
+npm install @mui/x-date-pickers-pro
