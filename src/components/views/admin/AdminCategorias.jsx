@@ -35,7 +35,7 @@ const AdminCategorias = () => {
             <BasicModalCategorias onCategoriaAdded={refreshCategorias}/>
             <div className='header-table'>
                 <span className='id'>ID</span>
-                <span className='nombre'>Categoría</span>
+                <span className='nombre'>CATEGORÍA</span>
                 <span>GESTIÓN</span>
             </div>
             {categorias.map((categoria, index) => (

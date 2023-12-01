@@ -23,19 +23,11 @@
 .btn-car1,
 .btn-cat2,
 .btn-tour3 {
- 
     display: flex;
     border-radius: 5px;
     box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
     border: 0,5px solid #7fd2f2;
     margin: 2% 2% 3% 1%;
-}
-  
-.btn-car1:hover ,
-.btn-cat2:hover ,
-.btn-tour3:hover {
-    border: 0.5px solid  #7fd2f2;
-    transition: .4s ease;
 } 
   
 .header-table {
@@ -49,26 +41,26 @@
     justify-content: space-around;
 }
 
-  .pagination-container {
+.pagination-container {
     display: flex;
     justify-content: center;
     margin: 1% 3% 3% 3%; 
 }
 
-  .sc-dItHI h4 {
+.sc-dItHI h4 {
     width: 20vw;
     padding: 2% 7% 1% 0%;
     margin: 2% 4% 3% 0%;
-  }
+}
 
-  .sc-dItHI img {
+.sc-dItHI img {
     height: 9vh;
     padding: 2% 0% 0% 0%;
     margin: 1% 11% 3% 0%;
-  }
+}
 
-  .sc-dItHI svg {
+.sc-dItHI svg {
     height: 9vh;
     padding: 2% 1% 0% 0%;
     margin: 1% 10% 3% 0%;
-  }
+}

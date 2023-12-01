@@ -39,13 +39,13 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
     <React.Fragment>
       <div className='cont-ppal ' >
       <div>
-      <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
-        ADMIN TOURS
+      <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
+        AGREGAR CARACTERÍSTICAS
       </Button>
       </div>
       <div>
-      <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
-        AGREGAR CARACTERÍSTICAS
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
+        ADMIN TOURS
       </Button>
       </div>
       <div>
