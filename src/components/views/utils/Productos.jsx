@@ -8,6 +8,7 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
 
   const getProductos = async () => {
+
     const res = await fetchWithToken("http://localhost:8080/tours/todos")
     const data = await res.json()
     setProductos(data)

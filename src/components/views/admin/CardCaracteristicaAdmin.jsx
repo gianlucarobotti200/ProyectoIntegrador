@@ -43,6 +43,7 @@ const CardCaracteristicaAdmin = ({ id, iconoUrl, nombre, onDelete }) => {
         setIsDeleting(true);
 
         try {
+
             const response = await fetchWithToken(`http://localhost:8080/caracteristicas/${id}`, {
                 method: 'DELETE',
             });

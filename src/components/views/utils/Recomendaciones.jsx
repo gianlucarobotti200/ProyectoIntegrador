@@ -166,7 +166,7 @@ function Recomendaciones() {
         setLoading(false);
       }
     };
-  
+    
     getToursAndFavorites();
   }, []);
   
@@ -232,15 +232,12 @@ function Recomendaciones() {
     }
   };
   
-  
-
   return (
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
         <div className='div-h2'>
           <h2>Recomendaciones</h2>
         </div>
-
         {loading ? ( 
           <div className='loading-container'>
             <CircularProgress color="inherit" style={{position: "absolute", top: "95%", right: "50%"}}/>

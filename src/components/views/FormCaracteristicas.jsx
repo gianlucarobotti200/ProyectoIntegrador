@@ -72,6 +72,7 @@ const FormCaracteristicas = ({ onCloseModal }) => {
         };
 
         try {
+
             const response = await fetchWithToken('http://localhost:8080/caracteristicas', {
                 method: 'POST',
                 headers: {

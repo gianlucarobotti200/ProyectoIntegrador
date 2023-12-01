@@ -5,8 +5,8 @@ import BasicModal from './Basicmodal';
 import fetchWithToken from '../login/Interceptor'
 import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
-
-
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -19,10 +19,17 @@ const StyledAdministracion = styled.div`
         display: flex;
         justify-content: space-around;
     }
+
+    div.pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;  
+    }
 `
 
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
+
     const navigate = useNavigate();
     let decodedData = null
     
@@ -52,6 +59,21 @@ const AdminTours = () => {
     const getTours = async () => {
         try {
             const response = await fetchWithToken("http://localhost:8080/tours/todos");
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageChange = (event, newPage) => {
+        setCurrentPage(newPage);
+    };
+
+    const toursPerPage = 10;
+const startIndex = (currentPage - 1) * toursPerPage;
+const endIndex = startIndex + toursPerPage;
+
+    const getTours = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/tours/todos");
+
             const jsonData = await response.json();
 
             setTours(jsonData);
@@ -77,7 +99,7 @@ const AdminTours = () => {
                 <span className='nombre'>Título</span>
                 <span>GESTIÓN</span>
             </div>
-            {tours.map((tour, index) => (
+            {tours.slice(startIndex, endIndex).map((tour, index) => (
                 <CardTourAdmin
                     key={index}
                     id={tour.id}
@@ -90,6 +112,16 @@ const AdminTours = () => {
                     onDelete={refreshTours}
                 />
             ))}
+            <div className="pagination-container">
+            <Stack spacing={2}>
+                <Pagination
+                    count={Math.ceil(tours.length / toursPerPage)}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    shape="rounded"
+                />
+            </Stack>
+            </div>
         </StyledAdministracion>
     );
 };
