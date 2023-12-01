@@ -40,14 +40,19 @@ export default function OutlinedCard() {
     const [password, setPassword] = React.useState('');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [showMessage, setShowMessage] = React.useState(false);
+    const [error, setError] = React.useState(null);
 
     const handleRegister = () => {
-        // Deshabilitar el botón y mostrar el mensaje
+        if (!email || !password) {
+            setError('Por favor, complete todos los campos.');
+            return;
+        }
+
         setButtonDisabled(true);
-        setShowMessage(true);
-    
-        // Realizar la lógica para enviar los datos al backend
-        fetch('http://localhost:8080/users/crear', {
+        // setShowMessage(true);
+        setError(null);
+
+        fetch('http://localhost:8080/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,26 +61,17 @@ export default function OutlinedCard() {
         })
         .then(response => response.json())
         .then(data => {
-            // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
             console.log('Registro exitoso:', data);
-    
-            // Limpiar el formulario después del éxito
             setEmail('');
             setPassword('');
-    
-            // Habilitar el botón y ocultar el mensaje después de un breve periodo (por ejemplo, 2 segundos)
-            setTimeout(() => {
-                setButtonDisabled(false);
-                setShowMessage(false);
-            }, 2000);
+            setShowMessage(true); // Mostrar el mensaje
         })
         .catch(error => {
-            // Manejar errores, por ejemplo, mostrar un mensaje de error
             console.error('Error en el registro:', error);
-    
-            // En caso de error, habilitar el botón y ocultar el mensaje inmediatamente
+            setError('Hubo un error en el registro. Por favor, inténtelo de nuevo.');
+        })
+        .finally(() => {
             setButtonDisabled(false);
-            setShowMessage(false);
         });
     };
     return (

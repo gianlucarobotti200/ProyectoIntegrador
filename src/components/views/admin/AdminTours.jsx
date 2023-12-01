@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
+import BasicModal from './Basicmodal';
+import fetchWithToken from '../login/Interceptor'
+import { useNavigate } from 'react-router-dom';
+import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import BasicModal from './Basicmodal';
-
-
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -28,6 +30,37 @@ const StyledAdministracion = styled.div`
 
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
+
+    const navigate = useNavigate();
+    let decodedData = null
+    
+       
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login'); 
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)
+                // if (decodedData.role == 0) {
+                //     navigate('/inicio');
+                // } else {
+                //     getTours();
+                // }   
+                getTours();
+
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [history]);
+
+    const getTours = async () => {
+        try {
+            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const handlePageChange = (event, newPage) => {
@@ -41,6 +74,7 @@ const endIndex = startIndex + toursPerPage;
     const getTours = async () => {
         try {
             const response = await fetch("http://localhost:8080/tours/todos");
+
             const jsonData = await response.json();
 
             setTours(jsonData);
