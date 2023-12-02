@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import BasicModal from './Basicmodal';
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -30,7 +29,7 @@ const StyledAdministracion = styled.div`
 
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
-
+    const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
     let decodedData = null
     
@@ -55,13 +54,17 @@ const AdminTours = () => {
                 console.error('Error al decodificar el token:', error.message);
             }
         }
-    }, [history]);
+    }
+
+, []);
 
     const getTours = async () => {
         try {
             const response = await fetchWithToken("http://localhost:8080/tours/todos");
-
-    const [currentPage, setCurrentPage] = useState(1);
+        }catch (error) {
+            console.error('Error al decodificar el token:', error.message);
+        }
+   
 
     const handlePageChange = (event, newPage) => {
         setCurrentPage(newPage);
@@ -70,7 +73,7 @@ const AdminTours = () => {
     const toursPerPage = 5;
 const startIndex = (currentPage - 1) * toursPerPage;
 const endIndex = startIndex + toursPerPage;
-
+        
     const getTours = async () => {
         try {
             const response = await fetch("http://localhost:8080/tours/todos");
@@ -82,11 +85,11 @@ const endIndex = startIndex + toursPerPage;
             console.error("Error al obtener los datos de la API: ", error);
         }
     }
-
+        
     const refreshTours = () => {
         getTours();
     }
-
+        
     useEffect(() => {
         getTours();
     }, []);
@@ -126,5 +129,5 @@ const endIndex = startIndex + toursPerPage;
         </StyledAdministracion>
     );
 };
-
+}
 export default AdminTours;
