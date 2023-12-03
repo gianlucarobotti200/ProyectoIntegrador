@@ -8,6 +8,7 @@ import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
+
 const StyledAdministracion = styled.div`
     div.header-table{
         background-color: #f5f5f5;
@@ -76,7 +77,7 @@ const endIndex = startIndex + toursPerPage;
         
     const getTours = async () => {
         try {
-            const response = await fetch("http://localhost:8080/tours/todos");
+            const response = await fefetchWithTokentch("http://localhost:8080/tours/todos");
 
             const jsonData = await response.json();
 

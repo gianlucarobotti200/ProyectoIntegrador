@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import fetchWithToken from './login/Interceptor';
 
 const StyledForm = styled.form`
     .row1{
@@ -64,7 +65,7 @@ const FormPoliticas = ({ onCloseModal }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/politicas', {
+            const response = await fetchWithToken('http://localhost:8080/politicas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

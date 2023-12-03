@@ -10,6 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import fetchWithToken from '../login/Interceptor';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -50,7 +51,7 @@ const AdminModificarTour = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8080/tours/${id}`);
+      const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
       const jsonData1 = await response.json();
       console.log("Traer tour", jsonData1);
       setTour(jsonData1);
@@ -70,9 +71,9 @@ const AdminModificarTour = () => {
 
   const getCaracteristicasYCategorias = async () => {
     try {
-      const responseCaracteristica = await fetch("http://localhost:8080/caracteristicas");
-      const responseCategorias = await fetch("http://localhost:8080/categorias");
-      const responsePoliticas = await fetch("http://localhost:8080/politicas");
+      const responseCaracteristica = await fetchWithToken("http://localhost:8080/caracteristicas");
+      const responseCategorias = await fetchWithToken("http://localhost:8080/categorias");
+      const responsePoliticas = await fetchWithToken("http://localhost:8080/politicas");
       const jsonCaracteristica = await responseCaracteristica.json();
       const jsonCategorias = await responseCategorias.json();
       const jsonPoliticas = await responsePoliticas.json();
@@ -106,7 +107,7 @@ const AdminModificarTour = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8080/tours/eliminarfoto?id=${id}&url=${imagen}`, {
+      const response = await fetchWithToken(`http://localhost:8080/tours/eliminarfoto?id=${id}&url=${imagen}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +158,7 @@ const AdminModificarTour = () => {
     
  
     try {
-      const response = await fetch('http://localhost:8080/tours/modificarTour', {
+      const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
         method: 'PUT',
         body: formData,
 
@@ -169,7 +170,7 @@ const AdminModificarTour = () => {
         }
 
         // Enviar categorías seleccionadas
-        await fetch(`http://localhost:8080/tours/${id}/categorias`, {
+        await fetchWithToken(`http://localhost:8080/tours/${id}/categorias`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -178,7 +179,7 @@ const AdminModificarTour = () => {
         });
 
         // Enviar características seleccionadas
-        await fetch(`http://localhost:8080/tours/${id}/caracteristicas`, {
+        await fetchWithToken(`http://localhost:8080/tours/${id}/caracteristicas`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -186,7 +187,7 @@ const AdminModificarTour = () => {
           body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
       });
       // Enviar politicas seleccionadas
-      await fetch(`http://localhost:8080/tours/${id}/politicas`, {
+      await fetchWithToken(`http://localhost:8080/tours/${id}/politicas`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -214,7 +215,7 @@ const AdminModificarTour = () => {
           formData.append('file', file[i]);
         }
   
-        const response = await fetch('http://localhost:8080/s3/uploadFile', {
+        const response = await fetchWithToken('http://localhost:8080/s3/uploadFile', {
           method: 'POST',
           body: formData,
         });
