@@ -6,7 +6,7 @@ import { DateRangeCalendar } from '@mui/x-date-pickers-pro/DateRangeCalendar';
 import { useState, useEffect } from 'react';
 import fetchWithToken from '../login/Interceptor';
 
-export default function Calendar({ tourId }) {
+export default function Calendar({ tourId, onDateChange }) {
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [reservedDates, setReservedDates] = useState([]);
 
@@ -18,7 +18,9 @@ export default function Calendar({ tourId }) {
   const fetchReservedDates = async () => {
     try {
       // Realizar la llamada a la API para obtener las fechas reservadas
+
       const response = await fetchWithToken(`http://localhost:8080/tours/${tourId}/fechas-ocupadas`);
+
       if (response.ok) {
         const data = await response.json();
         setReservedDates(data.reservedDates); // Ajusta la estructura de acuerdo a la respuesta de tu API
@@ -38,6 +40,7 @@ export default function Calendar({ tourId }) {
 
   const handleDateChange = (dates) => {
     setSelectedDates(dates);
+    onDateChange(dates);
   };
 
   return (

@@ -155,7 +155,7 @@ const ReservaTour = () => {
     
         const reservaData = {
           idCliente: cliente.id,
-          idTour: id,
+          idTour: tourDetails.id,
           fechaInicio: fechaInicio,
           fechaFin: fechaFin
         };
@@ -181,7 +181,10 @@ const ReservaTour = () => {
         }
       };
 
-        
+      const handleDateChange = (dates) => {
+        setFechaInicio(dates[0]);
+        setFechaFin(dates[1]);
+      }; 
 
     return (
         <StyledDetalles>
@@ -270,7 +273,7 @@ const ReservaTour = () => {
                         </div>
                     </section>
                     <div>
-                        <Calendar tourId={id}/>
+                        <Calendar tourId={id} onDateChange={handleDateChange}/>
                         <Button onClick={handleReserveClick} style={{ margin: "0 45vw" }} variant="contained">
                             RESERVAR
                         </Button>
