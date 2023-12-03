@@ -8,6 +8,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
+import fetchWithToken from './login/Interceptor'
 
 
 const StyledForm = styled.form`
@@ -71,7 +72,8 @@ const FormCaracteristicas = ({ onCloseModal }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/caracteristicas', {
+
+            const response = await fetchWithToken('http://localhost:8080/caracteristicas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom'
 import AdminModificarTour from './AdminModificarTour'
-
+import fetchWithToken from '../login/Interceptor'
 
 
 const StyledCardUsuarioAdmin = styled.article`
@@ -49,7 +49,7 @@ const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, c
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8080/tours/eliminarTour/${id}`, {
+            const response = await fetchWithToken(`http://localhost:8080/tours/eliminarTour/${id}`, {
                 method: 'DELETE',
             });
 
