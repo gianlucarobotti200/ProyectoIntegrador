@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardPoliticasAdmin from './CardPoliticasAdmin';
 import BasicModalPoliticas from './BasicModalPoliticas';
+import fetchWithToken from '../login/Interceptor';
 
 
 
@@ -22,7 +23,7 @@ const AdminPoliticas = () => {
     const [politicas, setPoliticas] = useState([]);
     const getPoliticas = async () => {
         try {
-            const response = await fetch("http://localhost:8080/politicas");
+            const response = await fetchWithToken("http://localhost:8080/politicas");
             const jsonData = await response.json();
 
             setPoliticas(jsonData);

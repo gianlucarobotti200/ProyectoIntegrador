@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangeCalendar } from '@mui/x-date-pickers-pro/DateRangeCalendar';
 import { useState, useEffect } from 'react';
+import fetchWithToken from '../login/Interceptor';
 
 export default function Calendar({ tourId, onDateChange }) {
   const [selectedDates, setSelectedDates] = useState([null, null]);
@@ -17,7 +18,9 @@ export default function Calendar({ tourId, onDateChange }) {
   const fetchReservedDates = async () => {
     try {
       // Realizar la llamada a la API para obtener las fechas reservadas
-      const response = await fetch(`http://localhost:8080/reserva/${tourId}/fechasOcupadas`);
+
+      const response = await fetchWithToken(`http://localhost:8080/tours/${tourId}/fechas-ocupadas`);
+
       if (response.ok) {
         const data = await response.json();
         setReservedDates(data.reservedDates); // Ajusta la estructura de acuerdo a la respuesta de tu API

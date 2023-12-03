@@ -271,7 +271,7 @@ function Recomendaciones() {
                       )}
 
                     </div>
-                    <Link to={`/detalles/${tour.id}`}>
+                   
 
                       <CardMedia className='card-img'
                         component="img"

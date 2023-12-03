@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import fetchWithToken from './login/Interceptor'
+import fetchWithToken from './login/Interceptor';
 
 
 
