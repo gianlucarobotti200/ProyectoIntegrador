@@ -38,7 +38,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
 
   return (
     <>
-    <StyledDetalles>
     <React.Fragment>
        <div className='cont-ppal'>
       <Button className='btn-adm' variant="outlined" component={Link} to="/admintours">
@@ -85,7 +84,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         
       </BootstrapDialog>
     </React.Fragment>
-    </StyledDetalles>
     </>
   );
 }
