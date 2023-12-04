@@ -24,6 +24,7 @@ const StyledRecomendaciones = styled.div `
       justify-content: space-between; 
       width: 90vw;
       gap: 1px;
+      flex-direction: column;
   }
 
     .div-h2{
@@ -140,8 +141,10 @@ const StyledRecomendaciones = styled.div `
 function Recomendaciones() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState({});
   const [fetchingFavorite, setFetchingFavorite] = useState(false);
+
 
   useEffect(() => {
     const getToursAndFavorites = async () => {
@@ -162,6 +165,7 @@ function Recomendaciones() {
         setFavorites(favoriteIds); 
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
+        setError('Algo ha salido mal. Vuelve a cargar nuevamente.');
       } finally {
         setLoading(false);
       }
@@ -169,7 +173,17 @@ function Recomendaciones() {
     
     getToursAndFavorites();
   }, []);
-  
+
+
+  const handleReload = () => {
+    setLoading(true);
+    setError(null);
+    getTours();
+  };
+
+  console.log(data);
+  console.log('Datos obtenidos.');
+
   const handleFavoriteToggle = async (idTour) => {
     try {
       const idUsuario = decodeToken(localStorage.getItem('token')).id;
@@ -240,7 +254,14 @@ function Recomendaciones() {
         </div>
         {loading ? ( 
           <div className='loading-container'>
-            <CircularProgress color="inherit" style={{position: "absolute", top: "95%", right: "50%"}}/>
+            <CircularProgress color="inherit" />
+          </div>
+        ) : error ? (
+          <div className='error-container'>
+            <p>{error}</p>
+            <button onClick={handleReload}>
+              Volver a cargar
+            </button>
           </div>
         ) : (
           <div className='recomendaciones'>
@@ -251,7 +272,6 @@ function Recomendaciones() {
                   <Card>
 
                     <Typography variant="h6">{tour.titulo}</Typography>
-
                     <div className='cabecera-card'>
                       <Typography variant="h6">{tour.titulo}</Typography>
                       {fetchingFavorite[tour.id] ? (
@@ -271,8 +291,6 @@ function Recomendaciones() {
                       )}
 
                     </div>
-                   
-
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
@@ -280,16 +298,10 @@ function Recomendaciones() {
                         image={tour.linkFotos[0]}
                       />
                     <CardContent className='cardContent'>
-                      <Typography variant="body3">
-                        {tour.descripcion}
-                      </Typography >
+                      <Typography variant="body3">{tour.descripcion}</Typography>
                       <div className='precio-duracion'>
-                        <Typography variant="body1">
-                          Precio: $ {tour.precio}
-                        </Typography>
-                        <Typography variant="body1">
-                          Duración: {tour.cantHoras}hs
-                        </Typography>
+                        <Typography variant="body1">Precio: $ {tour.precio}</Typography>
+                        <Typography variant="body1">Duración: {tour.cantHoras}hs</Typography>
                       </div>
                     </CardContent>
                   </Card>

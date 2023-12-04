@@ -9,6 +9,7 @@ import AdminCaracteristicas from './components/views/admin/AdminCaracteristicas.
 import AdminTours from './components/views/admin/AdminTours.jsx'
 import Login from './components/views/login/Login.jsx'
 import Detalles from './components/views/utils/Detalles.jsx';
+import Resultados from './components/views/utils/Resultados.jsx'
 import AdminModificarTour from './components/views/admin/AdminModificarTour.jsx'
 import AdminPoliticas from './components/views/admin/AdminPoliticas.jsx'
 import ReservaTour from './components/views/utils/ReservarTour.jsx'
@@ -19,7 +20,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path='/' element={<App />}>
         <Route path='/inicio' element={<Inicio />} />
-        <Route path='/admintours' element={<AdminTours />} />
+        <Route path='/resultados/:search' element={<Resultados/>} />
+        <Route path='/admintours' element={<AdminTours/>} />
         <Route path='/admincaracteristicas' element={<AdminCaracteristicas />} />
         <Route path='/admincategorias' element={<AdminCategorias />} />
         <Route path='/adminpoliticas' element={<AdminPoliticas />} />
@@ -31,7 +33,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/modificartour/:id' element={<AdminModificarTour/>}/>
         <Route path='/reservartour/:id' element={<ReservaTour/>}/>
         <Route path='/favoritos' element={<Favoritos/>}/>
-
       </Route>
     </Routes>
   </BrowserRouter>
