@@ -1,6 +1,12 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
+import EditIcon from '@mui/icons-material/Edit'
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
+import AdminModificarTour from './AdminModificarTour'
+import fetchWithToken from '../login/Interceptor'
+
 
 const StyledCardUsuarioAdmin = styled.article`
   background-color: #f5f5f5;
@@ -30,9 +36,10 @@ const StyledCardUsuarioAdmin = styled.article`
   }
 `;
 
-const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete }) => {
+const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete}) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+   
 
     const handleDeleteClick = () => {
         setShowConfirmation(true);
@@ -42,7 +49,7 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8080/tours/eliminarTour/${id}`, {
+            const response = await fetchWithToken(`http://localhost:8080/tours/eliminarTour/${id}`, {
                 method: 'DELETE',
             });
 
@@ -63,6 +70,8 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setShowConfirmation(false);
     };
 
+      
+
     return (
         <StyledCardUsuarioAdmin>
             <h4>{id}</h4>
@@ -75,9 +84,15 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
                     <button onClick={handleConfirmDelete}>Sí</button>
                     <button onClick={handleCancelDelete}>No</button>
                 </div>
-            ) : (
+            ) : (<div>
                 <Delete onClick={handleDeleteClick} />
+            
+             </div>
             )}
+            <Link to={`/tours/${id}`}>
+            <EditIcon />
+            </Link>
+            
         </StyledCardUsuarioAdmin>
     );
 }

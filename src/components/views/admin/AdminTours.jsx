@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
 import BasicModal from './Basicmodal';
+import fetchWithToken from '../login/Interceptor'
+import { useNavigate } from 'react-router-dom';
+import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-
 
 
 const StyledAdministracion = styled.div`
@@ -29,18 +31,54 @@ const StyledAdministracion = styled.div`
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const navigate = useNavigate();
+    let decodedData = null
+    
+       
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login'); 
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)
+                // if (decodedData.role == 0) {
+                //     navigate('/inicio');
+                // } else {
+                //     getTours();
+                // }   
+                getTours();
+
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }
+
+, []);
+
+    const getTours = async () => {
+        try {
+            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+        }catch (error) {
+            console.error('Error al decodificar el token:', error.message);
+        }
+   
 
     const handlePageChange = (event, newPage) => {
         setCurrentPage(newPage);
     };
 
-    const toursPerPage = 10;
+    const toursPerPage = 5;
 const startIndex = (currentPage - 1) * toursPerPage;
 const endIndex = startIndex + toursPerPage;
-
+        
     const getTours = async () => {
         try {
-            const response = await fetch("http://localhost:8080/tours/todos");
+            const response = await fefetchWithTokentch("http://localhost:8080/tours/todos");
+
             const jsonData = await response.json();
 
             setTours(jsonData);
@@ -48,11 +86,11 @@ const endIndex = startIndex + toursPerPage;
             console.error("Error al obtener los datos de la API: ", error);
         }
     }
-
+        
     const refreshTours = () => {
         getTours();
     }
-
+        
     useEffect(() => {
         getTours();
     }, []);
@@ -92,5 +130,5 @@ const endIndex = startIndex + toursPerPage;
         </StyledAdministracion>
     );
 };
-
+}
 export default AdminTours;

@@ -7,8 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCategorias from '../FormCategorias';
+// Importa el archivo CSS de estilos externos
+import './EstilosModal.css';
+
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -32,7 +37,22 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
+    <>
+    <StyledDetalles>
     <React.Fragment>
+       <div className='cont-ppal'>
+      <Button className='btn-adm' variant="outlined" component={Link} to="/admintours">
+        Admin Tours
+      </Button>
+      <Button  variant="outlined" component={Link} to="/admincaracteristicas">
+        Admin Caracteristica
+      </Button>
+      <div>
+      <Button variant="outlined" component={Link} to="/adminpoliticas">
+        Admin Politicas
+      </Button>
+      </div>
+      </div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Categoría
       </Button>
@@ -65,5 +85,7 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         
       </BootstrapDialog>
     </React.Fragment>
+    </StyledDetalles>
+    </>
   );
 }

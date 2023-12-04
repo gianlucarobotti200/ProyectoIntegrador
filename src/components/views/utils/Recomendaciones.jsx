@@ -1,3 +1,4 @@
+import fetchWithToken from '../login/Interceptor'
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components"
 import Card from '@mui/material/Card';
@@ -6,6 +7,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import decodeToken from '../login/DecodeToken';
 
 const StyledRecomendaciones = styled.div `
 
@@ -94,6 +98,11 @@ const StyledRecomendaciones = styled.div `
       font-size: 11px;
   }
 
+  .cabecera-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
     @media (max-width: 600px) {
 
@@ -133,17 +142,27 @@ function Recomendaciones() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState({});
+  const [fetchingFavorite, setFetchingFavorite] = useState(false);
+
 
   useEffect(() => {
-    const getTours = async () => {
+    const getToursAndFavorites = async () => {
       try {
-        const response = await fetch('http://localhost:8080/tours/todos');
-        if (!response.ok) {
-          throw new Error(`Error al obtener los datos de la API: ${response.statusText}`);
-        }
-
-        const jsonData = await response.json();
-        setData(jsonData);
+        const toursResponse = await fetchWithToken('http://localhost:8080/tours/todos');
+        const toursData = await toursResponse.json();
+  
+        const idUsuario = decodeToken(localStorage.getItem('token')).id;
+        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesData = await favoritesResponse.json();
+  
+        const favoriteIds = {};
+        favoritesData.forEach(favorite => {
+          favoriteIds[favorite.idTour] = true;
+        });
+  
+        setData(toursData);
+        setFavorites(favoriteIds); 
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
         setError('Algo ha salido mal. Vuelve a cargar nuevamente.');
@@ -151,9 +170,10 @@ function Recomendaciones() {
         setLoading(false);
       }
     };
-
-    getTours();
+    
+    getToursAndFavorites();
   }, []);
+
 
   const handleReload = () => {
     setLoading(true);
@@ -164,14 +184,75 @@ function Recomendaciones() {
   console.log(data);
   console.log('Datos obtenidos.');
 
+  const handleFavoriteToggle = async (idTour) => {
+    try {
+      const idUsuario = decodeToken(localStorage.getItem('token')).id;
+      let response;
+  
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: true, // Establecer fetching para la tarjeta específica en true al hacer clic
+      }));
+  
+      if (favorites[idTour]) {
+        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            idUsuario: idUsuario,
+            idTour: idTour,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error al eliminar de favoritos');
+        }
+      } else {
+        response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            idUsuario: idUsuario,
+            idTour: idTour,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error al marcar como favorito');
+        }
+      }
+  
+      setFavorites((prevFavorites) => {
+        const updatedFavorites = { ...prevFavorites };
+        updatedFavorites[idTour] = !updatedFavorites[idTour];
+        return updatedFavorites;
+      });
+  
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: false, 
+      }));
+  
+    } catch (error) {
+      console.error('Error al manejar favorito:', error);
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: false, 
+      }));
+    }
+  };
+  
   return (
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
         <div className='div-h2'>
           <h2>Recomendaciones</h2>
         </div>
-
-        {loading ? (
+        {loading ? ( 
           <div className='loading-container'>
             <CircularProgress color="inherit" />
           </div>
@@ -187,11 +268,35 @@ function Recomendaciones() {
             <div className='card-row'>
               {data.map((tour, index) => (
                 <div key={index} className='card-item'>
+                  <Link to={`/detalles/${tour.id}`}>
                   <Card>
+
                     <Typography variant="h6">{tour.titulo}</Typography>
-                    <Link to={`/detalles/${tour.id}`}>
-                      <CardMedia className='card-img' component="img" alt={tour.titulo} height="140" image={tour.linkFotos[0]} />
-                    </Link>
+                    <div className='cabecera-card'>
+                      <Typography variant="h6">{tour.titulo}</Typography>
+                      {fetchingFavorite[tour.id] ? (
+                      <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
+                      ) : (
+                        favorites[tour.id] ? (
+                          <FavoriteIcon
+                            style={{ color: 'red', cursor: 'pointer' }}
+                            onClick={() => handleFavoriteToggle(tour.id)}
+                          />
+                        ) : (
+                          <FavoriteBorderIcon
+                            style={{ color: 'gray', cursor: 'pointer' }}
+                            onClick={() => handleFavoriteToggle(tour.id)}
+                          />
+                        )
+                      )}
+
+                    </div>
+                      <CardMedia className='card-img'
+                        component="img"
+                        alt={tour.titulo}
+                        height="140"
+                        image={tour.linkFotos[0]}
+                      />
                     <CardContent className='cardContent'>
                       <Typography variant="body3">{tour.descripcion}</Typography>
                       <div className='precio-duracion'>
@@ -200,6 +305,7 @@ function Recomendaciones() {
                       </div>
                     </CardContent>
                   </Card>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -211,4 +317,3 @@ function Recomendaciones() {
 }
 
 export default Recomendaciones;
-

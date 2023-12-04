@@ -8,7 +8,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const StyledLogin = styled.div `
     display: flex;
@@ -38,44 +39,62 @@ const StyledLogin = styled.div `
 `;
 
 export default function OutlinedCard() {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+
+    const [mail, setEmail] = React.useState('');
+    const [pass, setPassword] = React.useState('');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [showMessage, setShowMessage] = React.useState(false);
     const [loginSuccess, setLoginSuccess] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
+    const [redirectToInicio, setRedirectToInicio] = React.useState(false);
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
+    React.useEffect(() => {
+        if (redirectToInicio) {
+            navigate('/inicio'); 
+        }
+    }, [redirectToInicio, navigate]);
+
+    const handleLogin = async () => {
         setProcessing(true);
         setButtonDisabled(true);
         setShowMessage(false);
 
-        setTimeout(() => {
-            // Lógica simulada de inicio de sesión
-            if (email === 'sbmartinezmartinez@gmail.com' && password === '123456') {
+        try {
+            const response = await fetch('http://localhost:8080/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mail, pass })
+            });
+            
+            
+            const data = await response.json();
+
+            if (response.ok) {
                 setLoginSuccess(true);
+                setRedirectToInicio(true);
+                localStorage.setItem('token', data.token);
+
             } else {
                 setLoginSuccess(false);
             }
+        } catch (error) {
+            console.error('Error:', error);
+            setLoginSuccess(false);
+        }
 
-            setTimeout(() => {
-                setEmail('');
-                setPassword('');
-                setButtonDisabled(false);
-                setProcessing(false);
-                window.location.href = '/inicio';
+        setEmail('');
+        setPassword('');
+        setButtonDisabled(false);
+        setProcessing(false);
+        setShowMessage(true);
 
-                if (loginSuccess) {
-                    // Redirige a la ruta deseada después de un inicio de sesión exitoso
-                    console.log(loginSuccess)
-                    setTimeout(() => {
-                        window.location.href = '/inicio';
-                    }, 2000);
-                }
-
-                setShowMessage(true);
-            }, 2000);
-        }, 2000);
+        if (redirectToInicio) {
+            navigate('/inicio'); 
+            return null;
+        }
     };
 
     return (
@@ -94,7 +113,7 @@ export default function OutlinedCard() {
                                 size="small"
                                 variant="outlined"
                                 onChange={(e) => setEmail(e.target.value)}
-                                value={email}
+                                value={mail}
                                 disabled={buttonDisabled || processing}
                             />
                             <TextField
@@ -105,20 +124,18 @@ export default function OutlinedCard() {
                                 type='password'
                                 variant="outlined"
                                 onChange={(e) => setPassword(e.target.value)}
-                                value={password}
+                                value={pass}
                                 disabled={buttonDisabled || processing}
                             />
                         </div>
                         {showMessage && (
                             <div className='row1'>
-                                {loginSuccess ? (
-                                    <Typography variant="body2" color="success">
-                                        Inicio de sesión exitoso
-                                    </Typography>
-                                ) : (
+                                {!loginSuccess ? (
                                     <Typography variant="body2" color="error">
                                         Credenciales incorrectas. Inténtalo de nuevo.
                                     </Typography>
+                                ): (
+                                    null
                                 )}
                             </div>
                         )}
