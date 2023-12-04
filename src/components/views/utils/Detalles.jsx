@@ -17,6 +17,7 @@ import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brand
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
+import fetchWithToken from '../login/Interceptor';
 
 
 
@@ -114,7 +115,7 @@ const Detalles = () => {
   useEffect(() => {
     const getTourDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/tours/${id}`);
+        const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
@@ -128,7 +129,7 @@ const Detalles = () => {
 
     const getCalificacion = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/tours/${id}/calificacion`);
+        const response = await fetchWithToken(`http://localhost:8080/api/tours/${id}/calificacion`);
         if (response.ok) {
           const calificacion = await response.json();
           setCalificacion(calificacion);

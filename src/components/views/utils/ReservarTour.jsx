@@ -20,6 +20,7 @@ import Calendar from './Calendar'
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import fetchWithToken from '../login/Interceptor';
+import decodeToken from '../login/DecodeToken';
 
 
 
@@ -153,20 +154,28 @@ const ReservaTour = () => {
           return;
         }
     
+        const clienteID = decodeToken(localStorage.getItem('token')).id;
+
+        const formattedFechaInicio = formatDate(fechaInicio);
+        const formattedFechaFin = formatDate(fechaFin);
+
         const reservaData = {
-          idCliente: cliente.id,
+          idCliente: clienteID,
           idTour: tourDetails.id,
-          fechaInicio: fechaInicio,
-          fechaFin: fechaFin
+          fechaInicio: formattedFechaInicio,
+          fechaFin: formattedFechaFin
         };
+        console.log(reservaData)
     
+        
         try {
-          const response = await fetchWithToken('http://localhost:8080/tours/reservar', {
+          const response = await fetchWithToken('http://localhost:8080/reserva', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(reservaData)
+            
           });
     
           if (response.ok) {
@@ -179,6 +188,10 @@ const ReservaTour = () => {
           console.error('Error al realizar la reserva:', error);
           
         }
+      };
+      const formatDate = (date) => {
+        const isoString = new Date(date).toISOString();
+        return isoString.split('T')[0];
       };
 
       const handleDateChange = (dates) => {
