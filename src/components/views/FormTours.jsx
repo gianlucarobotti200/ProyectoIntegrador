@@ -157,12 +157,7 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
+        
         try {
             const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
                 method: 'POST',
