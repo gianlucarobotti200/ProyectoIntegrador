@@ -12,6 +12,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import fetchWithToken from '../login/Interceptor'
 
 const StyledDetalles = styled.div`
   display: flex;
@@ -92,7 +93,7 @@ const Detalles = () => {
   useEffect(() => {
     const getTourDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/tours/${id}`);
+        const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
