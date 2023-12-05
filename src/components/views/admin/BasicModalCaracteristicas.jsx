@@ -1,14 +1,19 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 import FormCaracteristicas from '../FormCaracteristicas';
+// Importa el archivo CSS de estilos externos
+import './EstilosBasicModal.css';
+import './EstilosAdmin.css';
+import './EstilosModal.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -33,9 +38,23 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Agregar Característica
+      <div className='cont-ppal ' >
+      <div>
+      <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
+        AGREGAR CARACTERÍSTICAS
       </Button>
+      </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
+        ADMIN TOURS
+      </Button>
+      </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admincategorias">
+        ADMIN CATEGORÍAS
+      </Button>
+      </div>   
+      </div>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

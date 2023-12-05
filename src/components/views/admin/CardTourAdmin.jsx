@@ -1,6 +1,10 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
+import EditIcon from '@mui/icons-material/Edit'
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
+import AdminModificarTour from './AdminModificarTour'
 import fetchWithToken from '../login/Interceptor'
 
 
@@ -32,9 +36,10 @@ const StyledCardUsuarioAdmin = styled.article`
   }
 `;
 
-const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete }) => {
+const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, cantHoras, onDelete}) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+   
 
     const handleDeleteClick = () => {
         setShowConfirmation(true);
@@ -65,6 +70,8 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setShowConfirmation(false);
     };
 
+      
+
     return (
         <StyledCardUsuarioAdmin>
             <h4>{id}</h4>
@@ -77,9 +84,15 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
                     <button onClick={handleConfirmDelete}>Sí</button>
                     <button onClick={handleCancelDelete}>No</button>
                 </div>
-            ) : (
+            ) : (<div>
                 <Delete onClick={handleDeleteClick} />
+            
+             </div>
             )}
+            <Link to={`/tours/${id}`}>
+            <EditIcon />
+            </Link>
+            
         </StyledCardUsuarioAdmin>
     );
 }

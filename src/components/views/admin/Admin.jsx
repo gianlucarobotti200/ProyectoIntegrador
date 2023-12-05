@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
-import BasicModal from './BasicModal';
+import BasicModal from './Basicmodal';
 import fetchWithToken from '../login/Interceptor'
 import { useNavigate } from 'react-router-dom';
 

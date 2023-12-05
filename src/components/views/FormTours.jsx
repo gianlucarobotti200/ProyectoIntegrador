@@ -11,44 +11,12 @@ import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import fetchWithToken from './login/Interceptor'
-
+import './EstilosForm.css';
+import fetchWithToken from './login/Interceptor';
 
 
 const StyledForm = styled.form`
-    .row1{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
-        width: 100%;
-        margin: 8px;
-
-    }
-    .css-1xnbq41-MuiAutocomplete-root {
-        width: 100%;
-        margin: 8px;
-    }
-    .css-sghohy-MuiButtonBase-root-MuiButton-root{
-        width: 100%;
-        margin: 8px;
-    }
-    .row2{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .row3{
-        display: flex;
-    }
-
-    .row4{
-        display: flex;
-        justify-content: flex-end;
-        margin: 8px;
-    }
+  
 `
 
 const VisuallyHiddenInput = styled('input')({
@@ -75,15 +43,21 @@ const FormTours = ({ onCloseModal }) => {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
     const [caracteristicasSeleccionadas, setCaracteristicasSeleccionadas] = useState([]);
+    const [politicas, setPoliticas] = useState([]);
+    const [politicasSeleccionadas, setPoliticasSeleccionadas] = useState([]);
 
     const getCaracteristicasYCategorias = async () => {
         try {
             const response1 = await fetchWithToken("http://localhost:8080/caracteristicas");
             const response2 = await fetchWithToken("http://localhost:8080/categorias");
+            const response3 = await fetchWithToken("http://localhost:8080/politicas");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
+            const jsonData3 = await response3.json();
             setCaracteristicas(jsonData1);
             setCategorias(jsonData2);
+            setPoliticas(jsonData3);
+
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
         }
@@ -119,11 +93,13 @@ const FormTours = ({ onCloseModal }) => {
             });
     
             if (response.ok) {
-                const jsonResponse = await response.json();
-                setId(jsonResponse.id);
+                if (response.ok) {
+                    console.log('El formulario se ha enviado exitosamente.');
+                }
 
                 // Enviar categorías seleccionadas
                 await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -133,6 +109,7 @@ const FormTours = ({ onCloseModal }) => {
 
                 // Enviar características seleccionadas
                 await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -148,14 +125,9 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
+        
         try {
-            const imageResponse = await fetch(`http://localhost:8080/tours/subirfotos/${id}`, {
+            const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
                 method: 'POST',
                 body: formDataImagenes,
             });
@@ -246,8 +218,35 @@ const FormTours = ({ onCloseModal }) => {
                             ))}
                         </FormGroup>
                     </div>
+                
 
                 </div>
+                    <div>
+                        <h5>Politicas</h5>
+                        <FormGroup>
+                            {politicas.map((politica) => (
+                                <FormControlLabel
+                                    key={politica.id}
+                                    control={
+                                        <Checkbox
+                                            inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
+                                            checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
+                                                } else {
+                                                    setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label={politica.nombre}
+                                />
+                            ))}
+                        </FormGroup>
+                    </div>
+
+
                 <div className='row2'>
 
 

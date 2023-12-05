@@ -2,20 +2,11 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardCaracteristicaAdmin from './CardCaracteristicaAdmin';
 import BasicModalCaracteristicas from './BasicModalCaracteristicas';
+import './EstilosAdmin.css';
 import fetchWithToken from '../login/Interceptor'
 
-
 const StyledAdministracion = styled.div`
-    div.header-table{
-        background-color: #f5f5f5;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 1rem;
-        margin: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-around;
-    }
+
 `
 
 const AdminCaracteristicas = () => {
@@ -42,15 +33,17 @@ const AdminCaracteristicas = () => {
 
     return (
         <StyledAdministracion>
-            <h1>Administración Características</h1>
+         
+            <h1 className='adm-caracteristicas' >Administración Características</h1>
             <BasicModalCaracteristicas onCaracteristicaAdded={refreshCaracteristicas}/>
             <div className='header-table'>
                 <span className='id'>ID</span>
-                <span className='icono'>Ícono</span>
-                <span className='nombre'>Título</span>
+                <span className='icono'>ÍCONO</span>
+                <span className='nombre'>TÍTULO</span>
                 <span>GESTIÓN</span>
-            </div>
+            </div> 
             {caracteristicas.map((caracteristica, index) => (
+                <div className='card-caract' >
                 <CardCaracteristicaAdmin
                     key={index}
                     id={caracteristica.id}
@@ -58,6 +51,7 @@ const AdminCaracteristicas = () => {
                     nombre={caracteristica.nombre}
                     onDelete={refreshCaracteristicas}
                 />
+                </div>
             ))}
         </StyledAdministracion>
     );

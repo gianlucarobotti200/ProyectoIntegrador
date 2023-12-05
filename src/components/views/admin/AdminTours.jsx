@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -42,6 +44,26 @@ const AdminTours = () => {
         } else {
             try {
                 decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)   
+                getTours();
+
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [navigate]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
                 console.log(decodedData.role)
                 // if (decodedData.role == 0) {
                 //     navigate('/inicio');
@@ -49,30 +71,25 @@ const AdminTours = () => {
                 //     getTours();
                 // }   
                 getTours();
-
             } catch (error) {
                 console.error('Error al decodificar el token:', error.message);
             }
         }
-    }, [history]);
+    }, []);
 
-    const getTours = async () => {
-        try {
-            const response = await fetchWithToken("http://localhost:8080/tours/todos");
 
-    const [currentPage, setCurrentPage] = useState(1);
 
     const handlePageChange = (event, newPage) => {
         setCurrentPage(newPage);
     };
 
-    const toursPerPage = 10;
-const startIndex = (currentPage - 1) * toursPerPage;
-const endIndex = startIndex + toursPerPage;
+    const toursPerPage = 5;
+    const startIndex = (currentPage - 1) * toursPerPage;
+    const endIndex = startIndex + toursPerPage;
 
     const getTours = async () => {
         try {
-            const response = await fetch("http://localhost:8080/tours/todos");
+            const response = await fetchWithToken("http://localhost:8080/tours/todos");
 
             const jsonData = await response.json();
 
@@ -93,7 +110,20 @@ const endIndex = startIndex + toursPerPage;
     return (
         <StyledAdministracion>
             <h1>Administración Tours</h1>
-            <BasicModal onTourAdded={refreshTours}/>
+            <div>
+                <Button variant="outlined" component={Link} to="/admintours">
+                    Admin Tours
+                </Button>
+                <Button variant="outlined" component={Link} to="/admincategorias">
+                    Admin Categorías
+                </Button>
+            </div>
+            <div>
+                <Button variant="outlined" component={Link} to="/adminpoliticas">
+                    Admin Politicas
+                </Button>
+            </div>
+            <BasicModal onTourAdded={refreshTours} />
             <div className='header-table'>
                 <span className='id'>ID</span>
                 <span className='nombre'>Título</span>
@@ -113,17 +143,16 @@ const endIndex = startIndex + toursPerPage;
                 />
             ))}
             <div className="pagination-container">
-            <Stack spacing={2}>
-                <Pagination
-                    count={Math.ceil(tours.length / toursPerPage)}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    shape="rounded"
-                />
-            </Stack>
+                <Stack spacing={2}>
+                    <Pagination
+                        count={Math.ceil(tours.length / toursPerPage)}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        shape="rounded"
+                    />
+                </Stack>
             </div>
         </StyledAdministracion>
     );
-};
-
+}
 export default AdminTours;

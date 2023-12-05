@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const StyledBuscador = styled.div`
-  background-color: #75AADB;
-  position: relative;
-  padding: 2rem 0.5rem; /* Ajusta el padding según sea necesario */
+  background-image: linear-gradient(120deg, rgb(248 248 248), rgb(195 217 240) 60%);
+  padding: 2rem 0.5rem;
   input {
     background-color: #FFFFFF;
     padding: 0.5rem;
     border-radius: 5px;
     border-style: none;
     box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 0.5);
-    margin: 0 0.5rem; /* Ajusta el margin según sea necesario */
+    margin: 0 0.5rem;
   }
 
   button {
@@ -23,50 +21,34 @@ const StyledBuscador = styled.div`
     border-radius: 5px;
     border-style: none;
     box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 2rem; 
-    right: 30rem;
   }
 `;
 
 
-const Buscador = () => {
-  const [ciudad, setCiudad] = useState('');
-  const [fecha, setFecha] = useState(null);
+const Buscador = ({ value, onChange }) => {
+  const [search, setSearch] = useState(value);
+  const navigate = useNavigate();
 
-  const handleCiudadChange = (event) => {
-    setCiudad(event.target.value);
+  const handleSearch = () => {
+    if (search.trim() !== '') {
+      navigate(`/resultados/${search}`);
+    }
   };
-
-  const handleFechaChange = (date) => {
-    setFecha(date);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Realizando búsqueda:', ciudad, fecha);
-  };
-
-  // Obtén la fecha actual
-  const fechaActual = new Date();
 
   return (
     <StyledBuscador>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={ciudad}
-          onChange={handleCiudadChange}
-          placeholder="Ciudad de Argentina..."
-        />
-        <DatePicker
-          selected={fecha}
-          onChange={handleFechaChange}
-          placeholderText="Selecciona una fecha"
-          minDate={fechaActual} // Establece la fecha mínima como la fecha actual
-        />
-        <button type="submit">Buscar</button>
-      </form>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder="¿A donde viajás?..."
+      />
+      <button type="button" onClick={handleSearch}>
+        Buscar
+      </button>
     </StyledBuscador>
   );
 };
