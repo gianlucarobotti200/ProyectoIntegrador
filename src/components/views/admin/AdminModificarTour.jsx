@@ -252,16 +252,7 @@ const AdminModificarTour = () => {
           value={titulo}
           variant="outlined"
           onChange={(e) => setTitulo(e.target.value)}
-        />
-        <TextField
-          id="filled-multiline-flexible"
-          label="Descripcion"
-          multiline
-          maxRows={10}
-          variant="outlined"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
+        />     
         <TextField
           label="Provincia"
           value={provincia}
@@ -289,6 +280,15 @@ const AdminModificarTour = () => {
           value={duracion}
           variant="outlined"
           onChange={(e) => setDuracion(e.target.value)}
+        />
+        <TextField
+          id="filled-multiline-flexible"
+          label="Descripcion"
+          multiline
+          maxRows={5}
+          variant="outlined"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
         />
         <div>
           <h5>Categorías</h5>

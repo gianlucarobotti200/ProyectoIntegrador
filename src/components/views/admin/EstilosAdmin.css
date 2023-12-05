@@ -20,10 +20,8 @@
     margin: 3% 0% 0% 2%;
 }
 
-
 .MuiOutlinedInput-notchedOutline {
-    width: 14vw;
-    height: 9vh;
+    width: 17vw;
     align-items: center;
     border-radius: 5px;
     box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
