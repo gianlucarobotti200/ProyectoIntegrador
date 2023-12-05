@@ -11,6 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import fetchWithToken from '../login/Interceptor';
+import './EstilosAdmin.css';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -242,12 +243,12 @@ const AdminModificarTour = () => {
       noValidate
       autoComplete="off"
     >
-      <div>
+      <div className='adm-modificarTour'>
         <h2>Modificar Tour</h2>
       </div>
-      <div>
-        <TextField
-          label="Titulo"
+      <div className='adm-modificarTour-container' >
+        <TextField 
+          label="Titulo" 
           value={titulo}
           variant="outlined"
           onChange={(e) => setTitulo(e.target.value)}
@@ -398,4 +399,4 @@ const AdminModificarTour = () => {
 
 }
 
-export default AdminModificarTour
+export default AdminModificarTour;

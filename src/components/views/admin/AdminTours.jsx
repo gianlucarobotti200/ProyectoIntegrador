@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import './EstilosAdmin.css';
 
 const StyledAdministracion = styled.div`
     div.header-table{

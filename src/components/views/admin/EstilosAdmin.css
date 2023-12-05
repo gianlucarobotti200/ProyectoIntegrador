@@ -2,13 +2,32 @@
 
 .adm-caracteristicas,
 .adm-tours,
-.adm-categorias {
+.adm-categorias,
+.adm-modificarTour {
     color: #24306E;
     padding: 2% 0% 2% 0%;
     margin: 4% 5% 0% 4%;
     font-weight: bolder;
     font: 2rem/1rem "Open Sans", sans-serif;
     border-bottom: 2px solid rgba(36, 48, 110, 1);
+}
+
+.adm-modificarTour-container {
+    width: 95vw;
+    align-items: center;
+    color: #24306E;
+    padding: 2% 0% 0% 0%;
+    margin: 3% 0% 0% 2%;
+}
+
+
+.MuiOutlinedInput-notchedOutline {
+    width: 14vw;
+    height: 9vh;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
+    border: 0,5px solid #7fd2f2;
 }
 
 .cont-ppal {
