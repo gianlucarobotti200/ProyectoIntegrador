@@ -16,11 +16,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
-import Calendar from './calendar';
+import Calendar from './Calendar'
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-
-
+import fetchWithToken from '../login/Interceptor';
+import decodeToken from '../login/DecodeToken';
 
 const StyledDetalles = styled.div`
   display: flex;
@@ -116,7 +116,7 @@ const ReservaTour = () => {
     useEffect(() => {
         const getTourDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/tours/${id}`);
+                const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
                 if (response.ok) {
                     const jsonData = await response.json();
                     setData(jsonData);
@@ -151,16 +151,23 @@ const ReservaTour = () => {
               });
           return;
         }
-    
+      
+        const clienteID = decodeToken(localStorage.getItem('token')).id;
+
+        const formattedFechaInicio = formatDate(fechaInicio);
+        const formattedFechaFin = formatDate(fechaFin);
+
         const reservaData = {
-          idCliente: cliente.id,
-          idTour: id,
-          fechaInicio: fechaInicio,
-          fechaFin: fechaFin
+          idCliente: clienteID,
+          idTour: tourDetails.id,
+          fechaInicio: formattedFechaInicio,
+          fechaFin: formattedFechaFin
         };
+        console.log(reservaData)
     
+        
         try {
-          const response = await fetch('http://localhost:8080/tours/reservar', {
+          const response = await fetchWithToken('http://localhost:8080/reserva', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -180,7 +187,15 @@ const ReservaTour = () => {
         }
       };
 
-        
+      const formatDate = (date) => {
+        const isoString = new Date(date).toISOString();
+        return isoString.split('T')[0];
+      };
+
+      const handleDateChange = (dates) => {
+        setFechaInicio(dates[0]);
+        setFechaFin(dates[1]);
+      }; 
 
     return (
         <StyledDetalles>
@@ -269,7 +284,7 @@ const ReservaTour = () => {
                         </div>
                     </section>
                     <div>
-                        <Calendar tourId={id}/>
+                        <Calendar tourId={id} onDateChange={handleDateChange}/>
                         <Button onClick={handleReserveClick} style={{ margin: "0 45vw" }} variant="contained">
                             RESERVAR
                         </Button>

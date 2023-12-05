@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import FormCategorias from '../FormCategorias';
 // Importa el archivo CSS de estilos externos
 import './EstilosBasicModal.css';
+import './EstilosModal.css';
 
 
 
@@ -37,7 +38,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
-    
     <React.Fragment>
        <div className='cont-ppal'>
         <div>
@@ -83,5 +83,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         </DialogContent>        
       </BootstrapDialog>
     </React.Fragment>
+    </>
   );
 }

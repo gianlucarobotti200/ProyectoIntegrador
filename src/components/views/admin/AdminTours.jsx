@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import CardTourAdmin from './CardTourAdmin';
-import BasicModal from './BasicModal';
+import BasicModal from './Basicmodal';
 import fetchWithToken from '../login/Interceptor'
 import { useNavigate } from 'react-router-dom';
 import decodeToken from '../login/DecodeToken';
@@ -58,71 +58,93 @@ const AdminTours = () => {
                 console.error("Error al obtener los datos de la API: ", error);
             }
     const [currentPage, setCurrentPage] = useState(1);
+    const navigate = useNavigate();
+    let decodedData = null
 
-    const handlePageChange = (event, newPage) => {
-        setCurrentPage(newPage);
-    
-    } 
-
-
-    const toursPerPage = 5;
-const startIndex = (currentPage - 1) * toursPerPage;
-const endIndex = startIndex + toursPerPage;
-
-    const getTours = async () => {
-        try {
-            const response = await fetch("http://localhost:8080/tours/todos");
-
-            const jsonData = await response.json();
-
-            setTours(jsonData);
-        } catch (error) {
-            console.error("Error al obtener los datos de la API: ", error);
-        }
-    }
-
-    const refreshTours = () => {
-        getTours();
-    }
 
     useEffect(() => {
-        getTours();
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)
+                // if (decodedData.role == 0) {
+                //     navigate('/inicio');
+                // } else {
+                //     getTours();
+                // }   
+                getTours();
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
     }, []);
 
-    return (
-        <StyledAdministracion>
-            <h1>Administración Tours</h1>
-            <BasicModal onTourAdded={refreshTours}/>
-            <div className='header-table'>
-                <span className='id'>ID</span>
-                <span className='nombre'>TÍTULO</span>
-                <span>GESTIÓN</span>
-            </div>
-            {tours.slice(startIndex, endIndex).map((tour, index) => (
-                <CardTourAdmin
-                    key={index}
-                    id={tour.id}
-                    linkFotos={tour.linkFotos}
-                    titulo={tour.titulo}
-                    provincia={tour.provincia}
-                    descripcion={tour.descripcion}
-                    precio={tour.precio}
-                    cantHoras={tour.cantHoras}
-                    onDelete={refreshTours}
-                />
-            ))}
-            <div className="pagination-container">
-            <Stack spacing={2}>
-                <Pagination
-                    count={Math.ceil(tours.length / toursPerPage)}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    shape="rounded"
-                />
-            </Stack>
-            </div>
-        </StyledAdministracion>
-    )}
-};
+   
 
+        const handlePageChange = (event, newPage) => {
+            setCurrentPage(newPage);
+        };
+
+        const toursPerPage = 5;
+        const startIndex = (currentPage - 1) * toursPerPage;
+        const endIndex = startIndex + toursPerPage;
+
+        const getTours = async () => {
+            try {
+                const response = await fetchWithToken("http://localhost:8080/tours/todos");
+
+                const jsonData = await response.json();
+
+                setTours(jsonData);
+            } catch (error) {
+                console.error("Error al obtener los datos de la API: ", error);
+            }
+        }
+
+        const refreshTours = () => {
+            getTours();
+        }
+
+        useEffect(() => {
+            getTours();
+        }, []);
+
+        return (
+            <StyledAdministracion>
+                <h1>Administración Tours</h1>
+                <BasicModal onTourAdded={refreshTours} />
+                <div className='header-table'>
+                    <span className='id'>ID</span>
+                    <span className='nombre'>Título</span>
+                    <span>GESTIÓN</span>
+                </div>
+                {tours.slice(startIndex, endIndex).map((tour, index) => (
+                    <CardTourAdmin
+                        key={index}
+                        id={tour.id}
+                        linkFotos={tour.linkFotos}
+                        titulo={tour.titulo}
+                        provincia={tour.provincia}
+                        descripcion={tour.descripcion}
+                        precio={tour.precio}
+                        cantHoras={tour.cantHoras}
+                        onDelete={refreshTours}
+                    />
+                ))}
+                <div className="pagination-container">
+                    <Stack spacing={2}>
+                        <Pagination
+                            count={Math.ceil(tours.length / toursPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            shape="rounded"
+                        />
+                    </Stack>
+                </div>
+            </StyledAdministracion>
+        );
+}
 export default AdminTours;

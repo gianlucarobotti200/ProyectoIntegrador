@@ -39,4 +39,6 @@ const Modal = ({image, onClose }) => {
   );
 };
 
+
 export default Modal;
+

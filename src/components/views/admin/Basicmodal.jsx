@@ -85,9 +85,3 @@ export default function BasicModal({ onTourAdded }) {
     </React.Fragment>
   );
 }
-
-
-
-
-
-

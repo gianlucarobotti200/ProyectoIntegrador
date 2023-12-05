@@ -13,6 +13,7 @@ import FormCaracteristicas from '../FormCaracteristicas';
 // Importa el archivo CSS de estilos externos
 import './EstilosBasicModal.css';
 import './EstilosAdmin.css';
+import './EstilosModal.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {

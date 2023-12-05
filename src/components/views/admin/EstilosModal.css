@@ -1,0 +1,35 @@
+/* estilosBotones.css */
+
+.cont-ppal {
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2% 0% 3% 4%;
+    margin: 3% 0% 2% 1%;
+  }
+
+.btn-car1 {
+    display: flex;
+    background-color: #3498db;
+    color: #ffffff;
+    
+  }
+  
+.btn-car1:hover {
+    background-color: #2980b9;
+  }
+  
+.btn-cat2 {
+    display: flex;
+  }
+
+.btn-tour3 {
+   display: flex;
+}  
+  
+
+
+ 
+
+ 

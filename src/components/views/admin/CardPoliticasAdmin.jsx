@@ -42,7 +42,7 @@ const CardPoliticaAdmin = ({ id, nombre, contenido, onDelete }) => {
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`http://localhost:8080/politicas/${id}`, {
+            const response = await fetchWithToken(`http://localhost:8080/politicas/${id}`, {
                 method: 'DELETE',
             });
 

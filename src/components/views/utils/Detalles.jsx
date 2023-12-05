@@ -16,7 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-
+import { Link } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+import fetchWithToken from '../login/Interceptor';
 
 const StyledDetalles = styled.div`
 
@@ -180,8 +182,18 @@ const StyledDetalles = styled.div`
     text-align: left;
     padding: 1% 0% 0% 0%;
     margin: 0% 3% 0% 6%;
+    
+  .cont-icons {
+    display: flex;
+    width: calc(15vw - 15px);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2% 10% 0% 2%;
+    padding: 0% 0% 0% 0%;
+    border-radius: 5px;
+    
   }
-`;
+`
 
 
 const StyledImageList = styled(ImageList)`
@@ -221,10 +233,11 @@ const Detalles = () => {
   const [tourDetails, setData] = useState([]);
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [politicasData, setPoliticasData] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReservaOpen, setIsReservaOpen] = useState(false);
+  const [calificacion, setCalificacion] = useState(0);
 
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
@@ -239,7 +252,7 @@ const Detalles = () => {
   useEffect(() => {
     const getTourDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/tours/${id}`);
+        const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
@@ -249,6 +262,18 @@ const Detalles = () => {
         console.error("Error al obtener datos:", error);
       } finally {
         setLoading(false);
+      }
+    };
+
+    const getCalificacion = async () => {
+      try {
+        const response = await fetchWithToken(`http://localhost:8080/api/tours/${id}/calificacion`);
+        if (response.ok) {
+          const calificacion = await response.json();
+          setCalificacion(calificacion);
+        }
+      } catch (error) {
+        console.error("Error al obtener la calificación:", error);
       }
     };
 
@@ -265,6 +290,9 @@ const Detalles = () => {
 
     window.open(twitterUrl, '_blank');
   };
+  const handleReserveClick = () => { 
+  setIsReservaOpen(true);
+  };
 
   return (
     <StyledDetalles>
@@ -273,7 +301,6 @@ const Detalles = () => {
           <CircularProgress color="inherit" />
         </div>
       ) : (
-
         <div>
           <div className='cont-icons'>
             <div>
@@ -336,9 +363,11 @@ const Detalles = () => {
               </Stack>
             </div>
           </section>
+          <Link to={`/reservartour/${id}`}>
           <Button className='btn-reservar'>
             RESERVAR
           </Button>
+          </Link>
           <div>
           <h3 className='politicas'>Políticas</h3>
           <ul>

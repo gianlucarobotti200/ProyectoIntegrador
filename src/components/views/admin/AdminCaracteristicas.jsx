@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CardCaracteristicaAdmin from './CardCaracteristicaAdmin';
 import BasicModalCaracteristicas from './BasicModalCaracteristicas';
 import './EstilosAdmin.css';
+import fetchWithToken from '../login/Interceptor'
 
 const StyledAdministracion = styled.div`
 
@@ -12,7 +13,7 @@ const AdminCaracteristicas = () => {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const getCaracteristicas = async () => {
         try {
-            const response = await fetch("http://localhost:8080/caracteristicas");
+            const response = await fetchWithToken("http://localhost:8080/caracteristicas");
             const jsonData = await response.json();
 
             setCaracteristicas(jsonData);
