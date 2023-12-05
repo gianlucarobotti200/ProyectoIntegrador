@@ -122,6 +122,9 @@ const FormTours = ({ onCloseModal }) => {
             const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
+                
+
+                
             });
     
             if (response.ok) {
@@ -136,7 +139,7 @@ const FormTours = ({ onCloseModal }) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(categoriasSeleccionadas.map((category) => category.id)),
+                    body: categoriasSeleccionadas.map((category) => category.id),
                 });
 
                 // Enviar características seleccionadas
@@ -157,16 +160,14 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
+        const formDataImagenes = new FormData();
+        
         try {
             const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
                 method: 'POST',
                 body: formDataImagenes,
+                headers: {
+                'Content-Type': 'multipart/form-data',}
             });
             if (imageResponse.ok) {
                 console.log('Las imágenes se han agregado exitosamente.');
