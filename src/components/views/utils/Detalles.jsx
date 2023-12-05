@@ -12,16 +12,14 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-
 import fetchWithToken from '../login/Interceptor'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
-import fetchWithToken from '../login/Interceptor';
+
 
 
 const StyledDetalles = styled.div`

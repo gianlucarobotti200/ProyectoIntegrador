@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import Buscador from './Buscador';
+import fetchWithToken from '../login/Interceptor';
 
 const StyledRecomendaciones = styled.div`
 
@@ -140,7 +141,7 @@ const Resultados = () => {
       const fetchTours = async () => {
         try {
           setLoading(true);
-          const response = await fetch('http://localhost:8080/tours/todos');
+          const response = await fetchWithToken('http://localhost:8080/tours/todos');
           if (!response.ok) {
             throw new Error(`Error al cargar los tours: ${response.statusText}`);
           }
