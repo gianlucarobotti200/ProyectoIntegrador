@@ -11,44 +11,12 @@ import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
+import './EstilosForm.css';
 import fetchWithToken from './login/Interceptor';
 
 
-
 const StyledForm = styled.form`
-    .row1{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
-        width: 100%;
-        margin: 8px;
-
-    }
-    .css-1xnbq41-MuiAutocomplete-root {
-        width: 100%;
-        margin: 8px;
-    }
-    .css-sghohy-MuiButtonBase-root-MuiButton-root{
-        width: 100%;
-        margin: 8px;
-    }
-    .row2{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .row3{
-        display: flex;
-    }
-
-    .row4{
-        display: flex;
-        justify-content: flex-end;
-        margin: 8px;
-    }
+  
 `
 
 const VisuallyHiddenInput = styled('input')({

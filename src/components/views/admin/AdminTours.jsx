@@ -8,7 +8,6 @@ import decodeToken from '../login/DecodeToken';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-
 const StyledAdministracion = styled.div`
     div.header-table{
         background-color: #f5f5f5;
@@ -30,10 +29,37 @@ const StyledAdministracion = styled.div`
 
 const AdminTours = () => {
     const [tours, setTours] = useState([]);
+
+    const navigate = useNavigate();
+    let decodedData = null
+    
+       
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login'); 
+        } else {
+            try {
+                decodedData = decodeToken(localStorage.getItem('token'));
+                console.log(decodedData.role)   
+                getTours();
+
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [navigate]);
+
+    const getTours = async () => {
+        try {
+            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+         } catch (error) {
+                console.error("Error al obtener los datos de la API: ", error);
+            }
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
     let decodedData = null
-
 
 
     useEffect(() => {
@@ -50,7 +76,6 @@ const AdminTours = () => {
                 //     getTours();
                 // }   
                 getTours();
-
             } catch (error) {
                 console.error('Error al decodificar el token:', error.message);
             }
