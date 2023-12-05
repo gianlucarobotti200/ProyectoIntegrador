@@ -83,6 +83,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         </DialogContent>        
       </BootstrapDialog>
     </React.Fragment>
-    </>
+    
   );
 }

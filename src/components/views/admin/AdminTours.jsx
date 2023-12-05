@@ -53,15 +53,8 @@ const AdminTours = () => {
         }
     }, [navigate]);
 
-    const getTours = async () => {
-        try {
-            const response = await fetchWithToken("http://localhost:8080/tours/todos");
-         } catch (error) {
-                console.error("Error al obtener los datos de la API: ", error);
-            }
     const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
-    let decodedData = null
+    
 
 
     useEffect(() => {
