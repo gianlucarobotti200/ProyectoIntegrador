@@ -18,7 +18,6 @@ export default function Calendar({ tourId, onDateChange }) {
   const fetchReservedDates = async () => {
     try {
       // Realizar la llamada a la API para obtener las fechas reservadas
-
       const response = await fetchWithToken(`http://localhost:8080/reserva/${tourId}/fechasOcupadas`);
 
       if (response.ok) {

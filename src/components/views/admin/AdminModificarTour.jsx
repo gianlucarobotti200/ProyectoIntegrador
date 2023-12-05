@@ -50,7 +50,6 @@ const AdminModificarTour = () => {
         console.error('ID is undefined');
         return;
       }
-
       const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
       const jsonData1 = await response.json();
       console.log("Traer tour", jsonData1);

@@ -22,8 +22,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import fetchWithToken from '../login/Interceptor';
 import decodeToken from '../login/DecodeToken';
 
-
-
 const StyledDetalles = styled.div`
   display: flex;
   flex-direction: column;
@@ -153,7 +151,7 @@ const ReservaTour = () => {
               });
           return;
         }
-    
+      
         const clienteID = decodeToken(localStorage.getItem('token')).id;
 
         const formattedFechaInicio = formatDate(fechaInicio);
@@ -175,7 +173,6 @@ const ReservaTour = () => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(reservaData)
-            
           });
     
           if (response.ok) {
@@ -189,6 +186,7 @@ const ReservaTour = () => {
           
         }
       };
+
       const formatDate = (date) => {
         const isoString = new Date(date).toISOString();
         return isoString.split('T')[0];
