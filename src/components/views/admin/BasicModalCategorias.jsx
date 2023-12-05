@@ -38,6 +38,7 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
   };
 
   return (
+    <>
     <React.Fragment>
        <div className='cont-ppal'>
         <div>

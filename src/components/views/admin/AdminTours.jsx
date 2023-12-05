@@ -69,12 +69,7 @@ const AdminTours = () => {
         } else {
             try {
                 decodedData = decodeToken(localStorage.getItem('token'));
-                console.log(decodedData.role)
-                // if (decodedData.role == 0) {
-                //     navigate('/inicio');
-                // } else {
-                //     getTours();
-                // }   
+                console.log(decodedData.role) 
                 getTours();
             } catch (error) {
                 console.error('Error al decodificar el token:', error.message);
@@ -146,5 +141,6 @@ const AdminTours = () => {
                 </div>
             </StyledAdministracion>
         );
+    }
 }
 export default AdminTours;
