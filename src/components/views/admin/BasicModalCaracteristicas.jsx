@@ -50,6 +50,11 @@ export default function BasicModalCaracteristicas({onCaracteristicaAdded}) {
       </Button>
       </div>
       <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/adminpoliticas">
+        ADMIN POLITICAS
+      </Button>
+      </div>
+      <div>
       <Button className='btn-car1' variant="outlined" component={Link} to="/admincategorias">
         ADMIN CATEGORÍAS
       </Button>

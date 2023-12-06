@@ -37,23 +37,15 @@ export default function BasicModal({ onTourAdded }) {
 
   return (
     <React.Fragment>
-      <div className='cont-ppal' >
-      <div className='btn-car1'>
-          <Button variant="outlined" component={Link} to="/admincaracteristicas">
-            ADMIN CARACTERÍSTICAS
-          </Button>
-        </div>
+      
+      
         <div className='btn-tour3'>
           <Button variant="outlined" onClick={handleClickOpen}>
             AGREGAR TOURS
           </Button>
         </div>
-        <div className='btn-cat2'>
-          <Button variant="outlined" component={Link} to="/admincategorias">
-            ADMIN CATEGORÍAS
-          </Button>
-        </div>
-      </div>
+       
+      
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

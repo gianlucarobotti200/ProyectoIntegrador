@@ -43,8 +43,8 @@ export default function BasicModalPoliticas({onPoliticasAdded}) {
       </Button>
       </div>
       <div>
-      <Button variant="outlined" component={Link} to="/adminpoliticas">
-        Admin Politicas
+      <Button variant="outlined" component={Link} to="/admincaracteristicas">
+        Admin Caracteristicas
       </Button>
       </div>
 
