@@ -160,9 +160,9 @@ const AdminModificarTour = () => {
       const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
         method: 'PUT',
         body: formData,
-        headers: {
-            'Content-Type': 'application/json',
-          },
+
+        headers: {'Access-Control-Allow-Origin':'http://localhost:5173'}
+
 
       });
 

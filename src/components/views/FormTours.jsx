@@ -85,20 +85,24 @@ const FormTours = ({ onCloseModal }) => {
                 formData.append('file', file[i]);
             }
         }
-      
         try {
             const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
+                            
             });
-    
+            
+            
+            console.log(response)
+            const tourDto = await response.json();
             if (response.ok) {
+                console.log(tourDto)
                 if (response.ok) {
                     console.log('El formulario se ha enviado exitosamente.');
                 }
 
                 // Enviar categorías seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/categorias`, {
 
                     method: 'POST',
                     headers: {
@@ -108,13 +112,23 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/caracteristicas`, {
 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
+                });
+
+                // Enviar características seleccionadas
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/politicas`, {
+
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(politicasSeleccionadas.map((politica) => politica.id)),
                 });
 
                 console.log('El tour se ha agregado exitosamente.');
@@ -125,6 +139,12 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
+
+        const formDataImagenes = new FormData();
+        
+        };
+       
+
         
         try {
             const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
@@ -144,6 +164,7 @@ const FormTours = ({ onCloseModal }) => {
     
 
     
+
 
     return (
         <>
