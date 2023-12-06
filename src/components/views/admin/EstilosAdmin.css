@@ -20,6 +20,18 @@
     margin: 3% 0% 0% 2%;
 }
 
+.modificar-tour-cat,
+.modificar-tour-car,
+.modificar-tour-pol {
+    width: 20vw;
+    justify-content: left;
+    font-weight: bolder;
+    padding: 0% 0% 2% 0%;
+    margin: 5% 0% 1% 40%;
+    font: 2rem/1rem "Open Sans", sans-serif;
+    border-bottom: 2px solid rgba(36, 48, 110, 1);
+}
+
 .MuiOutlinedInput-notchedOutline {
     width: 17vw;
     align-items: center;

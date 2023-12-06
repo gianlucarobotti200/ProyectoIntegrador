@@ -291,7 +291,7 @@ const AdminModificarTour = () => {
           onChange={(e) => setDescripcion(e.target.value)}
         />
         <div>
-          <h5>Categorías</h5>
+          <h2 className='modificar-tour-cat' >Categorías</h2>
           <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
             {categorias.map((categoria) => (
               <FormControlLabel
@@ -316,7 +316,7 @@ const AdminModificarTour = () => {
         </div>
       </div>
       <div>
-        <h5>Características</h5>
+      <h2 className='modificar-tour-cat' >Características</h2>
         <FormGroup>
           {caracteristicas.map((caracteristica) => (
             <FormControlLabel
@@ -340,7 +340,7 @@ const AdminModificarTour = () => {
         </FormGroup>
       </div>
       <div>
-        <h5>Politicas</h5>
+      <h2 className='modificar-tour-cat' >Políticas</h2>
         <FormGroup>
           {politicas.map((politica) => (
             <FormControlLabel
