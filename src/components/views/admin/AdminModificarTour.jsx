@@ -50,7 +50,6 @@ const AdminModificarTour = () => {
         console.error('ID is undefined');
         return;
       }
-
       const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
       const jsonData1 = await response.json();
       console.log("Traer tour", jsonData1);
@@ -98,7 +97,7 @@ const AdminModificarTour = () => {
   const handleDeleteImage = async (imagen) => {
     console.log(imagen);
 
-   
+
     try {
       const fileNameToDelete = getFileNameFromUrl(imagen);
 
@@ -124,8 +123,8 @@ const AdminModificarTour = () => {
       console.error('Error:', error);
     }
   };
-  
-  
+
+
 
   const getFileNameFromUrl = (url) => {
     try {
@@ -138,11 +137,11 @@ const AdminModificarTour = () => {
       return null;
     }
   };
-  
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files);
-};
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,13 +154,15 @@ const AdminModificarTour = () => {
     formData.append('id', id);
     uploadImage();
 
-    
- 
+
+
     try {
       const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
         method: 'PUT',
         body: formData,
+
         headers: {'Access-Control-Allow-Origin':'http://localhost:5173'}
+
 
       });
 
@@ -183,18 +184,18 @@ const AdminModificarTour = () => {
         await fetchWithToken(`http://localhost:8080/tours/${id}/caracteristicas`, {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
-      });
-      // Enviar politicas seleccionadas
-      await fetchWithToken(`http://localhost:8080/tours/${id}/politicas`, {
+        });
+        // Enviar politicas seleccionadas
+        await fetchWithToken(`http://localhost:8080/tours/${id}/politicas`, {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(politicasSeleccionadas.map((policy) => policy.id)),
-      });
+        });
 
         console.log('El tour se ha agregado exitosamente.');
       } else {
@@ -209,18 +210,18 @@ const AdminModificarTour = () => {
     if (file.length > 0) {
       try {
         const formData = new FormData();
-  
+
         formData.append('id', id);
-  
+
         for (let i = 0; i < file.length; i++) {
           formData.append('file', file[i]);
         }
-  
+
         const response = await fetchWithToken('http://localhost:8080/s3/uploadFile', {
           method: 'POST',
           body: formData,
         });
-  
+
         if (response.ok) {
           console.log('Imágenes subidas exitosamente');
         } else {
@@ -233,7 +234,7 @@ const AdminModificarTour = () => {
       console.log('No hay nuevas imágenes para subir.');
     }
   }
- 
+
 
   return (
     <Box
@@ -378,17 +379,17 @@ const AdminModificarTour = () => {
         </div>
       )}
       <div>
-      <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
-      Upload file
-      <VisuallyHiddenInput  multiple type="file" name='file' />
-    </Button>
-      </div>
-      
-        <Button onClick={handleSubmit} variant="contained" color="success">
-          Modificar
+        <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
+          Upload file
+          <VisuallyHiddenInput multiple type="file" name='file' />
         </Button>
-      
-        <div>
+      </div>
+
+      <Button onClick={handleSubmit} variant="contained" color="success">
+        Modificar
+      </Button>
+
+      <div>
         <Link to={`/admintours`}>
           <Button variant="outlined" color="error">
             Cancelar

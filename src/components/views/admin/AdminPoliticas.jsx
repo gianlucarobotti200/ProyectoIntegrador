@@ -4,8 +4,6 @@ import CardPoliticasAdmin from './CardPoliticasAdmin';
 import BasicModalPoliticas from './BasicModalPoliticas';
 import fetchWithToken from '../login/Interceptor';
 
-
-
 const StyledAdministracion = styled.div`
     div.header-table{
         background-color: #f5f5f5;

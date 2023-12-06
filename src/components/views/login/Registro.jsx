@@ -38,12 +38,14 @@ const StyledRegistro = styled.div `
 export default function OutlinedCard() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [nombre, setNombre] = React.useState('');
+    const [apellido, setApellido] = React.useState('');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [showMessage, setShowMessage] = React.useState(false);
     const [error, setError] = React.useState(null);
 
     const handleRegister = () => {
-        if (!email || !password) {
+        if (!email || !password || !nombre || !apellido) {
             setError('Por favor, complete todos los campos.');
             return;
         }
@@ -57,18 +59,21 @@ export default function OutlinedCard() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ mail: email, pass: password }),
+            body: JSON.stringify({ mail: email, pass: password, nombre: nombre, apellido: apellido}),
         })
         .then(response => response.json())
         .then(data => {
             console.log('Registro exitoso:', data);
             setEmail('');
             setPassword('');
+            setNombre('');
+            setApellido('');
             setShowMessage(true); // Mostrar el mensaje
         })
         .catch(error => {
             console.error('Error en el registro:', error);
             setError('Hubo un error en el registro. Por favor, inténtelo de nuevo.');
+            setShowMessage(true);
         })
         .finally(() => {
             setButtonDisabled(false);
@@ -83,6 +88,26 @@ export default function OutlinedCard() {
                             Nuevo registro
                         </DialogTitle>
                         <div className='row1'>
+                            <TextField
+                                id="outlined-controlled"
+                                InputLabelProps={{ shrink: true }}
+                                label="Nombre"
+                                size="small"
+                                variant="outlined"
+                                onChange={(e) => setNombre(e.target.value)}
+                                value={nombre}
+                                disabled={buttonDisabled}
+                            />
+                            <TextField
+                                id="outlined-controlled"
+                                InputLabelProps={{ shrink: true }}
+                                label="Apellido"
+                                size="small"
+                                variant="outlined"
+                                onChange={(e) => setApellido(e.target.value)}
+                                value={apellido}
+                                disabled={buttonDisabled}
+                            />
                             <TextField
                                 id="outlined-controlled"
                                 InputLabelProps={{ shrink: true }}
@@ -105,10 +130,16 @@ export default function OutlinedCard() {
                                 disabled={buttonDisabled}
                             />
                         </div>
-                        {showMessage && (
+                        {error ? (
                             <div className='row1'>
-                                <p>Se enviará un correo electrónico para completar la activación.</p>
+                                <p>Error: {error}</p>
                             </div>
+                        ) : (
+                            showMessage && (
+                                <div className='row1'>
+                                    <p>Se enviará un correo electrónico para completar la activación.</p>
+                                </div>
+                            )
                         )}
                         <div className='row1'>
                             <CardActions>
