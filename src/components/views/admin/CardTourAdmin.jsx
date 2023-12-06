@@ -50,7 +50,7 @@ const CardTourAdmin = ({id, linkFotos, titulo, provincia, descripcion, precio, c
 
         try {
             const response = await fetchWithToken(`http://localhost:8080/tours/eliminarTour/${id}`, {
-                method: 'DELETE',
+                method: 'POST',
             });
 
             if (response.status === 200) {
