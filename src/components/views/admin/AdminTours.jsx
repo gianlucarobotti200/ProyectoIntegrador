@@ -111,8 +111,8 @@ const AdminTours = () => {
         <StyledAdministracion>
             <h1>Administración Tours</h1>
             <div>
-                <Button variant="outlined" component={Link} to="/admintours">
-                    Admin Tours
+                <Button variant="outlined" component={Link} to="/admincaracteristicas">
+                    Admin Carateristicas
                 </Button>
                 <Button variant="outlined" component={Link} to="/admincategorias">
                     Admin Categorías

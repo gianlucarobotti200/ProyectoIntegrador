@@ -89,10 +89,10 @@ const FormTours = ({ onCloseModal }) => {
             const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
-                            
+
             });
-            
-            
+
+
             console.log(response)
             const tourDto = await response.json();
             if (response.ok) {
@@ -140,30 +140,7 @@ const FormTours = ({ onCloseModal }) => {
             console.error('Error al realizar la solicitud:', error);
         }
 
-        const formDataImagenes = new FormData();
-        
-        };
-       
-
-        
-        try {
-            const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
-                method: 'POST',
-                body: formDataImagenes,
-            });
-            if (imageResponse.ok) {
-                console.log('Las imágenes se han agregado exitosamente.');
-            } else {
-                console.error('Error al subir las imágenes.');
-            }
-        }
-        catch (error) {
-            console.error('Error al subir las imágenes:', error);
-        }
     };
-    
-
-    
 
 
     return (
@@ -239,33 +216,33 @@ const FormTours = ({ onCloseModal }) => {
                             ))}
                         </FormGroup>
                     </div>
-                
+
 
                 </div>
-                    <div>
-                        <h5>Politicas</h5>
-                        <FormGroup>
-                            {politicas.map((politica) => (
-                                <FormControlLabel
-                                    key={politica.id}
-                                    control={
-                                        <Checkbox
-                                            inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
-                                            checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
-                                                } else {
-                                                    setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
-                                                }
-                                            }}
-                                        />
-                                    }
-                                    label={politica.nombre}
-                                />
-                            ))}
-                        </FormGroup>
-                    </div>
+                <div>
+                    <h5>Politicas</h5>
+                    <FormGroup>
+                        {politicas.map((politica) => (
+                            <FormControlLabel
+                                key={politica.id}
+                                control={
+                                    <Checkbox
+                                        inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
+                                        checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
+                                            } else {
+                                                setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
+                                            }
+                                        }}
+                                    />
+                                }
+                                label={politica.nombre}
+                            />
+                        ))}
+                    </FormGroup>
+                </div>
 
 
                 <div className='row2'>
