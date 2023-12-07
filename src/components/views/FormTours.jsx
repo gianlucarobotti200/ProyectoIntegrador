@@ -273,7 +273,11 @@ const FormTours = ({ onCloseModal }) => {
 
                         />
                     </FormControl>
-                    <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
+                    <Button 
+                    component="label" 
+                    onChange={handleFileChange} 
+                    variant="contained" 
+                    startIcon={<CloudUploadIcon />}>
                         Subir archivo
                         <VisuallyHiddenInput multiple type="file" name='file' />
                     </Button>

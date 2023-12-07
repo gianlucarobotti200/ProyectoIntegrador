@@ -29,18 +29,6 @@
     border: 0,5px solid #7fd2f2;
 }
 
-/* .MuiInputBase-multiline {
-    width: 50%;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10% 10% 10% 10%;
-    margin: 0% 0% 0% 0%;
-    border-radius: 5px;
-    box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
-    border: 0,5px solid #7fd2f2;
-} */
-
 .modificar-tour-cat,
 .modificar-tour-car,
 .modificar-tour-pol {
@@ -65,10 +53,8 @@
 .btn-contenedor {
     display: flex;
     justify-content: space-around;
-    background-color: transparent;
     padding: 0% 0% 0% 0%;
     margin: 4% 1% 4% 1%; 
-
 }
 
 .btn-upload,
@@ -79,13 +65,14 @@
     height: 2.5rem;
     border-radius: 5px;
     background-color: transparent;
-    box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 11px;
+    box-shadow: #a5d8ec 0px 2px 4px,  #aecdd9 0px 4px 5px;
     border: 0,5px solid #7fd2f2;
 }
 
 .btn-cancelar a {
     width: 100%;
-    background-color: transparent;
+    border-radius: 5px;
+    background-color:rgba(220, 50, 50, 0.552);
 }
 
 .cont-ppal {

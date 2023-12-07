@@ -14,8 +14,16 @@ import fetchWithToken from '../login/Interceptor';
 import './EstilosAdmin.css';
 
 const VisuallyHiddenInput = styled('input')({
-  
-  clipPath: 'inset(50%)',
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    backgroundColor: 'transparent',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
 });
 
 const AdminModificarTour = () => {
@@ -379,7 +387,7 @@ const AdminModificarTour = () => {
        variant="contained" 
        startIcon={<CloudUploadIcon />}
        >
-      Upload file
+      UPLOAD FILE
       <VisuallyHiddenInput  multiple type="file" name='file' />
     </Button>
       </div>
@@ -389,7 +397,7 @@ const AdminModificarTour = () => {
             onClick={handleSubmit} 
             variant="contained" 
         >          
-          Modificar
+          MODIFICAR
         </Button>
         </div>
         <div className="btn-cancelar" >
