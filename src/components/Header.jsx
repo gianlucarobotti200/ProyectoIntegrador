@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PersonIcon from '@mui/icons-material/Person';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -114,6 +115,7 @@ function Header() {
     const [initials, setInitials] = React.useState('');
     let decodedData = null
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const [rol,setRol] = useState('');
 
     const decodeToken = (token) => {
         const tokenParts = token.split('.');
@@ -125,8 +127,12 @@ function Header() {
         const decodedPayload = atob(payloadBase64);
     
         const parsedPayload = JSON.parse(decodedPayload);
+        setRol(parsedPayload.role)
+        console.log(decodedPayload)
+        console.log(decodedPayload.role)
         return parsedPayload;
     };
+    
     
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -236,9 +242,15 @@ function Header() {
                                         <MenuItem key="favorite" component={Link} to="/favoritos">
                                         <Favorite /> Mis favoritos
                                 </MenuItem>,
+                                rol == 1 && (
+                                    <MenuItem key="admin" component={Link} to="/admintours">
+                                      <SupervisorAccountIcon /> Administrador
+                                    </MenuItem>
+                                  ),
                                     <MenuItem key="logout" onClick={handleLogout}>
                                         <LogoutRoundedIcon /> Cerrar sesión
                                     </MenuItem>
+                                    
                                     ]
                                 ) : (
                                     [

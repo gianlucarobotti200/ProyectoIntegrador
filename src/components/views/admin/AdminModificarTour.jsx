@@ -41,6 +41,8 @@ const AdminModificarTour = () => {
   const [tour, setTour] = useState([]);
   const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
+  
+
 
 
 
@@ -107,7 +109,7 @@ const AdminModificarTour = () => {
       }
 
       const response = await fetchWithToken(`http://localhost:8080/tours/eliminarfoto?id=${id}&url=${imagen}`, {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -151,20 +153,22 @@ const AdminModificarTour = () => {
     formData.append('descripcion', descripcion);
     formData.append('precio', parseInt(precio));
     formData.append('cantHoras', parseInt(duracion));
-    formData.append('id', id);
+    formData.append('id', parseInt(id));
     uploadImage();
 
 
 
     try {
       const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
-        method: 'PUT',
+        method: 'POST',
         body: formData,
-
-        headers: {'Access-Control-Allow-Origin':'http://localhost:5173'}
-
-
+        headers: {
+          'Content-Type': 'application/json',
+        },
+                
       });
+      
+      const tourDto = await response.json();
 
       if (response.ok) {
         if (response.ok) {
@@ -172,7 +176,7 @@ const AdminModificarTour = () => {
         }
 
         // Enviar categorías seleccionadas
-        await fetchWithToken(`http://localhost:8080/tours/${id}/categorias`, {
+        await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/categorias`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -181,7 +185,7 @@ const AdminModificarTour = () => {
         });
 
         // Enviar características seleccionadas
-        await fetchWithToken(`http://localhost:8080/tours/${id}/caracteristicas`, {
+        await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/caracteristicas`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -189,7 +193,7 @@ const AdminModificarTour = () => {
           body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
         });
         // Enviar politicas seleccionadas
-        await fetchWithToken(`http://localhost:8080/tours/${id}/politicas`, {
+        await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/politicas`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -220,6 +224,9 @@ const AdminModificarTour = () => {
         const response = await fetchWithToken('http://localhost:8080/s3/uploadFile', {
           method: 'POST',
           body: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+        }
         });
 
         if (response.ok) {
