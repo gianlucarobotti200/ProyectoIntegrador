@@ -19,6 +19,11 @@ const StyledCategorias = styled.div `
   .div-h2{
     display: flex;
     justify-content: flex-start;
+    text-align: left;
+    font: 1.7rem/1rem "Open Sans", sans-serif;
+    padding: 0% 70% 0% 0%;
+    margin: 0% 0% 2% 5%;
+    border-bottom: 3px solid rgba(36, 48, 110, 1);
   }
 
   .div-categorias{
@@ -83,7 +88,6 @@ function Categorias() {
     <StyledCategorias>
       <div className='div-categorias'>
         <div className='div-h2'>
-
         <h2>Categorías</h2>       
         </div>
         <div className='categorias'>

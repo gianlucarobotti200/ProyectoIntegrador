@@ -31,9 +31,10 @@ const StyledRecomendaciones = styled.div `
       display: flex;
       justify-content: flex-start;
       text-align: left;
-      font-size: 2vw;
-      margin: 1% 1% 0% 3%;       
+      font: 1.5rem/1rem "Open Sans", sans-serif;
+      margin: 1% 1% 0% 0%;       
       color: rgba(36, 48, 110, 1);
+      border-bottom: 3px solid rgba(36, 48, 110, 1);
   }
 
     .recomendaciones{
