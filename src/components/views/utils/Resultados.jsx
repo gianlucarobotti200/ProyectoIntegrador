@@ -70,6 +70,12 @@ const StyledRecomendaciones = styled.div`
       border: 1px solid rgba(230, 230, 230);
   }
 
+  .cabecera-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
     .card-img{
       width: 90%;
       margin: 2% 4% 2% 4%;
@@ -145,7 +151,7 @@ const StyledRecomendaciones = styled.div`
 const Resultados = () => {
   const { search } = useParams();
   const [tours, setTours] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState({});
   const [fetchingFavorite, setFetchingFavorite] = useState(false);
 
@@ -158,6 +164,15 @@ const Resultados = () => {
           throw new Error(`Error al cargar los tours: ${response.statusText}`);
         }
 
+        const idUsuario = decodeToken(localStorage.getItem('token')).id;
+        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesData = await favoritesResponse.json();
+
+        const favoriteIds = {};
+        favoritesData.forEach(favorite => {
+          favoriteIds[favorite.idTour] = true;
+        });
+
         const data = await response.json();
         const filteredTours = data.filter(
           (tour) =>
@@ -165,6 +180,7 @@ const Resultados = () => {
             tour.provincia.toLowerCase().includes(search.toLowerCase())
         );
         setTours(filteredTours);
+        setFavorites(favoriteIds);
       } catch (error) {
         console.error('Error fetching tours:', error.message);
       } finally {
@@ -183,12 +199,12 @@ const Resultados = () => {
     try {
       const idUsuario = decodeToken(localStorage.getItem('token')).id;
       let response;
-  
+
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
         [idTour]: true, // Establecer fetching para la tarjeta específica en true al hacer clic
       }));
-  
+
       if (favorites[idTour]) {
         response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
           method: 'POST',
@@ -200,7 +216,7 @@ const Resultados = () => {
             idTour: idTour,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Error al eliminar de favoritos');
         }
@@ -215,28 +231,28 @@ const Resultados = () => {
             idTour: idTour,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Error al marcar como favorito');
         }
       }
-  
+
       setFavorites((prevFavorites) => {
         const updatedFavorites = { ...prevFavorites };
         updatedFavorites[idTour] = !updatedFavorites[idTour];
         return updatedFavorites;
       });
-  
+
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
-        [idTour]: false, 
+        [idTour]: false,
       }));
-  
+
     } catch (error) {
       console.error('Error al manejar favorito:', error);
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
-        [idTour]: false, 
+        [idTour]: false,
       }));
     }
   };
@@ -282,6 +298,7 @@ const Resultados = () => {
                             />
                           )
                         )}
+
                       </div>
                       <CardMedia className='card-img'
                         component="img"
@@ -292,8 +309,7 @@ const Resultados = () => {
                       <CardContent className='cardContent'>
                         <Typography variant="body3" sx={{ fontSize: "1.3rem" }}>{truncateDescription(tour.descripcion)}</Typography>
                         <div className='precio-duracion'>
-                          <Typography variant="body1">Precio: $ {tour.precio}</Typography>
-                          <Typography variant="body1">Duración: {tour.cantHoras}hs</Typography>
+                          <Typography variant="body1" sx={{ fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio}</Typography>
                         </div>
                       </CardContent>
                     </Card>
@@ -303,7 +319,7 @@ const Resultados = () => {
             </div>
           </div>
         )}
-        {!loading && data.length === 0 && (
+        {!loading && tours.length === 0 && (
           <h2>No se encontraron resultados para "{search}"</h2>
         )}
       </div>
