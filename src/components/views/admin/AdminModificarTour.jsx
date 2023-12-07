@@ -14,15 +14,8 @@ import fetchWithToken from '../login/Interceptor';
 import './EstilosAdmin.css';
 
 const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
+  
   clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
 });
 
 const AdminModificarTour = () => {
@@ -238,7 +231,7 @@ const AdminModificarTour = () => {
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        '& .MuiTextField-root': { m: 3, width: '30ch' },
       }}
       noValidate
       autoComplete="off"
@@ -281,18 +274,20 @@ const AdminModificarTour = () => {
           variant="outlined"
           onChange={(e) => setDuracion(e.target.value)}
         />
-        <TextField
+        <div className='adm-modificarTour-descripcion' > 
+        <TextField 
           id="filled-multiline-flexible"
           label="Descripcion"
           multiline
-          maxRows={5}
+          maxRows={4}
           variant="outlined"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
+        </div>
         <div>
           <h2 className='modificar-tour-cat' >Categorías</h2>
-          <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
+          <FormGroup>
             {categorias.map((categoria) => (
               <FormControlLabel
                 key={categoria.id}
@@ -316,7 +311,7 @@ const AdminModificarTour = () => {
         </div>
       </div>
       <div>
-      <h2 className='modificar-tour-cat' >Características</h2>
+      <h2 className='modificar-tour-cat'>Características</h2>
         <FormGroup>
           {caracteristicas.map((caracteristica) => (
             <FormControlLabel
@@ -376,23 +371,36 @@ const AdminModificarTour = () => {
           </div>
         </div>
       )}
-      <div>
-      <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
+      <div className='btn-contenedor' >
+      <div className="btn-upload">
+      <Button 
+       component="label" 
+       onChange={handleFileChange} 
+       variant="contained" 
+       startIcon={<CloudUploadIcon />}
+       >
       Upload file
       <VisuallyHiddenInput  multiple type="file" name='file' />
     </Button>
       </div>
-      
-        <Button onClick={handleSubmit} variant="contained" color="success">
+      <div  className="btn-modificar"  >
+        <Button
+           
+            onClick={handleSubmit} 
+            variant="contained" 
+        >          
           Modificar
         </Button>
-      
-        <div>
+        </div>
+        <div className="btn-cancelar" >
         <Link to={`/admintours`}>
-          <Button variant="outlined" color="error">
-            Cancelar
+          <Button 
+           variant="outlined" 
+           >
+            CANCELAR
           </Button>
         </Link>
+      </div>
       </div>
     </Box>
   );
