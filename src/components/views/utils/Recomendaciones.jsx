@@ -11,6 +11,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`
+
 const StyledRecomendaciones = styled.div `
 
     display: flex;
@@ -68,14 +72,17 @@ const StyledRecomendaciones = styled.div `
       width: 90%;
       margin: 2% 4% 2% 4%;
       padding: 0% 0% 0% 0%;
-  }
+      border-radius: 20px;
+      box-shadow: #80808047 3px 3px 3px 2px;
+      border: 1px solid rgba(230, 230, 230);
+    }
 
     h6{
       display: flex;
       justify-content: flex-start;
       margin-left: 10px;
       text-align: left;
-      font-size: 2vw;
+      font-size: 2rem;
       margin: 1% 1% 2% 5%;       
       color: rgba(36, 48, 110, 1);
   }
@@ -174,7 +181,6 @@ function Recomendaciones() {
     getToursAndFavorites();
   }, []);
 
-
   const handleReload = () => {
     setLoading(true);
     setError(null);
@@ -246,6 +252,14 @@ function Recomendaciones() {
     }
   };
   
+  const truncateDescription = (description) => {
+    const itinerarioIndex = description.indexOf('Itinerario');
+    if (itinerarioIndex !== -1) {
+      return description.substring(0, itinerarioIndex);
+    }
+    return description;
+  };
+
   return (
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
@@ -267,11 +281,9 @@ function Recomendaciones() {
           <div className='recomendaciones'>
             <div className='card-row'>
               {data.map((tour, index) => (
-                <div key={index} className='card-item'>
-                  <Link to={`/detalles/${tour.id}`}>
+                <StyledLink key={index} to={`/detalles/${tour.id}`}>
+                <div className='card-item'>
                   <Card>
-
-                    <Typography variant="h6">{tour.titulo}</Typography>
                     <div className='cabecera-card'>
                       <Typography variant="h6">{tour.titulo}</Typography>
                       {fetchingFavorite[tour.id] ? (
@@ -279,12 +291,12 @@ function Recomendaciones() {
                       ) : (
                         favorites[tour.id] ? (
                           <FavoriteIcon
-                            style={{ color: 'red', cursor: 'pointer' }}
+                            style={{ color: 'red', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
                             onClick={() => handleFavoriteToggle(tour.id)}
                           />
                         ) : (
                           <FavoriteBorderIcon
-                            style={{ color: 'gray', cursor: 'pointer' }}
+                            style={{ color: 'gray', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem"}}
                             onClick={() => handleFavoriteToggle(tour.id)}
                           />
                         )
@@ -298,15 +310,14 @@ function Recomendaciones() {
                         image={tour.linkFotos[0]}
                       />
                     <CardContent className='cardContent'>
-                      <Typography variant="body3">{tour.descripcion}</Typography>
+                      <Typography variant="body3" sx={{fontSize: "1.3rem"}}>{truncateDescription(tour.descripcion)}</Typography>
                       <div className='precio-duracion'>
-                        <Typography variant="body1">Precio: $ {tour.precio}</Typography>
-                        <Typography variant="body1">Duración: {tour.cantHoras}hs</Typography>
+                        <Typography variant="body1" sx={{fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio}</Typography>
                       </div>
                     </CardContent>
                   </Card>
-                  </Link>
                 </div>
+                </StyledLink>
               ))}
             </div>
           </div>

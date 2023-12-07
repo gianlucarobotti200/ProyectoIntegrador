@@ -80,7 +80,7 @@ const AdminCaracteristicas = () => {
                             <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Gestión</TableCell>
                         </TableRow>
                     </TableHead>
-                    ({loading ? (
+                    {loading ? (
                         <div className='loading-container'>
                             <CircularProgress style={{ margin: '2rem 45%', display: "flex", justifyContent: "center" }} color="inherit" />
                         </div>
@@ -96,7 +96,7 @@ const AdminCaracteristicas = () => {
                                 />
                             ))}
                         </TableBody> 
-                    )})
+                    )}
                 </Table>
             </TableContainer>
             <div className="pagination-container">
