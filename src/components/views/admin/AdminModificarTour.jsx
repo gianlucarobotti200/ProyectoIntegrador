@@ -41,6 +41,9 @@ const AdminModificarTour = () => {
   const [tour, setTour] = useState([]);
   const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
+ 
+  
+
 
 
 
@@ -107,7 +110,7 @@ const AdminModificarTour = () => {
       }
 
       const response = await fetchWithToken(`http://localhost:8080/tours/eliminarfoto?id=${id}&url=${imagen}`, {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -158,13 +161,13 @@ const AdminModificarTour = () => {
 
     try {
       const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
-        method: 'PUT',
+        method: 'POST',
         body: formData,
-
-        headers: {'Access-Control-Allow-Origin':'http://localhost:5173'}
-
-
+        
+                
       });
+      
+           
 
       if (response.ok) {
         if (response.ok) {
@@ -210,9 +213,9 @@ const AdminModificarTour = () => {
     if (file.length > 0) {
       try {
         const formData = new FormData();
-
         formData.append('id', id);
 
+        
         for (let i = 0; i < file.length; i++) {
           formData.append('file', file[i]);
         }
@@ -220,6 +223,7 @@ const AdminModificarTour = () => {
         const response = await fetchWithToken('http://localhost:8080/s3/uploadFile', {
           method: 'POST',
           body: formData,
+          
         });
 
         if (response.ok) {
