@@ -151,6 +151,7 @@ function Recomendaciones() {
       try {
         const toursResponse = await fetchWithToken('http://localhost:8080/tours/todos');
         const toursData = await toursResponse.json();
+        setData(toursData);
   
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
@@ -161,7 +162,7 @@ function Recomendaciones() {
           favoriteIds[favorite.idTour] = true;
         });
   
-        setData(toursData);
+        
         setFavorites(favoriteIds); 
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
@@ -181,8 +182,6 @@ function Recomendaciones() {
     getTours();
   };
 
-  console.log(data);
-  console.log('Datos obtenidos.');
 
   const handleFavoriteToggle = async (idTour) => {
     try {

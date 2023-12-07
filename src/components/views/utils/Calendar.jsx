@@ -17,12 +17,12 @@ export default function Calendar({ tourId, onDateChange }) {
 
   const fetchReservedDates = async () => {
     try {
-      // Realizar la llamada a la API para obtener las fechas reservadas
+      
       const response = await fetchWithToken(`http://localhost:8080/reserva/${tourId}/fechasOcupadas`);
 
       if (response.ok) {
         const data = await response.json();
-        setReservedDates(data.reservedDates); // Ajusta la estructura de acuerdo a la respuesta de tu API
+        setReservedDates(data.reservedDates);
       }
     } catch (error) {
       console.error('Error al cargar fechas reservadas:', error);
@@ -30,7 +30,7 @@ export default function Calendar({ tourId, onDateChange }) {
   };
 
   const shouldDisableDate = (date) => {
-    // Verificar si la fecha está en la lista de fechas reservadas
+    
     return reservedDates.some(
       (reservedDate) =>
         date.isSame(reservedDate.fechaInicio) || date.isBetween(reservedDate.fechaInicio, reservedDate.fechaFinalizacion)

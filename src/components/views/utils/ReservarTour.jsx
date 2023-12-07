@@ -143,59 +143,63 @@ const ReservaTour = () => {
     };
     
     const handleReserveClick = async () => {
-          if (!fechaInicio || !fechaFin) {
+        // Verificación de fechas seleccionadas
+        if (!fechaInicio || !fechaFin) {
             Swal.fire({
                 title: "Oops",
-                text: "Debe Seleccionar Fecha de Inicio Y Fin",
+                text: "Debe seleccionar fecha de inicio y fin",
                 icon: "error"
-              });
-          return;
+            });
+            return;
         }
-      
+
+        // Obtención del ID del cliente desde el token decodificado
         const clienteID = decodeToken(localStorage.getItem('token')).id;
 
+        // Formateo de las fechas
         const formattedFechaInicio = formatDate(fechaInicio);
         const formattedFechaFin = formatDate(fechaFin);
 
+        // Datos para enviar en la reserva
         const reservaData = {
-          idCliente: clienteID,
-          idTour: tourDetails.id,
-          fechaInicio: formattedFechaInicio,
-          fechaFin: formattedFechaFin
+            idCliente: clienteID,
+            idTour: tourDetails.id,
+            fechaInicio: formattedFechaInicio,
+            fechaFin: formattedFechaFin
         };
-        console.log(reservaData)
-    
-        
-        try {
-          const response = await fetchWithToken('http://localhost:8080/reserva', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reservaData)
-          });
-    
-          if (response.ok) {
-            
-            setIsReservaOpen(false);
-          } else {
-            
-          }
-        } catch (error) {
-          console.error('Error al realizar la reserva:', error);
-          
-        }
-      };
 
-      const formatDate = (date) => {
+        try {
+            // Llamada a la API para realizar la reserva
+            const response = await fetchWithToken('http://localhost:8080/reserva', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reservaData)
+            });
+
+            if (response.ok) {
+                setIsReservaOpen(false);
+            } else {
+                setIsReservaOpen(true);
+            }
+        } catch (error) {
+            console.error('Error al realizar la reserva:', error);
+            // Manejo de errores en caso de falla en la reserva
+        }
+    };
+
+     // Función para formatear fechas
+     const formatDate = (date) => {
         const isoString = new Date(date).toISOString();
         return isoString.split('T')[0];
-      };
+    };
 
-      const handleDateChange = (dates) => {
+    // Función para manejar cambios en las fechas
+    const handleDateChange = (dates) => {
         setFechaInicio(dates[0]);
         setFechaFin(dates[1]);
-      }; 
+    };  
 
     return (
         <StyledDetalles>
