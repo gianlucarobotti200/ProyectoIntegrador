@@ -20,7 +20,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function BasicModalPoliticas({onPoliticasAdded}) {
+export default function BasicModalPoliticas({ onPoliticasAdded }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -34,23 +34,28 @@ export default function BasicModalPoliticas({onPoliticasAdded}) {
 
   return (
     <React.Fragment>
-      <div>
-      <Button variant="outlined" component={Link} to="/admintours">
-        Admin Tours
-      </Button>
-      <Button variant="outlined" component={Link} to="/admincategorias">
-        Admin Categorías
-      </Button>
+      <div className='cont-ppal'>
+        <div>
+          <Button className='btn-car1' variant="outlined" component={Link} to="/admintours">
+            ADMIN TOURS
+          </Button>
+        </div>
+        <div>
+          <Button className='btn-car1' variant="outlined" component={Link} to="/admincaracteristicas">
+            ADMIN CARACTERÍSTICAS
+          </Button>
+        </div>
+        <div>
+          <Button className='btn-car1' variant="outlined" component={Link} to="/admincategorias">
+            ADMIN CATEGORÍAS
+          </Button>
+        </div>
+        <div>
+          <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
+            Agregar Política
+          </Button>
+        </div>
       </div>
-      <div>
-      <Button variant="outlined" component={Link} to="/admincaracteristicas">
-        Admin Caracteristicas
-      </Button>
-      </div>
-
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Agregar Politica
-      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -72,12 +77,12 @@ export default function BasicModalPoliticas({onPoliticasAdded}) {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-        {/* <Box > */}
-            <FormPoliticas onCloseModal={handleClose}/>   
-        {/* </Box> */}
-          
+          {/* <Box > */}
+          <FormPoliticas onCloseModal={handleClose} />
+          {/* </Box> */}
+
         </DialogContent>
-        
+
       </BootstrapDialog>
     </React.Fragment>
   );
