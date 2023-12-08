@@ -12,13 +12,13 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import fetchWithToken from '../login/Interceptor'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
-import fetchWithToken from '../login/Interceptor';
 
 const StyledDetalles = styled.div`
 
@@ -195,7 +195,6 @@ const StyledDetalles = styled.div`
   }
 `
 
-
 const StyledImageList = styled(ImageList)`
   
 `
@@ -358,7 +357,15 @@ const Detalles = () => {
               <Stack>
                 {tourDetails.caracteristicas &&
                   tourDetails.caracteristicas.map((caracteristica) => (
-                    <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
+                    <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" icon={<img src={caracteristica.icono} alt="Icono de característica" style={{width: "1.2rem"}}/>}/>
+                  ))}
+              </Stack>
+            </div>
+            <div>
+              <Stack>
+                {tourDetails.categorias &&
+                  tourDetails.categorias.map((categoria) => (
+                    <Chip key={categoria.id} label={categoria.nombre}  />
                   ))}
               </Stack>
             </div>

@@ -85,20 +85,24 @@ const FormTours = ({ onCloseModal }) => {
                 formData.append('file', file[i]);
             }
         }
-      
         try {
             const response = await fetchWithToken('http://localhost:8080/tours', {
                 method: 'POST',
                 body: formData,
+
             });
-    
+
+
+            console.log(response)
+            const tourDto = await response.json();
             if (response.ok) {
+                console.log(tourDto)
                 if (response.ok) {
                     console.log('El formulario se ha enviado exitosamente.');
                 }
 
                 // Enviar categorías seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/categorias`, {
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/categorias`, {
 
                     method: 'POST',
                     headers: {
@@ -108,13 +112,23 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${jsonResponse.id}/caracteristicas`, {
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/caracteristicas`, {
 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(caracteristicasSeleccionadas.map((category) => category.id)),
+                });
+
+                // Enviar características seleccionadas
+                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/politicas`, {
+
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(politicasSeleccionadas.map((politica) => politica.id)),
                 });
 
                 console.log('El tour se ha agregado exitosamente.');
@@ -125,30 +139,9 @@ const FormTours = ({ onCloseModal }) => {
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }
-        if (imagenes && imagenes.length > 0) {
-            formDataImagenes = new FormData();
-            for (let i = 0; i < imagenes.length; i++) {
-                formDataImagenes.append('file', imagenes[i]);
-            }
-        }
-        try {
-            const imageResponse = fetchWithToken(`http://localhost:8080/tours/subirfotos/${id}`, {
-                method: 'POST',
-                body: formDataImagenes,
-            });
-            if (imageResponse.ok) {
-                console.log('Las imágenes se han agregado exitosamente.');
-            } else {
-                console.error('Error al subir las imágenes.');
-            }
-        }
-        catch (error) {
-            console.error('Error al subir las imágenes:', error);
-        }
-    };
-    
 
-    
+    };
+
 
     return (
         <>
@@ -223,33 +216,33 @@ const FormTours = ({ onCloseModal }) => {
                             ))}
                         </FormGroup>
                     </div>
-                
+
 
                 </div>
-                    <div>
-                        <h5>Politicas</h5>
-                        <FormGroup>
-                            {politicas.map((politica) => (
-                                <FormControlLabel
-                                    key={politica.id}
-                                    control={
-                                        <Checkbox
-                                            inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
-                                            checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
-                                                } else {
-                                                    setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
-                                                }
-                                            }}
-                                        />
-                                    }
-                                    label={politica.nombre}
-                                />
-                            ))}
-                        </FormGroup>
-                    </div>
+                <div>
+                    <h5>Politicas</h5>
+                    <FormGroup>
+                        {politicas.map((politica) => (
+                            <FormControlLabel
+                                key={politica.id}
+                                control={
+                                    <Checkbox
+                                        inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
+                                        checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
+                                            } else {
+                                                setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
+                                            }
+                                        }}
+                                    />
+                                }
+                                label={politica.nombre}
+                            />
+                        ))}
+                    </FormGroup>
+                </div>
 
 
                 <div className='row2'>

@@ -52,8 +52,13 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
       </Button>
       </div>
       <div>
+      <Button className='btn-car1'  variant="outlined" component={Link} to="/adminpoliticas">
+        ADMIN POLITICAS
+      </Button>
+      </div>
+      <div>
       <Button className='btn-car1'  variant="outlined" onClick={handleClickOpen}>
-        AGREGAR CATEGORÍA
+        Agregar Categoría
       </Button>
       </div>
        </div>
@@ -84,6 +89,6 @@ export default function BasicModalCategorias({onCategoriaAdded}) {
         </DialogContent>        
       </BootstrapDialog>
     </React.Fragment>
-    </>
+    
   );
 }

@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import FormTours from '../FormTours';
 // Importa el archivo CSS de estilos externos
 import './EstilosBasicModal.css';
+import './EstilosAdmin.css';
+import './EstilosModal.css';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -37,23 +39,29 @@ export default function BasicModal({ onTourAdded }) {
 
   return (
     <React.Fragment>
-      <div className='cont-ppal' >
-      <div className='btn-car1'>
-          <Button variant="outlined" component={Link} to="/admincaracteristicas">
-            ADMIN CARACTERÍSTICAS
-          </Button>
-        </div>
-        <div className='btn-tour3'>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            AGREGAR TOURS
-          </Button>
-        </div>
-        <div className='btn-cat2'>
-          <Button variant="outlined" component={Link} to="/admincategorias">
-            ADMIN CATEGORÍAS
-          </Button>
-        </div>
+      <div className='cont-ppal ' >
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admincaracteristicas">
+        ADMIN CARACTERÍSTICAS
+      </Button>
       </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/adminpoliticas">
+        ADMIN POLITICAS
+      </Button>
+      </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" component={Link} to="/admincategorias">
+        ADMIN CATEGORÍAS
+      </Button>
+      </div>
+      <div>
+      <Button className='btn-car1' variant="outlined" onClick={handleClickOpen}>
+        Agregar Tour
+      </Button>
+      </div>   
+      </div>
+      
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
