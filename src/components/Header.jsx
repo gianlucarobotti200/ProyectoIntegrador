@@ -115,40 +115,40 @@ function Header() {
     const [initials, setInitials] = React.useState('');
     let decodedData = null
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [rol,setRol] = useState('');
+    const [rol, setRol] = useState('');
 
     const decodeToken = (token) => {
         const tokenParts = token.split('.');
         if (tokenParts.length !== 3) {
             throw new Error('Token inválido');
         }
-    
+
         const payloadBase64 = tokenParts[1];
         const decodedPayload = atob(payloadBase64);
-    
+
         const parsedPayload = JSON.parse(decodedPayload);
         setRol(parsedPayload.role)
         console.log(decodedPayload)
         console.log(decodedPayload.role)
         return parsedPayload;
     };
-    
-    
+
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            setInitials(<PersonIcon />); 
+            setInitials(<PersonIcon />);
         } else {
             try {
                 decodedData = decodeToken(localStorage.getItem('token'));
                 if (decodedData.nombre) {
-                    const nombre = decodedData.nombre
-                    const apellido = decodedData.apellido
+                    const nombre = decodedData.nombre;
+                    const apellido = decodedData.apellido;
                     const firstInitial = nombre ? nombre[0].charAt(0) : '';
                     const lastInitial = apellido ? apellido[0].charAt(0) : '';
                     const initials = `${firstInitial}${lastInitial}`.toUpperCase();
                     setInitials(initials);
-                }        
+                }
             } catch (error) {
                 console.error('Error al decodificar el token:', error.message);
             }
@@ -169,106 +169,109 @@ function Header() {
     }, [isLoggedIn, navigate]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); 
+        localStorage.removeItem('token');
     };
 
-    
+
     return (
         <><StyledHeader>
-                    <nav>
-                        <div className='logo-lema'>
-                            <Link className='nav-a' to="/inicio">
-                                <img className='logo' src='./src/components/img/logo-vector-blanco.png' alt='Logo SectArg tour' />
-                            </Link>
-                            <p className='lema'>Más que un tour</p>
-                        </div>
-                        <React.Fragment>
-                        <div className='div-avatar'>
+            <nav>
+                <div className='logo-lema'>
+                    <Link className='nav-a' to="/inicio">
+                        <img className='logo' src='./src/components/img/logo-vector-blanco.png' alt='Logo SectArg tour' />
+                    </Link>
+                    <p className='lema'>Más que un tour</p>
+                </div>
+                <React.Fragment>
+                    <div className='div-avatar'>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                                
-                                <Tooltip title="Account settings">
-                                    <IconButton
-                                        onClick={handleClick}
-                                        size="small"
-                                        sx={{ ml: 2 }}
-                                        aria-controls={open ? 'account-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? 'true' : undefined}
-                                    >
-                                        <Avatar sx={{ width: 40, height: 40, backgroundColor: '#ffffff', color:'#7DB5DC' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+
+                            <Tooltip title="Account settings">
+                                <IconButton
+                                    onClick={handleClick}
+                                    size="small"
+                                    sx={{ ml: 2 }}
+                                    aria-controls={open ? 'account-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                >
+                                    <Avatar sx={{ width: 40, height: 40, backgroundColor: '#ffffff', color: '#7DB5DC' }}>
                                         {initials}
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                            <Menu
-                                anchorEl={anchorEl}
-                                id="account-menu"
-                                open={open}
-                                onClose={handleClose}
-                                onClick={handleClose}
-                                PaperProps={{
-                                    elevation: 0,
-                                    sx: {
-                                        overflow: 'visible',
-                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                        mt: 1.5,
-                                        '& .MuiAvatar-root': {
-                                            width: 32,
-                                            height: 32,
-                                            ml: -0.5,
-                                            mr: 1,
-                                        },
-                                        '&:before': {
-                                            content: '""',
-                                            display: 'block',
-                                            position: 'absolute',
-                                            top: 0,
-                                            right: 14,
-                                            width: 10,
-                                            height: 10,
-                                            bgcolor: 'background.paper',
-                                            transform: 'translateY(-50%) rotate(45deg)',
-                                            zIndex: 0,
-                                        },
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                        <Menu
+                            anchorEl={anchorEl}
+                            id="account-menu"
+                            open={open}
+                            onClose={handleClose}
+                            onClick={handleClose}
+                            PaperProps={{
+                                elevation: 0,
+                                sx: {
+                                    overflow: 'visible',
+                                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                    mt: 1.5,
+                                    '& .MuiAvatar-root': {
+                                        width: 32,
+                                        height: 32,
+                                        ml: -0.5,
+                                        mr: 1,
                                     },
-                                }}
-                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                            >
-                                {isLoggedIn ? (
-                                    [
-                                        <MenuItem key="favorite" component={Link} to="/favoritos">
+                                    '&:before': {
+                                        content: '""',
+                                        display: 'block',
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 14,
+                                        width: 10,
+                                        height: 10,
+                                        bgcolor: 'background.paper',
+                                        transform: 'translateY(-50%) rotate(45deg)',
+                                        zIndex: 0,
+                                    },
+                                },
+                            }}
+                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                        >
+                            {isLoggedIn ? (
+                                [
+                                    <MenuItem key="favorite" component={Link} to="/favoritos">
                                         <Favorite /> Mis favoritos
-                                </MenuItem>,
-                                rol == 1 && (
-                                    <MenuItem key="admin" component={Link} to="/admintours">
-                                      <SupervisorAccountIcon /> Administrador
-                                    </MenuItem>
-                                  ),
+                                    </MenuItem>,
+                                    <MenuItem key="reservas" component={Link} to="/ReservasUsuario">
+                                        <SupervisorAccountIcon /> Reservas
+                                    </MenuItem>,
+                                    rol == 1 && (
+                                        <MenuItem key="admin" component={Link} to="/admintours">
+                                            <SupervisorAccountIcon /> Administrador
+                                        </MenuItem>
+                                    ),
                                     <MenuItem key="logout" onClick={handleLogout}>
                                         <LogoutRoundedIcon /> Cerrar sesión
                                     </MenuItem>
-                                    
-                                    ]
-                                ) : (
-                                    [
+
+                                ]
+                            ) : (
+                                [
                                     <MenuItem key="login" component={Link} to="/login">
                                         <LoginRoundedIcon /> Iniciar sesión
                                     </MenuItem>,
                                     <MenuItem key="registro" component={Link} to="/registro" >
                                         <AppRegistrationRoundedIcon /> Registrarse
                                     </MenuItem>]
-                                )}
-                                
-                                
-                            </Menu>
-                        </div>
-                    </React.Fragment>
-                        
-                    </nav>
-            </StyledHeader></>
+                            )}
+
+
+                        </Menu>
+                    </div>
+                </React.Fragment>
+
+            </nav>
+        </StyledHeader></>
     );
 }
 

@@ -163,22 +163,25 @@ const Resultados = () => {
         if (!response.ok) {
           throw new Error(`Error al cargar los tours: ${response.statusText}`);
         }
-
+    
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
-
+    
         const favoriteIds = {};
-        favoritesData.forEach(favorite => {
+        favoritesData.forEach((favorite) => {
           favoriteIds[favorite.idTour] = true;
         });
-
+    
         const data = await response.json();
-        const filteredTours = data.filter(
-          (tour) =>
-            tour.titulo.toLowerCase().includes(search.toLowerCase()) ||
-            tour.provincia.toLowerCase().includes(search.toLowerCase())
-        );
+        const filteredTours = data.filter((tour) => {
+          const lowerSearch = search.toLowerCase();
+          return (
+            tour.titulo.toLowerCase().includes(lowerSearch) ||
+            tour.provincia.toLowerCase().includes(lowerSearch) ||
+            tour.categorias.some((categoria) => categoria.nombre.toLowerCase() === lowerSearch)
+          );
+        });
         setTours(filteredTours);
         setFavorites(favoriteIds);
       } catch (error) {
