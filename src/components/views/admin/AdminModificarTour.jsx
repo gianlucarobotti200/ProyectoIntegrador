@@ -278,7 +278,7 @@ const AdminModificarTour = () => {
           label="Precio"
           type="number"
           value={precio}
-          variant="filled"
+          variant="outlined"
           onChange={(e) => setPrecio(e.target.value)}
         />
         <TextField
