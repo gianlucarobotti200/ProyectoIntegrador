@@ -141,61 +141,61 @@ const ReservaTour = () => {
 
         window.open(twitterUrl, '_blank');
     };
-    
+
     const handleReserveClick = async () => {
-          if (!fechaInicio || !fechaFin) {
+        if (!fechaInicio || !fechaFin) {
             Swal.fire({
                 title: "Oops",
                 text: "Debe Seleccionar Fecha de Inicio Y Fin",
                 icon: "error"
-              });
-          return;
+            });
+            return;
         }
-      
+
         const clienteID = decodeToken(localStorage.getItem('token')).id;
 
         const formattedFechaInicio = formatDate(fechaInicio);
         const formattedFechaFin = formatDate(fechaFin);
 
         const reservaData = {
-          idCliente: clienteID,
-          idTour: tourDetails.id,
-          fechaInicio: formattedFechaInicio,
-          fechaFin: formattedFechaFin
+            idCliente: clienteID,
+            idTour: tourDetails.id,
+            fechaInicio: formattedFechaInicio,
+            fechaFin: formattedFechaFin
         };
         console.log(reservaData)
-    
-        
-        try {
-          const response = await fetchWithToken('http://localhost:8080/reserva', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reservaData)
-          });
-    
-          if (response.ok) {
-            
-            setIsReservaOpen(false);
-          } else {
-            
-          }
-        } catch (error) {
-          console.error('Error al realizar la reserva:', error);
-          
-        }
-      };
 
-      const formatDate = (date) => {
+
+        try {
+            const response = await fetchWithToken('http://localhost:8080/reserva', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reservaData)
+            });
+
+            if (response.ok) {
+
+                setIsReservaOpen(false);
+            } else {
+
+            }
+        } catch (error) {
+            console.error('Error al realizar la reserva:', error);
+
+        }
+    };
+
+    const formatDate = (date) => {
         const isoString = new Date(date).toISOString();
         return isoString.split('T')[0];
-      };
+    };
 
-      const handleDateChange = (dates) => {
+    const handleDateChange = (dates) => {
         setFechaInicio(dates[0]);
         setFechaFin(dates[1]);
-      }; 
+    };
 
     return (
         <StyledDetalles>
@@ -283,9 +283,21 @@ const ReservaTour = () => {
                             </Stack>
                         </div>
                     </section>
-                    <div>
-                        <Calendar tourId={id} onDateChange={handleDateChange}/>
-                        <Button onClick={handleReserveClick} style={{ margin: "0 45vw" }} variant="contained">
+                    <div style={{display: "flex", width: "100wh", justifyContent: 'space-around', alignItems:"center", paddingLeft:"15rem"}}>
+                        <Calendar style={{display: "flex", justifyContent: 'center',alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} />
+                        <Button onClick={handleReserveClick} style={{
+                            color: '#090909',
+                            padding: '0.7em 1em',
+                            fontSize: '18px',
+                            width: "180px",
+                            marginTop: "40px",
+                            borderRadius: '0.5em',
+                            background: '#B3D6E1',
+                            border: '1px solid #e8e8e8',
+                            transition: 'all 0.3s',
+                            boxShadow: '6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff',
+                            marginRight: '20rem',
+                        }} variant="contained">
                             RESERVAR
                         </Button>
                     </div>
