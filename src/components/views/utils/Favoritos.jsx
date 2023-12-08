@@ -11,7 +11,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
 
-const StyledRecomendaciones = styled.div `
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`
+
+const StyledRecomendaciones = styled.div`
 
     display: flex;
     flex-direction: row;
@@ -21,6 +25,7 @@ const StyledRecomendaciones = styled.div `
     .div-recomendaciones{
       display: flex;
       flex-wrap: wrap;
+      flex-direction: column;
       justify-content: space-between; 
       width: 90vw;
       gap: 1px;
@@ -134,249 +139,247 @@ const StyledRecomendaciones = styled.div `
 }`
 
 function Favoritos() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [favorites, setFavorites] = useState({});
-    const [fetchingFavorite, setFetchingFavorite] = useState(false);
-  
-    useEffect(() => {
-      const getFavoriteTours = async () => {
-        try {
-          const idUsuario = decodeToken(localStorage.getItem('token')).id;
-          const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
-          const favoritesData = await favoritesResponse.json();
-    
-          const favoriteIds = {};
-          favoritesData.forEach(favorite => {
-            favoriteIds[favorite.idTour] = true;
-          });
-    
-          setFavorites(favoriteIds);
-  
-          // Filtrar solo los tours que están marcados como favoritos
-          const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
-            const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
-            const tourData = await tourResponse.json();
-            return tourData;
-          }));
-    
-          setData(favoriteTours);
-        } catch (error) {
-          console.error('Error al obtener los datos de la API:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-    
-      getFavoriteTours();
-    }, []);
-  
-    const handleFavoriteToggle = async (idTour) => {
-        try {
-          const idUsuario = decodeToken(localStorage.getItem('token')).id;
-          let response;
-      
-          setFetchingFavorite((prevFetching) => ({
-            ...prevFetching,
-            [idTour]: true,
-          }));
-      
-          if (favorites[idTour]) {
-            // Eliminar de favoritos
-            response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                idUsuario: idUsuario,
-                idTour: idTour,
-              }),
-            });
-          } else {
-            // Agregar a favoritos
-            response = await fetchWithToken(`http://localhost:8080/favoritos`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                idUsuario: idUsuario,
-                idTour: idTour,
-              }),
-            });
-          }
-      
-          if (!response.ok) {
-            throw new Error('Error al manejar favorito');
-          }
-      
-          // Actualizar lista de tours favoritos después de cambiar el estado del favorito
-          const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
-          const updatedFavoritesData = await favoritesResponse.json();
-      
-          const updatedFavoriteIds = {};
-          updatedFavoritesData.forEach((favorite) => {
-            updatedFavoriteIds[favorite.idTour] = true;
-          });
-      
-          setFavorites(updatedFavoriteIds);
-      
-          // Filtrar y actualizar los tours marcados como favoritos
-          const favoriteTours = await Promise.all(updatedFavoritesData.map(async (favorite) => {
-            const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
-            const tourData = await tourResponse.json();
-            return tourData;
-          }));
-      
-          setData(favoriteTours);
-      
-          setFetchingFavorite((prevFetching) => ({
-            ...prevFetching,
-            [idTour]: false,
-          }));
-      
-        } catch (error) {
-          console.error('Error al manejar favorito:', error);
-          setFetchingFavorite((prevFetching) => ({
-            ...prevFetching,
-            [idTour]: false,
-          }));
-        }
-      };
-      
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState({});
+  const [fetchingFavorite, setFetchingFavorite] = useState(false);
 
-//   const handleFavoriteToggle = async (idTour) => {
-//     try {
-//       const idUsuario = decodeToken(localStorage.getItem('token')).id;
-//       let response;
-  
-//       if (favorites[idTour]) {
-        
-//         response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({
-//             idUsuario: idUsuario,
-//             idTour: idTour,
-//           }),
-          
-//         });
+  useEffect(() => {
+    const getFavoriteTours = async () => {
+      try {
+        const idUsuario = decodeToken(localStorage.getItem('token')).id;
+        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesData = await favoritesResponse.json();
 
-  
-//         if (!response.ok) {
-//           throw new Error('Error al eliminar de favoritos');
-//         }
+        const favoriteIds = {};
+        favoritesData.forEach(favorite => {
+          favoriteIds[favorite.idTour] = true;
+        });
 
-//         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
-//         const favoritesData = await favoritesResponse.json();
+        setFavorites(favoriteIds);
 
-//         const favoriteIds = {};
-//         favoritesData.forEach(favorite => {
-//           favoriteIds[favorite.idTour] = true;
-//         });
-  
-//         setFavorites(favoriteIds);
+        // Filtrar solo los tours que están marcados como favoritos
+        const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
+          const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+          const tourData = await tourResponse.json();
+          return tourData;
+        }));
 
-//         // Filtramos nuevamente los tours según los favoritos actualizados
-//         const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
-//           const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
-//           const tourData = await tourResponse.json();
-//           return tourData;
-//         }));
-  
-//         setData(favoriteTours);
+        setData(favoriteTours);
+      } catch (error) {
+        console.error('Error al obtener los datos de la API:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//       } else {
-//         response = await fetchWithToken(`http://localhost:8080/favoritos`, {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({
-//             idUsuario: idUsuario,
-//             idTour: idTour,
-//           }),
-//         });
-  
-//         if (!response.ok) {
-//           throw new Error('Error al marcar como favorito');
-//         }
-//       }
-  
-//       setFavorites((prevFavorites) => {
-//         const updatedFavorites = { ...prevFavorites };
-//         updatedFavorites[idTour] = !updatedFavorites[idTour];
-//         return updatedFavorites;
-//       });
-  
-//     } catch (error) {
-//       console.error('Error al manejar favorito:', error);
-//     }
-//   };
-  
+    getFavoriteTours();
+  }, []);
+
+  const handleFavoriteToggle = async (idTour) => {
+    try {
+      const idUsuario = decodeToken(localStorage.getItem('token')).id;
+      let response;
+
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: true,
+      }));
+
+      if (favorites[idTour]) {
+        // Eliminar de favoritos
+        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            idUsuario: idUsuario,
+            idTour: idTour,
+          }),
+        });
+      } else {
+        // Agregar a favoritos
+        response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            idUsuario: idUsuario,
+            idTour: idTour,
+          }),
+        });
+      }
+
+      if (!response.ok) {
+        throw new Error('Error al manejar favorito');
+      }
+
+      // Actualizar lista de tours favoritos después de cambiar el estado del favorito
+      const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+      const updatedFavoritesData = await favoritesResponse.json();
+
+      const updatedFavoriteIds = {};
+      updatedFavoritesData.forEach((favorite) => {
+        updatedFavoriteIds[favorite.idTour] = true;
+      });
+
+      setFavorites(updatedFavoriteIds);
+
+      // Filtrar y actualizar los tours marcados como favoritos
+      const favoriteTours = await Promise.all(updatedFavoritesData.map(async (favorite) => {
+        const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+        const tourData = await tourResponse.json();
+        return tourData;
+      }));
+
+      setData(favoriteTours);
+
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: false,
+      }));
+
+    } catch (error) {
+      console.error('Error al manejar favorito:', error);
+      setFetchingFavorite((prevFetching) => ({
+        ...prevFetching,
+        [idTour]: false,
+      }));
+    }
+
+
+  };
+
+  const truncateDescription = (description) => {
+    const itinerarioIndex = description.indexOf('Itinerario');
+    if (itinerarioIndex !== -1) {
+      return description.substring(0, itinerarioIndex);
+    }
+    return description;
+  };
+  //   const handleFavoriteToggle = async (idTour) => {
+  //     try {
+  //       const idUsuario = decodeToken(localStorage.getItem('token')).id;
+  //       let response;
+
+  //       if (favorites[idTour]) {
+
+  //         response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             idUsuario: idUsuario,
+  //             idTour: idTour,
+  //           }),
+
+  //         });
+
+
+  //         if (!response.ok) {
+  //           throw new Error('Error al eliminar de favoritos');
+  //         }
+
+  //         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+  //         const favoritesData = await favoritesResponse.json();
+
+  //         const favoriteIds = {};
+  //         favoritesData.forEach(favorite => {
+  //           favoriteIds[favorite.idTour] = true;
+  //         });
+
+  //         setFavorites(favoriteIds);
+
+  //         // Filtramos nuevamente los tours según los favoritos actualizados
+  //         const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
+  //           const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+  //           const tourData = await tourResponse.json();
+  //           return tourData;
+  //         }));
+
+  //         setData(favoriteTours);
+
+  //       } else {
+  //         response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             idUsuario: idUsuario,
+  //             idTour: idTour,
+  //           }),
+  //         });
+
+  //         if (!response.ok) {
+  //           throw new Error('Error al marcar como favorito');
+  //         }
+  //       }
+
+  //       setFavorites((prevFavorites) => {
+  //         const updatedFavorites = { ...prevFavorites };
+  //         updatedFavorites[idTour] = !updatedFavorites[idTour];
+  //         return updatedFavorites;
+  //       });
+
+  //     } catch (error) {
+  //       console.error('Error al manejar favorito:', error);
+  //     }
+  //   };
+
 
   return (
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
-        <div className='div-h2'>
-          <h2>Mis favoritos</h2>
-        </div>
-
-        {loading ? ( 
+        <h2>Mis favoritos</h2>
+        {loading ? (
           <div className='loading-container'>
-            <CircularProgress color="inherit" style={{position: "absolute", top: "95%", right: "50%"}}/>
+            <CircularProgress color="inherit" style={{}} />
           </div>
         ) : (
           <div className='recomendaciones'>
             <div className='card-row'>
               {data.map((tour, index) => (
-                <div key={index} className='card-item'>
-                  <Card>
-                    <div className='cabecera-card'>
-                      <Typography variant="h6">{tour.titulo}</Typography>
-                      {fetchingFavorite[tour.id] ? (
-                      <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
-                      ) : (
-                        favorites[tour.id] ? (
-                          <FavoriteIcon
-                            style={{ color: 'red', cursor: 'pointer' }}
-                            onClick={() => handleFavoriteToggle(tour.id)}
-                          />
+                <StyledLink key={index} to={`/detalles/${tour.id}`}>
+                  <div className='card-item'>
+                    <Card>
+                      <div className='cabecera-card'>
+                        <Typography variant="h6">{tour.titulo}</Typography>
+                        {fetchingFavorite[tour.id] ? (
+                          <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
                         ) : (
-                          <FavoriteBorderIcon
-                            style={{ color: 'gray', cursor: 'pointer' }}
-                            onClick={() => handleFavoriteToggle(tour.id)}
-                          />
-                        )
-                      )}
+                          favorites[tour.id] ? (
+                            <FavoriteIcon
+                              style={{ color: 'red', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              onClick={() => handleFavoriteToggle(tour.id)}
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              style={{ color: 'gray', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              onClick={() => handleFavoriteToggle(tour.id)}
+                            />
+                          )
+                        )}
 
-                    </div>
-                    <Link to={`/detalles/${tour.id}`}>
+                      </div>
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
                         height="140"
                         image={tour.linkFotos[0]}
                       />
-                    </Link>
-                    <CardContent className='cardContent'>
-                      <Typography variant="body3">
-                        {tour.descripcion}
-                      </Typography >
-                      <div className='precio-duracion'>
-                        <Typography variant="body1">
-                          Precio: $ {tour.precio}
-                        </Typography>
-                        <Typography variant="body1">
-                          Duración: {tour.cantHoras}hs
-                        </Typography>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                      <CardContent className='cardContent'>
+                        <Typography variant="body3" sx={{ fontSize: "1.3rem" }}>{truncateDescription(tour.descripcion)}</Typography>
+                        <div className='precio-duracion'>
+                          <Typography variant="body1" sx={{ fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio}</Typography>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </StyledLink>
               ))}
             </div>
           </div>

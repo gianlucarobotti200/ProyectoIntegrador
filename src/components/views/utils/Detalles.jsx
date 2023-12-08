@@ -20,8 +20,6 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 
-
-
 const StyledDetalles = styled.div`
 
   .div-modal1 {
@@ -197,7 +195,6 @@ const StyledDetalles = styled.div`
   }
 `
 
-
 const StyledImageList = styled(ImageList)`
   
 `
@@ -360,7 +357,15 @@ const Detalles = () => {
               <Stack>
                 {tourDetails.caracteristicas &&
                   tourDetails.caracteristicas.map((caracteristica) => (
-                    <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
+                    <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" icon={<img src={caracteristica.icono} alt="Icono de característica" style={{width: "1.2rem"}}/>}/>
+                  ))}
+              </Stack>
+            </div>
+            <div>
+              <Stack>
+                {tourDetails.categorias &&
+                  tourDetails.categorias.map((categoria) => (
+                    <Chip key={categoria.id} label={categoria.nombre}  />
                   ))}
               </Stack>
             </div>
