@@ -32,7 +32,7 @@ const AdminCategorias = () => {
     const getCategorias = async () => {
         try {
             setLoading(true);
-            const response = await fetchWithToken("http://localhost:8080/categorias");
+            const response = await fetch("http://localhost:8080/categorias");
             const jsonData = await response.json();
 
             setCategorias(jsonData);

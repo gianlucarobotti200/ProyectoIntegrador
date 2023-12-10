@@ -155,7 +155,7 @@ function Favoritos() {
     const getFavoriteTours = async () => {
       try {
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
-        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesResponse = await fetch(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
 
         const favoriteIds = {};
@@ -167,7 +167,7 @@ function Favoritos() {
 
         // Filtrar solo los tours que están marcados como favoritos
         const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
-          const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+          const tourResponse = await fetch(`http://localhost:8080/tours/${favorite.idTour}`);
           const tourData = await tourResponse.json();
           return tourData;
         }));
@@ -195,7 +195,7 @@ function Favoritos() {
 
       if (favorites[idTour]) {
         // Eliminar de favoritos
-        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+        response = await fetch(`http://localhost:8080/favoritos/eliminarFavoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ function Favoritos() {
       }
 
       // Actualizar lista de tours favoritos después de cambiar el estado del favorito
-      const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+      const favoritesResponse = await fetch(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
       const updatedFavoritesData = await favoritesResponse.json();
 
       const updatedFavoriteIds = {};
@@ -236,7 +236,7 @@ function Favoritos() {
 
       // Filtrar y actualizar los tours marcados como favoritos
       const favoriteTours = await Promise.all(updatedFavoritesData.map(async (favorite) => {
-        const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+        const tourResponse = await fetch(`http://localhost:8080/tours/${favorite.idTour}`);
         const tourData = await tourResponse.json();
         return tourData;
       }));

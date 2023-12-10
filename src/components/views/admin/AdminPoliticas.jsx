@@ -33,7 +33,7 @@ const AdminPoliticas = () => {
     const getPoliticas = async () => {
         try {
             setLoading(true)
-            const response = await fetchWithToken("http://localhost:8080/politicas");
+            const response = await fetch("http://localhost:8080/politicas");
             const jsonData = await response.json();
 
             setPoliticas(jsonData);

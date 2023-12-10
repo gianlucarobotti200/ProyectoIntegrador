@@ -165,11 +165,11 @@ function Recomendaciones() {
   useEffect(() => {
     const getToursAndFavorites = async () => {
       try {
-        const toursResponse = await fetchWithToken('http://localhost:8080/tours/todos');
+        const toursResponse = await fetch('http://localhost:8080/tours/todos');
         const toursData = await toursResponse.json();
 
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
-        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesResponse = await fetch(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
 
         const favoriteIds = {};
@@ -210,7 +210,7 @@ function Recomendaciones() {
       }));
 
       if (favorites[idTour]) {
-        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+        response = await fetch(`http://localhost:8080/favoritos/eliminarFavoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ function Recomendaciones() {
           throw new Error('Error al eliminar de favoritos');
         }
       } else {
-        response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+        response = await fetch(`http://localhost:8080/favoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

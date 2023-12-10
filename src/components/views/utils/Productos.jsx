@@ -9,7 +9,7 @@ const Productos = () => {
 
   const getProductos = async () => {
 
-    const res = await fetchWithToken("http://localhost:8080/tours/todos")
+    const res = await fetch("http://localhost:8080/tours/todos")
     const data = await res.json()
     setProductos(data)
   }
