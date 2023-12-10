@@ -12,7 +12,6 @@ import 'swiper/css';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 const StyledInicio = styled.main`
-    margin-top: 4.5%;
 `
 
 const StyledBuscador = styled.div`

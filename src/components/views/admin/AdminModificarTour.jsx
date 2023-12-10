@@ -24,6 +24,53 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+const StyledFormModificar = styled(Box)`
+.row1{
+  display: flex;
+  flex-direction: row;
+  justify-content: center ;
+}
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
+  width: 100%;
+  margin: 8px;
+
+}
+.css-1xnbq41-MuiAutocomplete-root {
+  width: 100%;
+  margin: 8px;
+}
+.css-sghohy-MuiButtonBase-root-MuiButton-root{
+  width: 100%;
+  margin: 8px;
+}
+.row2{
+  display: flex;
+  flex-direction: row;
+  justify-content: center ;
+  align-items: center;
+}
+.row3{
+  display: flex;
+  justify-content: center ;
+}
+
+.row4{
+  display: flex;
+  justify-content: center ;
+  margin: 8px;
+}
+
+.borde{
+  border: 1px solid grey;
+  padding: 1rem;
+  border-radius: 7px;
+}
+
+.update{
+  width: 10vw;
+}
+`
+
 const AdminModificarTour = () => {
 
   const [titulo, setTitulo] = useState('')
@@ -41,8 +88,8 @@ const AdminModificarTour = () => {
   const [tour, setTour] = useState([]);
   const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
- 
-  
+
+
 
 
 
@@ -53,7 +100,7 @@ const AdminModificarTour = () => {
         console.error('ID is undefined');
         return;
       }
-      const response = await fetch(`http://localhost:8080/tours/${id}`);
+      const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
       const jsonData1 = await response.json();
       console.log("Traer tour", jsonData1);
       setTour(jsonData1);
@@ -73,9 +120,9 @@ const AdminModificarTour = () => {
 
   const getCaracteristicasYCategorias = async () => {
     try {
-      const responseCaracteristica = await fetch("http://localhost:8080/caracteristicas");
-      const responseCategorias = await fetch("http://localhost:8080/categorias");
-      const responsePoliticas = await fetch("http://localhost:8080/politicas");
+      const responseCaracteristica = await fetchWithToken("http://localhost:8080/caracteristicas");
+      const responseCategorias = await fetchWithToken("http://localhost:8080/categorias");
+      const responsePoliticas = await fetchWithToken("http://localhost:8080/politicas");
       const jsonCaracteristica = await responseCaracteristica.json();
       const jsonCategorias = await responseCategorias.json();
       const jsonPoliticas = await responsePoliticas.json();
@@ -163,11 +210,11 @@ const AdminModificarTour = () => {
       const response = await fetch('http://localhost:8080/tours/modificarTour', {
         method: 'POST',
         body: formData,
-        
-                
+
+
       });
-      
-           
+
+
 
       if (response.ok) {
         if (response.ok) {
@@ -175,7 +222,7 @@ const AdminModificarTour = () => {
         }
 
         // Enviar categorías seleccionadas
-        await fetch(`http://localhost:8080/tours/${id}/categorias`, {
+        await fetchWithToken(`http://localhost:8080/tours/${id}/categorias`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -184,7 +231,7 @@ const AdminModificarTour = () => {
         });
 
         // Enviar características seleccionadas
-        await fetch(`http://localhost:8080/tours/${id}/caracteristicas`, {
+        await fetchWithToken(`http://localhost:8080/tours/${id}/caracteristicas`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -192,7 +239,7 @@ const AdminModificarTour = () => {
           body: JSON.stringify(caracteristicasSeleccionadas.map((characteristic) => characteristic.id)),
         });
         // Enviar politicas seleccionadas
-        await fetch(`http://localhost:8080/tours/${id}/politicas`, {
+        await fetchWithToken(`http://localhost:8080/tours/${id}/politicas`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -215,7 +262,7 @@ const AdminModificarTour = () => {
         const formData = new FormData();
         formData.append('id', id);
 
-        
+
         for (let i = 0; i < file.length; i++) {
           formData.append('file', file[i]);
         }
@@ -223,7 +270,7 @@ const AdminModificarTour = () => {
         const response = await fetch('http://localhost:8080/s3/uploadFile', {
           method: 'POST',
           body: formData,
-          
+
         });
 
         if (response.ok) {
@@ -241,7 +288,7 @@ const AdminModificarTour = () => {
 
 
   return (
-    <Box
+    <StyledFormModificar
       component="form"
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -252,22 +299,23 @@ const AdminModificarTour = () => {
       <div>
         <h2>Modificar Tour</h2>
       </div>
-      <div>
+      <div className='row1'>
+        <TextField
+          label="ID"
+          value={id}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="outlined"
+        />
         <TextField
           label="Titulo"
           value={titulo}
           variant="outlined"
           onChange={(e) => setTitulo(e.target.value)}
         />
-        <TextField
-          id="filled-multiline-flexible"
-          label="Descripcion"
-          multiline
-          maxRows={10}
-          variant="outlined"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
+      </div>
+      <div className='row2'>
         <TextField
           label="Provincia"
           value={provincia}
@@ -281,13 +329,16 @@ const AdminModificarTour = () => {
           variant="outlined"
           onChange={(e) => setPrecio(e.target.value)}
         />
+      </div>
+      <div className='row2'>
         <TextField
-          label="ID"
-          value={id}
-          InputProps={{
-            readOnly: true,
-          }}
+          id="filled-multiline-flexible"
+          label="Descripcion"
+          multiline
+          maxRows={10}
           variant="outlined"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
         />
         <TextField
           label="Duracion"
@@ -296,9 +347,10 @@ const AdminModificarTour = () => {
           variant="outlined"
           onChange={(e) => setDuracion(e.target.value)}
         />
-        <div>
+      </div>
+        <div className='row2'>
           <h5>Categorías</h5>
-          <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
+          <FormGroup className='borde' style={{ display: 'flex' }}>
             {categorias.map((categoria) => (
               <FormControlLabel
                 key={categoria.id}
@@ -319,11 +371,8 @@ const AdminModificarTour = () => {
               />
             ))}
           </FormGroup>
-        </div>
-      </div>
-      <div>
         <h5>Características</h5>
-        <FormGroup>
+        <FormGroup className='borde'>
           {caracteristicas.map((caracteristica) => (
             <FormControlLabel
               key={caracteristica.id}
@@ -344,10 +393,8 @@ const AdminModificarTour = () => {
             />
           ))}
         </FormGroup>
-      </div>
-      <div>
         <h5>Politicas</h5>
-        <FormGroup>
+        <FormGroup className='borde'>
           {politicas.map((politica) => (
             <FormControlLabel
               key={politica.id}
@@ -370,7 +417,7 @@ const AdminModificarTour = () => {
         </FormGroup>
       </div>
       {Array.isArray(imagenesSubidas) && imagenesSubidas.length > 0 && (
-        <div>
+        <div className='row1'>
           <h3>Imágenes:</h3>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-arund', }}>
             {imagenesSubidas.map((imagen, index) => (
@@ -382,7 +429,7 @@ const AdminModificarTour = () => {
           </div>
         </div>
       )}
-      <div>
+      <div className='update'>
         <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
           Upload file
           <VisuallyHiddenInput multiple type="file" name='file' />
@@ -400,7 +447,7 @@ const AdminModificarTour = () => {
           </Button>
         </Link>
       </div>
-    </Box>
+    </StyledFormModificar>
   );
 
 }
