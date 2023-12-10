@@ -207,7 +207,7 @@ const AdminModificarTour = () => {
 
 
     try {
-      const response = await fetch('http://localhost:8080/tours/modificarTour', {
+      const response = await fetchWithToken('http://localhost:8080/tours/modificarTour', {
         method: 'POST',
         body: formData,
 
