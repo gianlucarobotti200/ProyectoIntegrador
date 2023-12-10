@@ -94,7 +94,7 @@ const AdminTours = () => {
     const getTours = async () => {
         try {
             setLoading(true);
-            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+            const response = await fetch("http://localhost:8080/tours/todos");
 
             const jsonData = await response.json();
 
