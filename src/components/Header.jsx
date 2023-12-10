@@ -29,6 +29,11 @@ import { Favorite } from '@mui/icons-material';
 
 const StyledHeader = styled.header`
     
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+
     nav {
         display: flex;
         justify-content: space-between;
@@ -174,11 +179,11 @@ function Header() {
 
 
     return (
-        <><StyledHeader>
+        <StyledHeader>
             <nav>
                 <div className='logo-lema'>
                     <Link className='nav-a' to="/inicio">
-                        <img className='logo' src='./src/components/img/logo-vector-blanco.png' alt='Logo SectArg tour' />
+                        <img className='logo' src='src\components\img\logo-vector-blanco.png' alt='Logo SectArg tour' />
                     </Link>
                     <p className='lema'>Más que un tour</p>
                 </div>
@@ -271,7 +276,7 @@ function Header() {
                 </React.Fragment>
 
             </nav>
-        </StyledHeader></>
+        </StyledHeader>
     );
 }
 

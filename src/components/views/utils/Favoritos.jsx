@@ -17,125 +17,132 @@ const StyledLink = styled(Link)`
 
 const StyledRecomendaciones = styled.div`
 
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-    
-    .div-recomendaciones{
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      justify-content: space-between; 
-      width: 90vw;
-      gap: 1px;
-  }
+display: flex;
+flex-direction: row;
+width: 100%;
+justify-content: center;
 
-    .div-h2{
-      display: flex;
-      justify-content: flex-start;
-      text-align: left;     
-      color: rgba(36, 48, 110, 1);
-  }
+.div-recomendaciones{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; 
+  width: 90vw;
+  gap: 1px;
+  flex-direction: column;
+}
 
-    .recomendaciones{
-      display: flex;
-      width: 90vw;
-      flex-wrap: wrap;
-      justify-content: space-between;  
-      margin: 0% 3% 6% 3%;
-      padding: 0% 0% 0% 0%;
-  }
+.div-h2{
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 1.2rem;
+  margin: 1% 1% 0% 3%;       
+  color: rgba(36, 48, 110, 1);
+}
 
-    .card-row {
-      display: flex;
-      width: 100%;
-      flex-wrap: wrap;
-      gap: 8%;        
-  }
-    
-    .card-item {
-      display: flex;
-      width: calc(39vw - 8px);
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin: 1% 0% 5% 0%;
-      padding: 0% 0% 0% 0%;
-      border-radius: 5px;
-      box-shadow: #80808047 3px 3px 3px 2px;
-      border: 1px solid rgba(230, 230, 230);
-  }
+.recomendaciones{
+  display: flex;
+  width: 90vw;
+  flex-wrap: wrap;
+  justify-content: space-between;  
+  margin: 0% 3% 6% 3%;
+  padding: 0% 0% 0% 0%;
+}
 
-    .card-img{
-      width: 90%;
-      margin: 2% 4% 2% 4%;
-      padding: 0% 0% 0% 0%;
-  }
+.card-row {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8%;        
+}
 
-    h6{
-      display: flex;
-      justify-content: flex-start;
-      margin-left: 10px;
-      text-align: left;       
-      color: rgba(36, 48, 110, 1);
-  }
+.card-item {
+  display: flex;
+  width: calc(39vw - 8px);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1% 0% 5% 0%;
+  padding: 0% 0% 0% 0%;
+  border-radius: 5px;
+  box-shadow: #80808047 3px 3px 3px 2px;
+  border: 1px solid rgba(230, 230, 230);
+}
 
-    .precio-duracion{
-      display: flex;
-      width: 90%;
-      flex-direction: row;
-      justify-content: space-between; 
-      margin: 3% 2% 1% 1%; 
-  }
+.card-img{
+  width: 90%;
+  margin: 2% 4% 2% 4%;
+  padding: 0% 0% 0% 0%;
+  border-radius: 20px;
+  box-shadow: #80808047 3px 3px 3px 2px;
+  border: 1px solid rgba(230, 230, 230);
+}
 
-    .cardContent{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin: 5% 0% 2% 4%;
-      padding: 0% 5% 10% 0%;
-      color: rgba(36, 48, 110, 1);
-      font-size: 11px;
-  }
+h6{
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 10px;
+  text-align: left;
+  font-size: 2rem;
+  margin: 1% 1% 2% 5%;       
+  color: rgba(36, 48, 110, 1);
+}
 
-  .cabecera-card{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.precio-duracion{
+  display: flex;
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-between; 
+  margin: 3% 2% 1% 1%; 
+}
 
-    @media (max-width: 600px) {
+.cardContent{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 5% 0% 2% 4%;
+  padding: 0% 5% 10% 0%;
+  color: rgba(36, 48, 110, 1);
+  font-size: 11px;
+}
 
-    .recomendaciones{
-      display: flex;
-      justify-content: space-between;
-      flex-direction: column;
-      align-items: center;
-  }
-  
-    .card-row {
-      width: 50vw;   
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-  }
+.cabecera-card{
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
 
-    .div-h2{
-      width: 95vw;
-      font-size: 6vw;
-      margin: 1% 1% 1% 10%
-  }
-     
-    .card-item {
-      display: flex;
-      width: calc(70vw);
-      justify-content: center;
-      margin: 0% 0% 5% -20%;
-      padding: 0% 0% 0% 0%;
-      border-radius: 5px;
-      box-shadow: #80808047 3px 3px 3px 2px;
-      border: 1px solid rgba(230, 230, 230);
-  }
+@media (max-width: 600px) {
+
+.recomendaciones{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-row {
+  width: 50vw;   
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.div-h2{
+  width: 95vw;
+  font-size: 6vw;
+  margin: 1% 1% 1% 10%
+}
+ 
+.card-item {
+  display: flex;
+  width: calc(70vw);
+  justify-content: center;
+  margin: 0% 0% 5% -20%;
+  padding: 0% 0% 0% 0%;
+  border-radius: 5px;
+  box-shadow: #80808047 3px 3px 3px 2px;
+  border: 1px solid rgba(230, 230, 230);
+}
 }`
 
 function Favoritos() {
@@ -235,6 +242,7 @@ function Favoritos() {
       }));
 
       setData(favoriteTours);
+      console.log(data);
 
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
@@ -336,15 +344,15 @@ function Favoritos() {
       <div className='div-recomendaciones'>
         <h2>Mis favoritos</h2>
         {loading ? (
-          <div className='loading-container'>
-            <CircularProgress color="inherit" style={{}} />
+          <div className='loading-container' style={{paddingTop: "15%"}}>
+            <CircularProgress color="inherit" />
           </div>
         ) : (
           <div className='recomendaciones'>
             <div className='card-row'>
-              {data.map((tour, index) => (
-                <StyledLink key={index} to={`/detalles/${tour.id}`}>
-                  <div className='card-item'>
+              {data && data.map((tour) => (
+                
+                  <div className='card-item' key={tour.id}>
                     <Card>
                       <div className='cabecera-card'>
                         <Typography variant="h6">{tour.titulo}</Typography>
@@ -365,12 +373,14 @@ function Favoritos() {
                         )}
 
                       </div>
+                      <StyledLink to={`/detalles/${tour.id}`}>
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
                         height="140"
                         image={tour.linkFotos[0]}
                       />
+                      </StyledLink>
                       <CardContent className='cardContent'>
                         <Typography variant="body3" sx={{ fontSize: "1.3rem" }}>{truncateDescription(tour.descripcion)}</Typography>
                         <div className='precio-duracion'>
@@ -379,7 +389,7 @@ function Favoritos() {
                       </CardContent>
                     </Card>
                   </div>
-                </StyledLink>
+                
               ))}
             </div>
           </div>

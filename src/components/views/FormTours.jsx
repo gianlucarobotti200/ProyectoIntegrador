@@ -79,6 +79,7 @@ const FormTours = ({ onCloseModal }) => {
         formData.append('descripcion', descripcion);
         formData.append('precio', parseInt(precio));
         formData.append('cantHoras', parseInt(duracion));
+        formData.append('contacto', "2617138419")
 
         if (file && file.length > 0) {
             for (let i = 0; i < file.length; i++) {

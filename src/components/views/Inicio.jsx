@@ -1,67 +1,85 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Buscador from './utils/Buscador'
 import Categorias from './utils/Categorias'
 import Recomendaciones from './utils/Recomendaciones'
 import Productos from './utils/Productos'
 import styled from "styled-components"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore from 'swiper';
+import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
-
-// Define un nuevo componente StyledInicio
-const StyledInicio = styled.main `
-/* Agrega estilos según tus necesidades */
-
+const StyledInicio = styled.main`
+    margin-top: 4.5%;
 `
-; 
 
-
-// Estiliza el componente Buscador para agregar una imagen
-const StyledBuscador = styled.div `
-
-    img {
-        width: 20%;
-        height: auto;
-        display: block; 
-    }
+const StyledBuscador = styled.div`
 `
-    ;
-const ContenedorDeImagenes = styled.div `
-  display: flex;
-  `
-  ;
 
-const Imagen = styled.img `
-  width: 100%;
-  height: auto;
-  border: 2px solid #f8af1c ;
+const Imagen = styled.img`
+  width: 55%;
+  height: 30vh;
   `
-;
+
+const SvgOverlay = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  pointer-events: none;
+  z-index: 999;
+`
 
 
 const Inicio = () => {
+
     return (
         <StyledInicio>
-            {/* Utiliza el componente estilizado Buscador */}
             <StyledBuscador>
-                <ContenedorDeImagenes>
-                <Imagen className='portada' src='./src/components/img/portada.jpeg'  alt='Portada' /> 
-                 <Imagen className='portada2'src='./src/components/img/portada2.jpeg'  alt='Portada2' />
-                 <Imagen className='portada3' src='./src/components/img/portada3.jpeg'  alt='Portada3' /> 
-                 <Imagen className='portada4'  src='./src/components/img/portada4.jpeg'  alt='Portada4' /> 
-                 <Imagen className='portada5'  src='./src/components/img/portada5.jpeg'  alt='Portada5' /> 
-      {/* Agrega más imágenes según sea necesario */}
+                    <Swiper
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        scrollbar={{ draggable: true }}
+                        onSwiper={(swiper) => console.log(swiper)}
+                        autoplay={{
+                            delay: 4000,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        {imagenes.map((item) => {
+                            return (<SwiperSlide key={item.id}><Imagen src={item.imgUrl} /><SvgOverlay src="./src/components/img/lema.svg" alt="Overlay SVG" /></SwiperSlide>)
+                        })}
 
-                </ContenedorDeImagenes>
-                <Buscador />
-            </StyledBuscador>
-            <Categorias />
-            <Recomendaciones />
+                    </Swiper>
+                    <Buscador />
+                </StyledBuscador>
+                <Categorias />
+                <Recomendaciones />
         </StyledInicio>
     )
 }
 export default Inicio;
 
+const imagenes = [
+    {
+        id: 1,
+        imgUrl: "./src/components/img/banner1.jpg"
+    },
+    {
+        id: 2,
+        imgUrl: "./src/components/img/banner2.png"
+    },
+    {
+        id: 3,
+        imgUrl: "./src/components/img/banner3.jpg"
+    },
+    {
+        id: 4,
+        imgUrl: "./src/components/img/banner4.jpg"
+    }
+]
 
-   
-         
-     
+

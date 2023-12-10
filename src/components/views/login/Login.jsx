@@ -10,20 +10,21 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-
 const StyledLogin = styled.div `
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     justify-content: center;
-
+    align-items: center;
+    margin-top: 7%;
     .row1{
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0 10%;
     }
     .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
-        width: 300px;
+        width: 100%;
     }
     .css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
         margin: 8px;

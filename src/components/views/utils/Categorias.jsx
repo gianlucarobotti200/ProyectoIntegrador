@@ -3,6 +3,7 @@ import styled from "styled-components"
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { Link } from 'react-router-dom';
+import { Key } from '@mui/icons-material';
 
 const StyledCategorias = styled.div`
 
@@ -20,6 +21,16 @@ const StyledCategorias = styled.div`
   .div-h2{
     display: flex;
     justify-content: flex-start;
+    text-align: left;
+    font-size: 1.2rem;
+    margin: 1% 1% 0% 3%;       
+    color: #24306E;
+    padding: 2% 0% 2% 0%;
+    font-weight: bolder;
+    border-bottom: 2px solid rgba(36, 48, 110, 1);
+    h2{
+      font-size: 1.5rem;
+    }
   }
 
   .div-categorias{
@@ -82,11 +93,10 @@ function Categorias() {
       <StyledCategorias>
         <div className='div-categorias'>
           <div className='div-h2'>
-            <h2>Categorías</h2>
           </div>
           <div className='categorias'>
-            {Categoria.map((item) => (
-              <Link to={`/resultados/${item.title}`}>
+            {Categoria.map((item, index) => (
+              <Link to={`/resultados/${item.title}`} key={index}>
                 <ImageListItem key={item.img}>
                   <img className='foto'
                     srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}

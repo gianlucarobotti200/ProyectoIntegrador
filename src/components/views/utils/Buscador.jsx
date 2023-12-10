@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledBuscador = styled.div`
-  background-image: linear-gradient(120deg, rgb(248 248 248), rgb(195 217 240) 60%);
+  background-color: rgb(195 217 240);
   padding: 2rem 0.5rem;
   input {
     background-color: #FFFFFF;

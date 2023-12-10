@@ -10,12 +10,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const StyledRecomendaciones = styled.div `
+const StyledRecomendaciones = styled.div`
 
     display: flex;
     flex-direction: row;
@@ -35,9 +36,17 @@ const StyledRecomendaciones = styled.div `
       display: flex;
       justify-content: flex-start;
       text-align: left;
-      font-size: 2vw;
+      font-size: 1.2rem;
       margin: 1% 1% 0% 3%;       
-      color: rgba(36, 48, 110, 1);
+      color: #24306E;
+      padding: 2% 0% 2% 0%;
+      margin: 4% 5% 0% 4%;
+      font-weight: bolder;
+      font: 2rem/1rem "Open Sans", sans-serif;
+      border-bottom: 2px solid rgba(36, 48, 110, 1);
+      h2{
+        font-size: 1.2rem;
+      }
   }
 
     .recomendaciones{
@@ -158,18 +167,18 @@ function Recomendaciones() {
       try {
         const toursResponse = await fetchWithToken('http://localhost:8080/tours/todos');
         const toursData = await toursResponse.json();
-  
+
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
-  
+
         const favoriteIds = {};
         favoritesData.forEach(favorite => {
           favoriteIds[favorite.idTour] = true;
         });
-  
-        setData(toursData);
-        setFavorites(favoriteIds); 
+
+        setData(toursData); 
+        setFavorites(favoriteIds);
       } catch (error) {
         console.error('Error al obtener los datos de la API:', error);
         setError('Algo ha salido mal. Vuelve a cargar nuevamente.');
@@ -177,7 +186,7 @@ function Recomendaciones() {
         setLoading(false);
       }
     };
-    
+
     getToursAndFavorites();
   }, []);
 
@@ -194,12 +203,12 @@ function Recomendaciones() {
     try {
       const idUsuario = decodeToken(localStorage.getItem('token')).id;
       let response;
-  
+
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
         [idTour]: true, // Establecer fetching para la tarjeta específica en true al hacer clic
       }));
-  
+
       if (favorites[idTour]) {
         response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
           method: 'POST',
@@ -211,7 +220,7 @@ function Recomendaciones() {
             idTour: idTour,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Error al eliminar de favoritos');
         }
@@ -226,38 +235,42 @@ function Recomendaciones() {
             idTour: idTour,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Error al marcar como favorito');
         }
       }
-  
+
       setFavorites((prevFavorites) => {
         const updatedFavorites = { ...prevFavorites };
         updatedFavorites[idTour] = !updatedFavorites[idTour];
         return updatedFavorites;
       });
-  
+
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
-        [idTour]: false, 
+        [idTour]: false,
       }));
-  
+
     } catch (error) {
       console.error('Error al manejar favorito:', error);
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
-        [idTour]: false, 
+        [idTour]: false,
       }));
     }
   };
-  
+
   const truncateDescription = (description) => {
     const itinerarioIndex = description.indexOf('Itinerario');
+
     if (itinerarioIndex !== -1) {
       return description.substring(0, itinerarioIndex);
+    } else if (description == null) {
+      return "No contiene descripción";
+    } else{
+      return description;
     }
-    return description;
   };
 
   return (
@@ -266,58 +279,54 @@ function Recomendaciones() {
         <div className='div-h2'>
           <h2>Recomendaciones</h2>
         </div>
-        {loading ? ( 
-          <div className='loading-container'>
+        {loading ? (
+          <div className='loading-container' >
             <CircularProgress color="inherit" />
           </div>
         ) : error ? (
           <div className='error-container'>
             <p>{error}</p>
-            <button onClick={handleReload}>
-              Volver a cargar
-            </button>
+            <RefreshIcon onClick={handleReload} />
           </div>
         ) : (
           <div className='recomendaciones'>
             <div className='card-row'>
-              {data.map((tour, index) => (
-                <StyledLink key={index} to={`/detalles/${tour.id}`}>
-                <div className='card-item'>
-                  <Card>
-                    <div className='cabecera-card'>
-                      <Typography variant="h6">{tour.titulo}</Typography>
-                      {fetchingFavorite[tour.id] ? (
-                      <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
-                      ) : (
-                        favorites[tour.id] ? (
-                          <FavoriteIcon
-                            style={{ color: 'red', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
-                            onClick={() => handleFavoriteToggle(tour.id)}
-                          />
+              {data.map((tour) => (
+                  <div key={tour.id} className='card-item'>
+                    <Card>
+                      <div className='cabecera-card'>
+                        <StyledLink  to={`/detalles/${tour.id}`}><Typography variant="h6">{tour.titulo}</Typography></StyledLink>
+                        {fetchingFavorite[tour.id] ? (
+                          <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
                         ) : (
-                          <FavoriteBorderIcon
-                            style={{ color: 'gray', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem"}}
-                            onClick={() => handleFavoriteToggle(tour.id)}
-                          />
-                        )
-                      )}
+                          favorites[tour.id] ? (
+                            <FavoriteIcon
+                              style={{ color: 'red', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              onClick={() => handleFavoriteToggle(tour.id)}
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              style={{ color: 'gray', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              onClick={() => handleFavoriteToggle(tour.id)}
+                            />
+                          )
+                        )}
 
-                    </div>
+                      </div>
                       <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
                         height="140"
                         image={tour.linkFotos[0]}
                       />
-                    <CardContent className='cardContent'>
-                      <Typography variant="body3" sx={{fontSize: "1.3rem"}}>{truncateDescription(tour.descripcion)}</Typography>
-                      <div className='precio-duracion'>
-                        <Typography variant="body1" sx={{fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio}</Typography>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                </StyledLink>
+                      <CardContent className='cardContent'>
+                        <Typography variant="body3" sx={{ fontSize: "1.3rem" }}>{truncateDescription(tour.descripcion)}</Typography>
+                        <div className='precio-duracion'>
+                          <Typography variant="body1" sx={{ fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio} c/u</Typography>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
               ))}
             </div>
           </div>

@@ -4,7 +4,7 @@ import styled from "styled-components"
 const StyledFooter = styled.footer`
 
 
-    background-image: linear-gradient(120deg, rgb(248 248 248), rgb(195 217 240) 60%);  
+    background-color: #8DB0CE;  
     width: 100%;
     height: 15vh;
     bottom: 0;
@@ -33,7 +33,7 @@ const StyledFooter = styled.footer`
 
     .footer-content p{
         margin: 0;
-        color: black;
+        color: white;
     }
 
     @media only screen and (max-width: 600px) {
@@ -60,7 +60,7 @@ const Footer = () => {
     <StyledFooter>
       <div className="footer-content">
         <div>
-          <img src="./src/components/img/logo.png" alt='logo-sectArgTour'/>
+          <img src="src\components\img\logo-vector-blanco.png" alt='logo-sectArgTour'/>
         </div>
         <div>
           <p>© 2023 - Equipo 2</p>
