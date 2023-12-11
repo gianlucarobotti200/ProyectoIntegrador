@@ -276,19 +276,8 @@ const Detalles = () => {
       }
     };
 
-    const getCalificacion = async () => {
-      try {
-        const response = await fetchWithToken(`${config.host}/api/tours/${id}/calificacion`);
-        if (response.ok) {
-          const calificacion = await response.json();
-          setCalificacion(calificacion);
-        }
-      } catch (error) {
-        console.error("Error al obtener la calificación:", error);
-      }
-    };
-
     getTourDetails();
+    getCalificacion();
   }, [id]);
 
   const handleTwitterShare = () => {

@@ -2,10 +2,10 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
@@ -109,6 +109,7 @@ const AdminModificarTour = () => {
   const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const getTour = async () => {
     try {
@@ -266,6 +267,8 @@ const AdminModificarTour = () => {
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
+    } finally{
+      navigate("/admintours");
     }
   };
 
@@ -311,7 +314,6 @@ const AdminModificarTour = () => {
           <CircularProgress color="inherit" />
         </div>
       ) : (
-        // Contenido principal aquí
         <>
           <div>
             <h2>Modificar Tour</h2>

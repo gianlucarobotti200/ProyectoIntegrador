@@ -171,7 +171,6 @@ function Recomendaciones() {
   const [fetchingFavorite, setFetchingFavorite] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const getToursAndFavorites = async () => {
       try {
@@ -353,16 +352,12 @@ function Recomendaciones() {
                         image={tour.linkFotos[0]}
                       />
                       </div>
-                      
-
                       <div onClick={() => handleClickNavigate(tour)}  className='card-title'>
                         {tour.titulo}
                       </div>
-
                       <div class="card-desc">
                         {truncateDescription(tour.descripcion)}
                       </div>
-
                       <div className='precio-duracion'>
                         $ {tour.precio} por persona
                       </div>
