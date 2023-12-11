@@ -24,6 +24,8 @@ import config from '../../../config';
 import moment from 'moment';
 import TextField from '@mui/material/TextField';
 import decodeToken from '../login/DecodeToken';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const StyledDetalles = styled.div`
     display: flex;
@@ -185,9 +187,16 @@ const Detalles = () => {
   const [personas, setPersonas] = useState("1");
   const [total, setTotal] = useState(0);
   const [fecha, setFecha] = useState(null);
-
-
+  const [reservaStatus, setReservaStatus] = useState({
+    loading: false,
+    success: false,
+    error: false,
+  });
+  const [usuarioData, setUsuarioData] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [datosUsuarioListos, setDatosUsuarioListos] = useState(false);
   const [fechas, setFechas] = useState([]);
+  const navigate = useNavigate();
 
   // Suponiendo que obtienes fechaInicio y fechaFin de un endpoint
   const obtenerFechasDesdeEndpoint = async () => {
@@ -224,6 +233,21 @@ const Detalles = () => {
   useEffect(() => {
     obtenerFechasDesdeEndpoint();
   }, []);
+
+  const obtenerDetallesUsuario = async (userId) => {
+    try {
+      const response = await fetchWithToken(`${config.host}/user/getusuario/${userId}`);
+      if (response.ok) {
+        const usuarioData = await response.json();
+        setUsuarioData(usuarioData); 
+        setDatosUsuarioListos(true);
+        return usuarioData; 
+      }
+    } catch (error) {
+      console.error('Error al obtener detalles del usuario:', error);
+    }
+    return null;
+  };
   
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
@@ -290,13 +314,15 @@ const Detalles = () => {
 const handleInputPersonas = (event) => {
   const value = event.target.value;
   setPersonas(value);
-  console.log(personas, value);
   setTotal(tourDetails.precio * value)
   
 }
 
 const reservar = async () => {
+  setReservaStatus({ loading: true, success: false, error: false });
+
   const clienteID = decodeToken(localStorage.getItem('token')).id;
+
   const reservaData = {
       idCliente: clienteID,
       idTour: tourDetails.id,
@@ -316,17 +342,30 @@ const reservar = async () => {
       });
 
       if (response.ok) {
-
-          alert("Tu reserva se efectuó con éxito\nQue lo disfrutes!")
-      } else {
-        alert("Ocurrió un error al efectuar la reserva")
-      }
+          setReservaStatus({ loading: false, success: true, error: false });
+          setDialogOpen(true);
+          const usuarioData = await obtenerDetallesUsuario(clienteID);
+          if (usuarioData) {
+            setUsuarioData(usuarioData);
+           
+          }
+        } else {
+          setReservaStatus({ loading: false, success: false, error: true });
+        }
   } catch (error) {
       console.error('Error al realizar la reserva:', error);
 
   }
-  console.log(reservaData);
+
 }
+
+const handleDialogClose = () => {
+  setDialogOpen(false); 
+  navigate('/inicio');
+};
+
+
+
   return (
     <StyledDetalles>
       {loading ? (
@@ -340,7 +379,7 @@ const reservar = async () => {
             <div>
               <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
             </div>
-            <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faSquareTwitter} style={{ color: "#557ab9", }} /></div>
+            <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faFacebook} /></div>
 
             <div className="fb-share-button"
               data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
@@ -349,7 +388,7 @@ const reservar = async () => {
               <a target="_blank"
                 href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
                 className="fb-xfbml-parse-ignore">
-                <FontAwesomeIcon icon={faFacebook} />
+                <FontAwesomeIcon icon={faSquareTwitter} style={{ color: "#557ab9", }} />
               </a>
             </div>
             <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
@@ -436,9 +475,25 @@ const reservar = async () => {
           </section>
           
   
-          <Button className='btn-reservar' onClick={reservar}>
-            RESERVAR
+          <Button className='btn-reservar' onClick={reservar} disabled={reservaStatus.loading}>
+          {reservaStatus.loading ? 'Procesando...' : 'RESERVAR'}
+            {/* RESERVAR */}
           </Button>
+          <Dialog open={dialogOpen && datosUsuarioListos} onClose={handleDialogClose}>
+            <DialogTitle>¡Reserva exitosa!</DialogTitle>
+            <DialogContent>
+              <p>Tu reserva se ha efectuado con éxito. ¡Disfruta tu experiencia!</p>
+              <p>Se ha enviado el detalle de tu reserva a tu correo: {usuarioData && usuarioData.mail}</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose} color="primary">
+                Cerrar
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {reservaStatus.error && (
+            <div>Error al realizar la reserva</div>
+          )}
           <div>
 
           <h3 style={{textAlign: 'left'}}>Políticas</h3>

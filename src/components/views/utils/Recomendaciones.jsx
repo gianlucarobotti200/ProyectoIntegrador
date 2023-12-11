@@ -210,9 +210,6 @@ function Recomendaciones() {
     getTours();
   };
 
-  console.log(data);
-  console.log('Datos obtenidos.');
-
   const handleFavoriteToggle = async (idTour) => {
     try {
       const idUsuario = decodeToken(localStorage.getItem('token')).id;
