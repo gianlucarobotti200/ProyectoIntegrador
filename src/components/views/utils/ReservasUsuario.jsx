@@ -190,9 +190,9 @@ function ReservasUsuario() {
           const dateB = new Date(b.fechaInicio);
           return dateA - dateB;
         });
-        
+
         setData(reservasData);
-       
+
       } catch (error) {
         console.error('Error al obtener las reservas del usuario:', error);
         setError('Algo salió mal al obtener las reservas. Vuelve a cargar nuevamente.');

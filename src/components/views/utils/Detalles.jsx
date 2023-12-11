@@ -19,13 +19,15 @@ import { faFacebook, faSquareTwitter, faWhatsapp } from '@fortawesome/free-brand
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
-import Rating from '@mui/material/Rating';
 import config from '../../../config';
 import moment from 'moment';
 import TextField from '@mui/material/TextField';
 import decodeToken from '../login/DecodeToken';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
+import Box from '@mui/material/Box';
 
 const StyledDetalles = styled.div`
     display: flex;
@@ -202,9 +204,9 @@ const Detalles = () => {
   const obtenerFechasDesdeEndpoint = async () => {
     try {
       const response = await fetchWithToken(`${config.host}/reserva/fechasOcupadas/${id}`);
-    
+
       if (response.ok) {
-        
+
         const fechasOcupadas = await response.json();
         const ocupadas = []
         for (let i = 0; i < fechasOcupadas.length; i++) {
@@ -214,16 +216,16 @@ const Detalles = () => {
           const fechasCalculadas = calcularDiasEntreFechas(fechaInicio, fechaFin);
           for (let j = 0; j < fechasCalculadas.length; j++) {
             const fecha = fechasCalculadas[j];
-            if(!ocupadas.includes(fecha)){
+            if (!ocupadas.includes(fecha)) {
               ocupadas.push(fecha)
             }
           }
         }
         setFechas(ocupadas)
-        
-        
-        
-        
+
+
+
+
       }
     } catch (error) {
       console.error('Error al obtener fechas:', error);
@@ -239,16 +241,16 @@ const Detalles = () => {
       const response = await fetchWithToken(`${config.host}/user/getusuario/${userId}`);
       if (response.ok) {
         const usuarioData = await response.json();
-        setUsuarioData(usuarioData); 
+        setUsuarioData(usuarioData);
         setDatosUsuarioListos(true);
-        return usuarioData; 
+        return usuarioData;
       }
     } catch (error) {
       console.error('Error al obtener detalles del usuario:', error);
     }
     return null;
   };
-  
+
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
     setIsModalOpen(true);
@@ -277,7 +279,7 @@ const Detalles = () => {
     };
 
     getTourDetails();
-    getCalificacion();
+    console.log(tourDetails.calificacion)
   }, [id]);
 
   const handleTwitterShare = () => {
@@ -290,68 +292,68 @@ const Detalles = () => {
 
     window.open(twitterUrl, '_blank');
   };
-  const handleReserveClick = () => { 
-  setIsReservaOpen(true);
+  const handleReserveClick = () => {
+    setIsReservaOpen(true);
   };
 
   const handleDateChange = (date) => {
     const currentDate = date.toISOString().split("T")[0];
     setFecha(currentDate)
 
-};
+  };
 
-const handleInputPersonas = (event) => {
-  const value = event.target.value;
-  setPersonas(value);
-  setTotal(tourDetails.precio * value)
-  
-}
+  const handleInputPersonas = (event) => {
+    const value = event.target.value;
+    setPersonas(value);
+    setTotal(tourDetails.precio * value)
 
-const reservar = async () => {
-  setReservaStatus({ loading: true, success: false, error: false });
+  }
 
-  const clienteID = decodeToken(localStorage.getItem('token')).id;
+  const reservar = async () => {
+    setReservaStatus({ loading: true, success: false, error: false });
 
-  const reservaData = {
+    const clienteID = decodeToken(localStorage.getItem('token')).id;
+
+    const reservaData = {
       idCliente: clienteID,
       idTour: tourDetails.id,
       fechaInicio: fecha,
       fechaFin: fecha,
       cantidadPersonas: parseInt(personas),
       precioTotal: total
-  };
+    };
 
-  try {
-      const response = await fetchWithToken(config.host+'/reserva', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(reservaData)
+    try {
+      const response = await fetchWithToken(config.host + '/reserva', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reservaData)
       });
 
       if (response.ok) {
-          setReservaStatus({ loading: false, success: true, error: false });
-          setDialogOpen(true);
-          const usuarioData = await obtenerDetallesUsuario(clienteID);
-          if (usuarioData) {
-            setUsuarioData(usuarioData);
-           
-          }
-        } else {
-          setReservaStatus({ loading: false, success: false, error: true });
+        setReservaStatus({ loading: false, success: true, error: false });
+        setDialogOpen(true);
+        const usuarioData = await obtenerDetallesUsuario(clienteID);
+        if (usuarioData) {
+          setUsuarioData(usuarioData);
+
         }
-  } catch (error) {
+      } else {
+        setReservaStatus({ loading: false, success: false, error: true });
+      }
+    } catch (error) {
       console.error('Error al realizar la reserva:', error);
+
+    }
 
   }
 
-}
-
-const handleDialogClose = () => {
-  setDialogOpen(false); 
-  navigate('/inicio');
-};
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    navigate('/inicio');
+  };
 
 
 
@@ -363,139 +365,155 @@ const handleDialogClose = () => {
         </div>
       ) : (
         <>
-        <div className='container'>  
-        <div className='cont-icons'>
-            <div>
-              <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
-            </div>
-            <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faFacebook} /></div>
+          <div className='container'>
+            <div className='cont-icons'>
+              <div>
+                <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
+              </div>
+              <div onClick={handleTwitterShare}><FontAwesomeIcon icon={faFacebook} /></div>
 
-            <div className="fb-share-button"
-              data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
-              data-layout=""
-              data-size="">
-              <a target="_blank"
-                href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
-                className="fb-xfbml-parse-ignore">
-                <FontAwesomeIcon icon={faSquareTwitter} style={{ color: "#557ab9", }} />
+              <div className="fb-share-button"
+                data-href={`https://tu-sitio-web.com/detalles/${tourDetails.id}`}
+                data-layout=""
+                data-size="">
+                <a target="_blank"
+                  href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftu-sitio-web.com%2Fdetalles%2F${tourDetails.id}&amp;src=sdkpreparse`}
+                  className="fb-xfbml-parse-ignore">
+                  <FontAwesomeIcon icon={faSquareTwitter} style={{ color: "#557ab9", }} />
+                </a>
+              </div>
+              <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
               </a>
             </div>
-            <a href={`https://wa.me/?text=Hola%20te%20comparto%20este%20tour%20a%20${tourDetails.provincia}%20por%20${tourDetails.precio}%20`} target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
-            </a>
-          </div>
-        <div >
-          
-          <h2 className="h2-title">{tourDetails.titulo}</h2>
-          {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
-            <div className='imagenes'>
-              <ImageList onClick={openGallery} sx={{ width: '100%' }} cols={4} rowHeight={225}>
+            <div >
 
-                {tourDetails.linkFotos.slice(0, 1).map((imageSrc, index) => (
-                  <ImageListItem key={index} cols={2} rows={2}>
-                    <img
-                      src={imageSrc}
-                      alt={`Imagen ${index + 1}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </ImageListItem>
-                ))}
+              <h2 className="h2-title">{tourDetails.titulo}</h2>
+              {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
+                <div className='imagenes'>
+                  <ImageList onClick={openGallery} sx={{ width: '100%' }} cols={4} rowHeight={225}>
 
-                {tourDetails.linkFotos.slice(1, 5).map((imageSrc, index) => (
-                  <ImageListItem key={index + 1} cols={1} rows={1}>
-                    <img
-                      src={imageSrc}
-                      alt={`Imagen ${index + 2}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    {tourDetails.linkFotos.slice(0, 1).map((imageSrc, index) => (
+                      <ImageListItem key={index} cols={2} rows={2}>
+                        <img
+                          src={imageSrc}
+                          alt={`Imagen ${index + 1}`}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </ImageListItem>
+                    ))}
 
-                  </ImageListItem>
-                ))}
-              </ImageList>
-              {isModalOpen && (
-                <ImageModal images={tourDetails.linkFotos} onClose={closeGallery} />
+                    {tourDetails.linkFotos.slice(1, 5).map((imageSrc, index) => (
+                      <ImageListItem key={index + 1} cols={1} rows={1}>
+                        <img
+                          src={imageSrc}
+                          alt={`Imagen ${index + 2}`}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                  {isModalOpen && (
+                    <ImageModal images={tourDetails.linkFotos} onClose={closeGallery} />
+                  )}
+                  <Box
+                      sx={{
+                        width: 200,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Rating
+                        name="text-feedback"
+                        value={tourDetails.calificacion}
+                        readOnly
+                        precision={0.5}
+                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                      />
+                    </Box>
+                </div>
+                
               )}
-            </div>
-          )}
-          <div>
-            <div>
-              <div className='titulos'>
-                <h2>Sobre {tourDetails.titulo}</h2>
-              </div>
-              <p className='descripcion'>{tourDetails.descripcion}</p>
-              
-            </div>
-            <div>
-              <div className='titulos'>
-                <h2>Disponibilidad y tarifa</h2>
-              </div>
-              <div className="cont">
+              <div>
                 <div>
-                <BasicDatePicker style={{display: "flex", justifyContent: 'center',alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} ocupadas={fechas}/>
-                <TextField onInput={handleInputPersonas} value={personas} style={{marginLeft: 15}} type='number' id="outlined-basic" label="Cantidad de personas" variant="outlined" />
-                </div>
-                <div style={{textAlign: 'left'}}>
-                  <div className="price">{"Precio por persona: $ " + tourDetails.precio}</div>
-                  <div className="total">Total: $ {total}</div>
-                </div>
+                  <div className='titulos'>
+                    <h2>Sobre {tourDetails.titulo}</h2>
+                  </div>
+                  <p className='descripcion'>{tourDetails.descripcion}</p>
 
+                </div>
+                <div>
+                  <div className='titulos'>
+                    <h2>Disponibilidad y tarifa</h2>
+                  </div>
+                  <div className="cont">
+                    <div>
+                      <BasicDatePicker style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} ocupadas={fechas} />
+                      <TextField onInput={handleInputPersonas} value={personas} style={{ marginLeft: 15 }} type='number' id="outlined-basic" label="Cantidad de personas" variant="outlined" />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <div className="price">{"Precio por persona: $ " + tourDetails.precio}</div>
+                      <div className="total">Total: $ {total}</div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <section>
+                <div className='especificaciones'>
+                  <Stack direction="row" spacing={1}>
+                    <h3>Características:</h3>
+                    {tourDetails.caracteristicas &&
+                      tourDetails.caracteristicas.map((caracteristica) => (
+                        <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
+                      ))}
+                  </Stack>
+                </div>
+                <div className='especificaciones'>
+                  <Stack direction="row" spacing={1}>
+                    <h3>Categorías:</h3>
+                    {tourDetails.categorias &&
+                      tourDetails.categorias.map((categoria) => (
+                        <Chip key={categoria.id} label={categoria.nombre} />
+                      ))}
+                  </Stack>
+                </div>
+              </section>
+
+
+              <Button className='btn-reservar' onClick={reservar} disabled={reservaStatus.loading}>
+                {reservaStatus.loading ? 'Procesando...' : 'RESERVAR'}
+                {/* RESERVAR */}
+              </Button>
+              <Dialog open={dialogOpen && datosUsuarioListos} onClose={handleDialogClose}>
+                <DialogTitle>¡Reserva exitosa!</DialogTitle>
+                <DialogContent>
+                  <p>Tu reserva se ha efectuado con éxito. ¡Disfruta tu experiencia!</p>
+                  <p>Se ha enviado el detalle de tu reserva a tu correo: {usuarioData && usuarioData.mail}</p>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleDialogClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              {reservaStatus.error && (
+                <div>Error al realizar la reserva</div>
+              )}
+              <div>
+
+                <h3 style={{ textAlign: 'left' }}>Políticas</h3>
+                <ul style={{ textAlign: 'left' }}>
+                  {politicasData.map((politica, index) => (
+                    <li key={index}>
+                      <strong>{politica.nombre}</strong>: {politica.contenido}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
-          <section>
-            <div className='especificaciones'>
-            <Stack direction="row" spacing={1}>
-                                <h3>Características:</h3>
-                                {tourDetails.caracteristicas &&
-                                    tourDetails.caracteristicas.map((caracteristica) => (
-                                        <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
-                                    ))}
-                            </Stack>
-            </div>
-            <div className='especificaciones'>
-              <Stack direction="row" spacing={1}>
-                                <h3>Categorías:</h3>
-                                {tourDetails.categorias &&
-                                    tourDetails.categorias.map((categoria) => (
-                                        <Chip key={categoria.id} label={categoria.nombre} />
-                                    ))}
-                            </Stack>
-            </div>
-          </section>
-          
-  
-          <Button className='btn-reservar' onClick={reservar} disabled={reservaStatus.loading}>
-          {reservaStatus.loading ? 'Procesando...' : 'RESERVAR'}
-            {/* RESERVAR */}
-          </Button>
-          <Dialog open={dialogOpen && datosUsuarioListos} onClose={handleDialogClose}>
-            <DialogTitle>¡Reserva exitosa!</DialogTitle>
-            <DialogContent>
-              <p>Tu reserva se ha efectuado con éxito. ¡Disfruta tu experiencia!</p>
-              <p>Se ha enviado el detalle de tu reserva a tu correo: {usuarioData && usuarioData.mail}</p>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDialogClose} color="primary">
-                Cerrar
-              </Button>
-            </DialogActions>
-          </Dialog>
-          {reservaStatus.error && (
-            <div>Error al realizar la reserva</div>
-          )}
-          <div>
-
-          <h3 style={{textAlign: 'left'}}>Políticas</h3>
-          <ul style={{textAlign: 'left'}}>
-            {politicasData.map((politica, index) => (
-              <li key={index}>
-                <strong>{politica.nombre}</strong>: {politica.contenido}
-              </li>
-            ))}
-          </ul>
-          </div>
-        </div>
-        </div>
         </>
       )
       }

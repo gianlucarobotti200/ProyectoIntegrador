@@ -11,6 +11,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import config from '../../../config';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
 
 const StyledRecomendaciones = styled.div`
 
@@ -361,7 +364,24 @@ function Recomendaciones() {
                       <div className='precio-duracion'>
                         $ {tour.precio} por persona
                       </div>
-
+                      <Box
+                          sx={{
+                            width: 200,
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginBottom: "1rem",
+                            marginLeft: "1rem"
+                          }}
+                        >
+                          <Rating
+                            name="text-feedback"
+                            value={tour.calificacion}
+                            readOnly
+                            precision={0.5}
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                          />
+                        </Box>
+                        
                     </Card>
                   </div>
               ))}
