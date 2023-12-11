@@ -40,28 +40,8 @@ const AdminTours = () => {
     const navigate = useNavigate();
     let decodedData = null
 
-
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-        } else {
-            try {
-                decodedData = decodeToken(localStorage.getItem('token'));
-                console.log(decodedData.role)
-                getTours();
-
-            } catch (error) {
-                console.error('Error al decodificar el token:', error.message);
-            }
-        }
-    }, [navigate]);
-
     const [currentPage, setCurrentPage] = useState(1);
 
-
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -69,12 +49,12 @@ const AdminTours = () => {
         } else {
             try {
                 decodedData = decodeToken(localStorage.getItem('token'));
-                console.log(decodedData.role)
-                // if (decodedData.role == 0) {
-                //     navigate('/inicio');
-                // } else {
-                //     getTours();
-                // }   
+                
+                if (decodedData.role == 0) {
+                    navigate('/inicio');
+                } else {
+                    getTours();
+                }   
                 getTours();
             } catch (error) {
                 console.error('Error al decodificar el token:', error.message);

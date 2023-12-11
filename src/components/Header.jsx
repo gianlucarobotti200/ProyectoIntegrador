@@ -248,7 +248,7 @@ function Header() {
                                     <MenuItem key="reservas" component={Link} to="/reservas">
                                         <SupervisorAccountIcon /> Reservas
                                     </MenuItem>,
-                                    rol == 1 && (
+                                    (rol == 1) && (
                                         <MenuItem key="admin" component={Link} to="/admintours">
                                             <SupervisorAccountIcon /> Administrador
                                         </MenuItem>

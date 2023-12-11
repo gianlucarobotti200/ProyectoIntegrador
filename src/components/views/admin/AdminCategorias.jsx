@@ -14,6 +14,8 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import config from "../../../config"
+import { useNavigate } from 'react-router-dom';
+import decodeToken from '../login/DecodeToken';
 
 const StyledAdministracion = styled.div`
     div.loading-container{
@@ -30,20 +32,20 @@ const StyledAdministracion = styled.div`
 const AdminCategorias = () => {
     const [categorias, setCategorias] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
     const getCategorias = async () => {
         try {
             setLoading(true);
-            const response = await fetchWithToken(config.host+"/categorias");
+            const response = await fetchWithToken(`${config.host}/categorias`);
             const jsonData = await response.json();
-
             setCategorias(jsonData);
-            console.log(jsonData);
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
-        } finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -57,7 +59,25 @@ const AdminCategorias = () => {
 
     const refreshCategorias = () => {
         getCategorias();
-    }
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        } else {
+            try {
+                const decodedData = decodeToken(localStorage.getItem('token'));
+                if (decodedData.role === 0) {
+                    navigate('/inicio');
+                } else {
+                    getCategorias();
+                }
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [navigate]);
 
     useEffect(() => {
         getCategorias();
@@ -76,22 +96,26 @@ const AdminCategorias = () => {
                             <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Gestión</TableCell>
                         </TableRow>
                     </TableHead>
-                    {loading ? (
-                        <div className='loading-container'>
-                        <CircularProgress style={{ margin: '2rem 45%', display: "flex", justifyContent: "center" }} color="inherit" />
-                    </div>
-                    ):(
-                        <TableBody>
-                            {categorias.slice(startIndex, endIndex).map((categoria, index) => (
+                    <TableBody>
+                        {loading ? (
+                            <TableRow>
+                                <TableCell colSpan={3}>
+                                    <div className='loading-container'>
+                                        <CircularProgress style={{ margin: '2rem auto', display: "block" }} color="inherit" />
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            categorias.slice(startIndex, endIndex).map((categoria) => (
                                 <CardCategoriaAdmin
-                                    key={index}
+                                    key={categoria.id}
                                     id={categoria.id}
                                     nombre={categoria.nombre}
                                     onDelete={refreshCategorias}
                                 />
-                            ))}
-                        </TableBody>
-                    )}
+                            ))
+                        )}
+                    </TableBody>
                 </Table>
             </TableContainer>
             <div className="pagination-container">
