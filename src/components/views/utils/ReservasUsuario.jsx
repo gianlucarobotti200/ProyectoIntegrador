@@ -58,16 +58,12 @@ const StyledRecomendaciones = styled.div`
     .card-row {
       display: flex;
       width: 100%;
-      flex-wrap: wrap;
-      gap: 20px;
       justify-content: center;
+      flex-direction: column;
   }
     
     .card-item {
-      display: flex;
-      width: calc(50% - 16px);
-      flex-wrap: wrap;
-      justify-content: space-between;
+      
       border-radius: 7px;
       box-shadow: #00000033 3px 3px 5px 0px;
       border: 1px solid rgba(230, 230, 230);
@@ -97,9 +93,7 @@ const StyledRecomendaciones = styled.div`
 
 
     .precio-duracion{
-      margin-top: 45px;
-      margin-left: 20px;
-      margin-bottom: 20px;
+      margin: 45px 20px 0px 20px;
       background: #24306E;
       width: fit-content;
       padding: 5px;
@@ -116,10 +110,16 @@ const StyledRecomendaciones = styled.div`
       color: rgba(36, 48, 110, 1);
       font-size: 11px;
   }
-
-  .cabecera-card{
-
+  .infoReserva{
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
   }
+  
+  .contenedorInfo{
+    margin-bottom: 20px;
+  }
+
 
     @media (max-width: 600px) {
 
@@ -165,6 +165,8 @@ const StyledRecomendaciones = styled.div`
     border-radius: 50%;
     border: 1px solid gray;
   }
+
+  
 }`
 
 function ReservasUsuario() {
@@ -182,6 +184,13 @@ function ReservasUsuario() {
 
         const reservasResponse = await fetchWithToken(`${config.host}/reserva/${idUsuario}`);
         const reservasData = await reservasResponse.json();
+
+        reservasData.sort((a, b) => {
+          const dateA = new Date(a.fechaInicio);
+          const dateB = new Date(b.fechaInicio);
+          return dateA - dateB;
+        });
+        
         setData(reservasData);
        
       } catch (error) {
@@ -201,88 +210,6 @@ function ReservasUsuario() {
     getTours();
   };
 
-  console.log(data);
-  console.log(data[7])
-  console.log('Datos obtenidos.');
-
-  const handleFavoriteToggle = async (idTour) => {
-    try {
-      const idUsuario = decodeToken(localStorage.getItem('token')).id;
-      let response;
-
-      setFetchingFavorite((prevFetching) => ({
-        ...prevFetching,
-        [idTour]: true, // Establecer fetching para la tarjeta específica en true al hacer clic
-      }));
-
-      if (favorites[idTour]) {
-        response = await fetchWithToken(`${config.host}/favoritos/eliminarFavoritos`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            idUsuario: idUsuario,
-            idTour: idTour,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al eliminar de favoritos');
-        }
-      } else {
-        response = await fetchWithToken(`${config.host}/favoritos`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            idUsuario: idUsuario,
-            idTour: idTour,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al marcar como favorito');
-        }
-      }
-
-      setFavorites((prevFavorites) => {
-        const updatedFavorites = { ...prevFavorites };
-        updatedFavorites[idTour] = !updatedFavorites[idTour];
-        return updatedFavorites;
-      });
-
-      setFetchingFavorite((prevFetching) => ({
-        ...prevFetching,
-        [idTour]: false,
-      }));
-
-    } catch (error) {
-      console.error('Error al manejar favorito:', error);
-      setFetchingFavorite((prevFetching) => ({
-        ...prevFetching,
-        [idTour]: false,
-      }));
-    }
-  };
-
-  const truncateDescription = (description) => {
-    const itinerarioIndex = description.indexOf('Itinerario');
-
-    if (itinerarioIndex !== -1) {
-      return description.substring(0, itinerarioIndex);
-    } else if (description == null) {
-      return "No contiene descripción";
-    } else{
-      return description;
-    }
-  };
-
-  const handleClickNavigate = (tour) => {
-    
-    navigate(`/detalles/${tour.id}`);
-  };
 
   return (
     <StyledRecomendaciones>
@@ -293,13 +220,22 @@ function ReservasUsuario() {
         {!loading && !error && (
           <div className='recomendaciones'>
             <div className='card-row'>
+
               {data.map((reserva) => (
                 <div key={reserva.id} className='card-item'>
                   <Card>
-                    <div className='card-title'>{reserva.titulo}</div>
-                    <div className='card-desc'>Fecha de reserva: {reserva.fechaReserva}</div>
-                    <div className='card-desc'>Cantidad de personas: {reserva.cantidadPersonas}</div>
-                    <div className='precio-duracion'>Precio de la reserva: ${reserva.precioTotal}</div>
+                    <div className='contenedorInfo'>
+                      <div className='card-title'>{reserva.tituloTour}</div>
+                      <div className='infoReserva'>
+
+                        <div>
+                          <div className='card-desc'>Fecha de reserva: {reserva.fechaInicio}</div>
+                          <div className='card-desc'>Cantidad de personas: {reserva.cantidadPersonas}</div>
+                        </div>
+
+                        <div className='precio-duracion'>Precio de la reserva: ${reserva.precioTotal}</div>
+                      </div>
+                    </div>
                   </Card>
                 </div>
               ))}
