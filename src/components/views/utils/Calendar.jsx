@@ -69,12 +69,29 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function BasicDatePicker() {
+export default function BasicDatePicker(props) {
+  const handleDateChange = (date) => {
+    // Llamar a la función de devolución de llamada del componente padre
+    if (props.onDateChange) {
+      props.onDateChange(date);
+    }
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} >
-      <DemoContainer components={['DatePicker']}>
-        <DatePicker disablePast={true} label="Basic date picker" />
-      </DemoContainer>
+
+        <DatePicker 
+        disablePast={true}
+        label="Selecciona una fecha"
+        onChange={handleDateChange}
+        shouldDisableDate={(dateParam) => {
+          const currentDate = dateParam.toISOString().split("T")[0];
+          if(props.ocupadas.includes(currentDate)){
+            return true
+          }
+          return false;
+        }}
+        />
+
     </LocalizationProvider>
   );
 }

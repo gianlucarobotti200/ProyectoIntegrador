@@ -5,13 +5,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import config from '../../../config';
+
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -88,6 +89,7 @@ const StyledRecomendaciones = styled.div`
       font-size: 2rem;
       color: #232323;
       font-weight: bold;
+      cursor: pointer
   }
 
   .card-desc{
@@ -176,6 +178,7 @@ function Recomendaciones() {
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState({});
   const [fetchingFavorite, setFetchingFavorite] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -289,6 +292,11 @@ function Recomendaciones() {
     }
   };
 
+  const handleClickNavigate = (tour) => {
+    // Navegar a la ruta deseada usando history.push
+    navigate(`/detalles/${tour.id}`);
+  };
+
   return (
     <StyledRecomendaciones>
       <div className='div-recomendaciones'>
@@ -359,7 +367,7 @@ function Recomendaciones() {
                       </div>
                       
 
-                      <div to={`/detalles/${tour.id}`} className='card-title'>
+                      <div onClick={() => handleClickNavigate(tour)}  className='card-title'>
                         {tour.titulo}
                       </div>
 
