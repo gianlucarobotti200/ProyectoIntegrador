@@ -14,6 +14,7 @@ import AdminModificarTour from './components/views/admin/AdminModificarTour.jsx'
 import AdminPoliticas from './components/views/admin/AdminPoliticas.jsx'
 import ReservaTour from './components/views/utils/ReservarTour.jsx'
 import Favoritos from'./components/views/utils/Favoritos.jsx';
+import ReservasUsuarios from'./components/views/utils/ReservasUsuario.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/modificartour/:id' element={<AdminModificarTour/>}/>
         <Route path='/reservartour/:id' element={<ReservaTour/>}/>
         <Route path='/favoritos' element={<Favoritos/>}/>
+        <Route path='/reservas' element={<ReservasUsuarios/>}/>
       </Route>
     </Routes>
   </BrowserRouter>

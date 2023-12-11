@@ -245,7 +245,7 @@ function Header() {
                                     <MenuItem key="favorite" component={Link} to="/favoritos">
                                         <Favorite /> Mis favoritos
                                     </MenuItem>,
-                                    <MenuItem key="reservas" component={Link} to="/ReservasUsuario">
+                                    <MenuItem key="reservas" component={Link} to="/reservas">
                                         <SupervisorAccountIcon /> Reservas
                                     </MenuItem>,
                                     rol == 1 && (

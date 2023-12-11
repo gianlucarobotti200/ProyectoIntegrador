@@ -3,9 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
 import Buscador from './Buscador';
 import fetchWithToken from '../login/Interceptor';
@@ -14,9 +12,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
 import config from '../../../config';
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-`
+
 
 const StyledRecomendaciones = styled.div`
 

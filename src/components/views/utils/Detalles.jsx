@@ -224,6 +224,7 @@ const Detalles = () => {
   useEffect(() => {
     obtenerFechasDesdeEndpoint();
   }, []);
+  
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
     setIsModalOpen(true);
@@ -291,6 +292,7 @@ const handleInputPersonas = (event) => {
   setPersonas(value);
   console.log(personas, value);
   setTotal(tourDetails.precio * value)
+  
 }
 
 const reservar = async () => {
@@ -300,7 +302,8 @@ const reservar = async () => {
       idTour: tourDetails.id,
       fechaInicio: fecha,
       fechaFin: fecha,
-      cantidadPersonas: parseInt(personas)
+      cantidadPersonas: parseInt(personas),
+      precioTotal: total
   };
 
   try {

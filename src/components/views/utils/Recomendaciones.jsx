@@ -13,11 +13,6 @@ import decodeToken from '../login/DecodeToken';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import config from '../../../config';
 
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-`
-
 const StyledRecomendaciones = styled.div`
 
     display: flex;
