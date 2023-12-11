@@ -19,6 +19,7 @@ import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
+import config from '../../../config';
 
 const StyledDetalles = styled.div`
 
@@ -251,7 +252,7 @@ const Detalles = () => {
   useEffect(() => {
     const getTourDetails = async () => {
       try {
-        const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
+        const response = await fetchWithToken(`${config.host}/tours/${id}`);
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
@@ -266,7 +267,7 @@ const Detalles = () => {
 
     const getCalificacion = async () => {
       try {
-        const response = await fetchWithToken(`http://localhost:8080/api/tours/${id}/calificacion`);
+        const response = await fetchWithToken(`${config.host}/api/tours/${id}/calificacion`);
         if (response.ok) {
           const calificacion = await response.json();
           setCalificacion(calificacion);
