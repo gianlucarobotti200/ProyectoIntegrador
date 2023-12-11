@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import Grid from '@mui/material/Grid';
+import { Grid, Paper } from '@mui/material';
+
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
@@ -22,10 +23,10 @@ import Rating from '@mui/material/Rating';
 
 const StyledDetalles = styled.div`
 
-  .div-modal1 {
-
+  .imagenes{
+    width: 80%
   }
- 
+
   .cont-icons {
       display: flex;
       width: 15vw;
@@ -47,46 +48,6 @@ const StyledDetalles = styled.div`
     border-bottom: 2px solid rgba(36, 48, 110, 1);
   }
 
-  .contenedor-img-ppal {
-    display: flex;
-    width: 90vw;
-    height: 90vh;
-    padding: 0% 1% 0% 0%;
-    margin: -2.2% 1.5% 1% 0%;
-  }
-
-  .img-ppal {
-    display: flex;
-    width: 50vw;
-    height: 95vh;
-    padding: 0% 0% 0% 1%;
-    margin: 0% 0% 0% 0%;
-    border-radius: 2%;
-    box-shadow: #80808047 3px 3px 3px 2px;
-    border: 1px solid rgba(230, 230, 230);
-  }
-
-  .contenedor-imgs {
-    display: flex;
-    width: 85vw;
-    height: 80vh;
-    padding: 3% 0% 1% 0%;
-    margin: 1% 0% 1% 9%;
-  }
-
-  .img-list {
-    display: flex;
-    width: 17vw;
-    height: 17vh;
-    padding: 0% 0% 2% 2%;
-    margin: 0% 0% 0% 0%;
-  }
-
-  .img-unit {
-    border-radius: 3%;
-    box-shadow: #80808047 3px 3px 3px 2px;
-    border: 1px solid rgba(230, 230, 230);
-  }
 
   .h2-caracteristicas {
     color: #24306E;
@@ -123,19 +84,6 @@ const StyledDetalles = styled.div`
     border-color: 2px #79B1D6;
  }
 
-  /* Contenedor principal */
-    display: flex;
-    flex-direction: column;
-    width: 95%;
-    margin-bottom: 2rem;
-
-  section {
-    display: flex;
-    justify-content: left;
-    width: 90vw;
-   
-  }
-
   .description {
     text-align: left;
     margin: 2rem 20%;
@@ -153,36 +101,7 @@ const StyledDetalles = styled.div`
     border-bottom: 3px solid rgba(36, 48, 110, 1);
   }
 
-  ul {
-    /* Estilos para las listas */
-    display: flex;
-    margin: auto 0;
-    
-  }
 
-  .li-fecha,
-  .li-noIncluido,
-  .li-documentacion {
-    /* Estilos comunes para los elementos de la lista */
-    display: flex;
-    width: 24%;
-    align-items: center;
-    text-align: center; 
-    padding: 4% 0% 1% 1%;
-    margin: 0% 6% 2% 5%;
-    border-bottom: 2px solid rgba(36, 48, 110, 1);
-  }
-
-  .li-fecha1,
-  .li-noIncluido1,
-  .li-documentacion1 {
-    /* Estilos comunes para otros elementos de la lista */
-    display: flex;
-    width: 24%; 
-    text-align: left;
-    padding: 1% 0% 0% 0%;
-    margin: 0% 3% 0% 6%;
-    
   .cont-icons {
     display: flex;
     width: calc(15vw - 15px);
@@ -193,10 +112,6 @@ const StyledDetalles = styled.div`
     border-radius: 5px;
     
   }
-`
-
-const StyledImageList = styled(ImageList)`
-  
 `
 
 const ImageModal = ({ images, onClose }) => {
@@ -323,31 +238,35 @@ const Detalles = () => {
           </div>
           <h2 className="h2-title">{tourDetails.titulo}</h2>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
-            <StyledImageList
-              className='contenedor-imgs'
-              onClick={openGallery}
-            >
-              <ImageListItem className='contenedor-img-ppal' >
-                <img className='img-ppal'
-                  src={tourDetails.linkFotos[0]}
-                />
-              </ImageListItem>
-              <Grid container spacing={2}>
-                {tourDetails.linkFotos.slice(1, 5).map((imageSrc, index) => (
-                  <ImageListItem className='img-list'
-                    key={index}
-                    onClick={() => setSelectedImage([...tourDetails.linkFotos.slice(1, 5)])}
-                  >
-                    <img className='img-unit'
+            <div className='imagenes'>
+              <ImageList sx={{ width: '100%', height: '450px' }} cols={4} rowHeight={225}>
+                {/* Imagen grande a la izquierda */}
+                {tourDetails.linkFotos.slice(0, 1).map((imageSrc, index) => (
+                  <ImageListItem key={index} cols={2} rows={2}>
+                    <img
                       src={imageSrc}
+                      alt={`Imagen ${index + 1}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </ImageListItem>
                 ))}
-              </Grid>
+
+                {/* Dos filas con dos imágenes cada una a la derecha */}
+                {tourDetails.linkFotos.slice(1, 5).map((imageSrc, index) => (
+                  <ImageListItem key={index + 1} cols={1} rows={1}>
+                    <img
+                      src={imageSrc}
+                      alt={`Imagen ${index + 2}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    
+                  </ImageListItem>
+                ))}
+              </ImageList>
               {isModalOpen && (
                 <ImageModal images={tourDetails.linkFotos} onClose={closeGallery} />
               )}
-            </StyledImageList>
+            </div>
           )}
           <h2 className='h2-caracteristicas'>Características</h2>
           <p className="description">{tourDetails.descripcion}</p>
@@ -384,7 +303,7 @@ const Detalles = () => {
               </li>
             ))}
           </ul>
-        </div>
+          </div>
         </div>
       )
       }

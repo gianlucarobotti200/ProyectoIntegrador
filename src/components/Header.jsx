@@ -133,8 +133,6 @@ function Header() {
 
         const parsedPayload = JSON.parse(decodedPayload);
         setRol(parsedPayload.role)
-        console.log(decodedPayload)
-        console.log(decodedPayload.role)
         return parsedPayload;
     };
 
