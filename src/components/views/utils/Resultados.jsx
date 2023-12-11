@@ -202,7 +202,7 @@ const Resultados = () => {
   };
 
   const handleBuscadorChange = (newValue) => {
-    // No necesitas hacer nada aquí, ya que la lógica de búsqueda se maneja en el efecto de useEffect
+    
   };
 
   const handleFavoriteToggle = async (idTour) => {
@@ -212,7 +212,7 @@ const Resultados = () => {
 
       setFetchingFavorite((prevFetching) => ({
         ...prevFetching,
-        [idTour]: true, // Establecer fetching para la tarjeta específica en true al hacer clic
+        [idTour]: true, 
       }));
 
       if (favorites[idTour]) {

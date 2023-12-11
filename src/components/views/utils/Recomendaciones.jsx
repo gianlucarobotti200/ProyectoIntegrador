@@ -4,7 +4,6 @@ import styled from "styled-components"
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -117,9 +116,6 @@ const StyledRecomendaciones = styled.div`
       font-size: 11px;
   }
 
-  .cabecera-card{
-
-  }
 
     @media (max-width: 600px) {
 
@@ -179,7 +175,7 @@ function Recomendaciones() {
   useEffect(() => {
     const getToursAndFavorites = async () => {
       try {
-        const toursResponse = await fetchWithToken(config.host+'/tours/todos');
+        const toursResponse = await fetchWithToken(config.host+'/tours/listarDiezAleatorio');
         const toursData = await toursResponse.json();
 
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
