@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { Grid, Paper } from '@mui/material';
-import Calendar from './Calendar'
+import BasicDatePicker from './Calendar'
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
@@ -21,6 +21,9 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import config from '../../../config';
+import moment from 'moment';
+import TextField from '@mui/material/TextField';
+import decodeToken from '../login/DecodeToken';
 
 const StyledDetalles = styled.div`
     display: flex;
@@ -59,10 +62,20 @@ const StyledDetalles = styled.div`
 
 
   .price {
-    font-size: 1.2rem;
-    
+      background: #24306E;
+      width: fit-content;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
   }
 
+  .total{
+    margin-top: 5px;
+    background: #8db0ce;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+  }
   .btn-reservar {
     display: flex;
     justify-content: center;
@@ -102,32 +115,25 @@ const StyledDetalles = styled.div`
     border-radius: 5px;
     
   }
+
+  .cont{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%
+  }
 `
 
 const calcularDiasEntreFechas = (fechaInicio, fechaFin) => {
-  const fechasArray = [];
-  const inicio = new Date(fechaInicio);
-  const fin = new Date(fechaFin);
+  const fechas = [];
+  let fechaActual = moment(fechaInicio);
 
-  let fechaActual = new Date(inicio);
-
-  // Convertir todas las fechas a UTC
-  inicio.setUTCHours(0, 0, 0, 0);
-  fin.setUTCHours(0, 0, 0, 0);
-
-  console.log(inicio)
-  console.log(fin)
-  while (fechaActual <= fin) {
-    const fechaUTC = new Date(fechaActual.getTime() + fechaActual.getTimezoneOffset() * 60000);
-    if (fechaUTC.getTime() === inicio.getTime()) {
-      fechasArray.push(new Date(fechaActual));
-    }
-    fechaActual.setUTCDate(fechaActual.getUTCDate() + 1);
-    fechaActual.setUTCHours(0, 0, 0, 0);
+  while (fechaActual.isSameOrBefore(fechaFin, 'day')) {
+    fechas.push(fechaActual.format('YYYY-MM-DD'));
+    fechaActual.add(1, 'day');
   }
 
-  console.log(fechasArray);
-  return fechasArray;
+  return fechas;
 };
 
 
@@ -171,6 +177,9 @@ const Detalles = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReservaOpen, setIsReservaOpen] = useState(false);
   const [calificacion, setCalificacion] = useState(0);
+  const [personas, setPersonas] = useState("1");
+  const [total, setTotal] = useState(0);
+  const [fecha, setFecha] = useState(null);
 
 
   const [fechas, setFechas] = useState([]);
@@ -182,17 +191,25 @@ const Detalles = () => {
     
       if (response.ok) {
         
-        const result = await response.json();
+        const fechasOcupadas = await response.json();
+        const ocupadas = []
+        for (let i = 0; i < fechasOcupadas.length; i++) {
+          const e = fechasOcupadas[i];
+          const fechaInicio = e.fechaInicio
+          const fechaFin = e.fechaFin
+          const fechasCalculadas = calcularDiasEntreFechas(fechaInicio, fechaFin);
+          for (let j = 0; j < fechasCalculadas.length; j++) {
+            const fecha = fechasCalculadas[j];
+            if(!ocupadas.includes(fecha)){
+              ocupadas.push(fecha)
+            }
+          }
+        }
+        setFechas(ocupadas)
         
-        console.log(result)
-        const fechaInicio = result[0].fechaInicio
-        const fechaFin= result[0].fechaFin
         
-        const fechasCalculadas = calcularDiasEntreFechas(fechaInicio, fechaFin);
-        setFechas(fechasCalculadas);
-        console.log(fechaFin)
-        console.log(fechaInicio)
-        console.log(fechasCalculadas)
+        
+        
       }
     } catch (error) {
       console.error('Error al obtener fechas:', error);
@@ -219,6 +236,7 @@ const Detalles = () => {
         if (response.ok) {
           const jsonData = await response.json();
           setData(jsonData);
+          setTotal(jsonData.precio)
           setPoliticasData(jsonData.politicas);
         }
       } catch (error) {
@@ -257,10 +275,50 @@ const Detalles = () => {
   setIsReservaOpen(true);
   };
 
-  const handleDateChange = (dates) => {
-    setFechaInicio(dates[0]);
-    setFechaFin(dates[1]);
+  const handleDateChange = (date) => {
+    const currentDate = date.toISOString().split("T")[0];
+    setFecha(currentDate)
+
 };
+
+const handleInputPersonas = (event) => {
+  const value = event.target.value;
+  setPersonas(value);
+  console.log(personas, value);
+  setTotal(tourDetails.precio * value)
+}
+
+const reservar = async () => {
+  const clienteID = decodeToken(localStorage.getItem('token')).id;
+  const reservaData = {
+      idCliente: clienteID,
+      idTour: tourDetails.id,
+      fechaInicio: fecha,
+      fechaFin: fecha,
+      cantidadPersonas: parseInt(personas)
+  };
+
+  try {
+      const response = await fetchWithToken(config.host+'/reserva', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(reservaData)
+      });
+
+      if (response.ok) {
+
+          alert("Tu reserva se efectuó con éxito\nQue lo disfrutes!")
+      } else {
+        alert("Ocurrió un error al efectuar la reserva")
+      }
+  } catch (error) {
+      console.error('Error al realizar la reserva:', error);
+
+  }
+  console.log(reservaData);
+}
   return (
     <StyledDetalles>
       {loading ? (
@@ -335,8 +393,17 @@ const Detalles = () => {
               <div className='titulos'>
                 <h2>Disponibilidad y tarifa</h2>
               </div>
-              <p className="price">{"Precio: $ " + tourDetails.precio}</p>
-              <Calendar style={{display: "flex", justifyContent: 'center',alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} />
+              <div className="cont">
+                <div>
+                <BasicDatePicker style={{display: "flex", justifyContent: 'center',alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} ocupadas={fechas}/>
+                <TextField onInput={handleInputPersonas} value={personas} style={{marginLeft: 15}} type='number' id="outlined-basic" label="Cantidad de personas" variant="outlined" />
+                </div>
+                <div style={{textAlign: 'left'}}>
+                  <div className="price">{"Precio por persona: $ " + tourDetails.precio}</div>
+                  <div className="total">Total: $ {total}</div>
+                </div>
+
+              </div>
             </div>
           </div>
           <section>
@@ -360,22 +427,17 @@ const Detalles = () => {
             </div>
           </section>
           
-          <Link to={`/reservartour/${id}`}>
-          <Button className='btn-reservar'>
+  
+          <Button className='btn-reservar' onClick={reservar}>
             RESERVAR
           </Button>
-          </Link>
+
+
 
           <div>
-          <h3>Fechas Disponibles</h3>
-          {fechas.map((fecha, index) => (
-            <p key={index}>{fecha.toLocaleDateString()}</p>
-          ))}
-        </div>
-          <div>
 
-          <h3 className='politicas'>Políticas</h3>
-          <ul>
+          <h3 style={{textAlign: 'left'}}>Políticas</h3>
+          <ul style={{textAlign: 'left'}}>
             {politicasData.map((politica, index) => (
               <li key={index}>
                 <strong>{politica.nombre}</strong>: {politica.contenido}

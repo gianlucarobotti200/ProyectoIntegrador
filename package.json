@@ -24,6 +24,7 @@
     "dayjs": "^1.11.10",
     "dedupe": "^4.0.2",
     "dom-helpers": "^5.2.1",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",
