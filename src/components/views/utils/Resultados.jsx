@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Buscador from './Buscador';
 import fetchWithToken from '../login/Interceptor';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -159,6 +159,7 @@ const Resultados = () => {
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState({});
   const [fetchingFavorite, setFetchingFavorite] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -198,6 +199,11 @@ const Resultados = () => {
 
     fetchTours();
   }, [search]);
+
+  const handleClickNavigate = (tour) => {
+    
+    navigate(`/detalles/${tour.id}`);
+  };
 
   const handleBuscadorChange = (newValue) => {
     // No necesitas hacer nada aquí, ya que la lógica de búsqueda se maneja en el efecto de useEffect
@@ -338,7 +344,7 @@ const Resultados = () => {
                       </div>
                       
 
-                      <div to={`/detalles/${tour.id}`} className='card-title'>
+                      <div onClick={() => handleClickNavigate(tour)} className='card-title'>
                         {tour.titulo}
                       </div>
 

@@ -76,6 +76,11 @@ const StyledDetalles = styled.div`
     border-radius: 5px;
     color: white;
   }
+
+  .especificaciones{
+    display: flex;
+    align-items: center;
+  }
   .btn-reservar {
     display: flex;
     justify-content: center;
@@ -353,7 +358,7 @@ const reservar = async () => {
           <h2 className="h2-title">{tourDetails.titulo}</h2>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <div className='imagenes'>
-              <ImageList sx={{ width: '100%' }} cols={4} rowHeight={225}>
+              <ImageList onClick={openGallery} sx={{ width: '100%' }} cols={4} rowHeight={225}>
 
                 {tourDetails.linkFotos.slice(0, 1).map((imageSrc, index) => (
                   <ImageListItem key={index} cols={2} rows={2}>
@@ -407,18 +412,18 @@ const reservar = async () => {
             </div>
           </div>
           <section>
-            <div>
+            <div className='especificaciones'>
             <Stack direction="row" spacing={1}>
-                                <h6>Características:</h6>
+                                <h3>Características:</h3>
                                 {tourDetails.caracteristicas &&
                                     tourDetails.caracteristicas.map((caracteristica) => (
                                         <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
                                     ))}
                             </Stack>
             </div>
-            <div>
+            <div className='especificaciones'>
               <Stack direction="row" spacing={1}>
-                                <h6>Características:</h6>
+                                <h3>Categorías:</h3>
                                 {tourDetails.categorias &&
                                     tourDetails.categorias.map((categoria) => (
                                         <Chip key={categoria.id} label={categoria.nombre} />
@@ -431,9 +436,6 @@ const reservar = async () => {
           <Button className='btn-reservar' onClick={reservar}>
             RESERVAR
           </Button>
-
-
-
           <div>
 
           <h3 style={{textAlign: 'left'}}>Políticas</h3>

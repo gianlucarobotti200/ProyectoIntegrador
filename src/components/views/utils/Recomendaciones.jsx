@@ -293,7 +293,7 @@ function Recomendaciones() {
   };
 
   const handleClickNavigate = (tour) => {
-    // Navegar a la ruta deseada usando history.push
+    
     navigate(`/detalles/${tour.id}`);
   };
 
