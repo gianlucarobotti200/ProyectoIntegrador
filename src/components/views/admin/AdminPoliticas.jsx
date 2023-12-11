@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CardPoliticasAdmin from './CardPoliticasAdmin';
 import BasicModalPoliticas from './BasicModalPoliticas';
@@ -14,6 +14,8 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import config from '../../../config';
+import { useNavigate } from 'react-router-dom';
+import decodeToken from '../login/DecodeToken';
 
 const StyledAdministracion = styled.div`
     div.pagination-container {
@@ -22,29 +24,50 @@ const StyledAdministracion = styled.div`
         margin-top: 20px;  
     }
 
-    div.loading-container{
+    div.loading-container {
         margin: 2rem 12vw;
         width: 100%;
+        display: flex;
+        justify-content: center;
     }
 `
 
 const AdminPoliticas = () => {
     const [politicas, setPoliticas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        } else {
+            try {
+                const decodedData = decodeToken(token);
+                if (decodedData.role === 0) {
+                    navigate('/inicio');
+                } else {
+                    getPoliticas();
+                }
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [navigate]);
+
     const getPoliticas = async () => {
         try {
-            setLoading(true)
-            const response = await fetchWithToken(config.host+"/politicas");
+            setLoading(true);
+            const response = await fetchWithToken(`${config.host}/politicas`);
             const jsonData = await response.json();
 
             setPoliticas(jsonData);
-            console.log(jsonData);
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
-        } finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -66,8 +89,8 @@ const AdminPoliticas = () => {
 
     return (
         <StyledAdministracion>
-            <h1 className='adm-categorias'>Administración Politicas</h1>
-            <BasicModalPoliticas onPoliticasAdded={refreshPoliticas}/>
+            <h1 className='adm-categorias'>Administración Políticas</h1>
+            <BasicModalPoliticas onPoliticasAdded={refreshPoliticas} />
             <TableContainer component={Paper} sx={{ width: "80vw", margin: "0 10vw" }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -78,13 +101,17 @@ const AdminPoliticas = () => {
                             <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Gestión</TableCell>
                         </TableRow>
                     </TableHead>
-                    {loading ? (
-                        <div className='loading-container'>
-                            <CircularProgress style={{ margin: '2rem 45%', display: "flex", justifyContent: "center" }} color="inherit" />
-                        </div>
-                    ):(
-                        <TableBody>
-                            {politicas.slice(startIndex, endIndex).map((politica, index) => (
+                    <TableBody>
+                        {loading ? (
+                            <TableRow>
+                                <TableCell colSpan={4}>
+                                    <div className='loading-container'>
+                                        <CircularProgress style={{ margin: '2rem auto' }} color="inherit" />
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            politicas.slice(startIndex, endIndex).map((politica, index) => (
                                 <CardPoliticasAdmin
                                     key={index}
                                     id={politica.id}
@@ -92,10 +119,9 @@ const AdminPoliticas = () => {
                                     contenido={politica.contenido}
                                     onDelete={refreshPoliticas}
                                 />
-                            ))}
-                        </TableBody>
-                    )}
-                    
+                            ))
+                        )}
+                    </TableBody>
                 </Table>
             </TableContainer>
             <div className="pagination-container">

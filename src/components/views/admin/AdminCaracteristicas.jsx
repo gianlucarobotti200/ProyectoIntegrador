@@ -15,6 +15,8 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import config from '../../../config';
+import { useNavigate } from 'react-router-dom';
+import decodeToken from '../login/DecodeToken';
 
 const StyledAdministracion = styled.div`
     div.pagination-container {
@@ -32,21 +34,20 @@ const StyledAdministracion = styled.div`
 const AdminCaracteristicas = () => {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [loading, setLoading] = useState(true);
-    const getCaracteristicas = async () => {
-        
-        try {
-            setLoading(true)
-            const response = await fetchWithToken(config.host+"/caracteristicas");
-            const jsonData = await response.json();
+    const navigate = useNavigate();
 
+    const getCaracteristicas = async () => {
+        try {
+            setLoading(true);
+            const response = await fetchWithToken(`${config.host}/caracteristicas`);
+            const jsonData = await response.json();
             setCaracteristicas(jsonData);
-            console.log(jsonData);
         } catch (error) {
             console.error("Error al obtener los datos de la API: ", error);
-        } finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -60,17 +61,32 @@ const AdminCaracteristicas = () => {
 
     const refreshCaracteristicas = () => {
         getCaracteristicas();
-    }
+    };
 
     useEffect(() => {
         getCaracteristicas();
     }, []);
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        } else {
+            try {
+                const decodedData = decodeToken(localStorage.getItem('token'));
+                if (decodedData.role === 0) {
+                    navigate('/inicio');
+                }
+            } catch (error) {
+                console.error('Error al decodificar el token:', error.message);
+            }
+        }
+    }, [navigate]);
+
     return (
         <StyledAdministracion>
-         
-            <h1 className='adm-caracteristicas' >Administración Características</h1>
-            <BasicModalCaracteristicas onCaracteristicaAdded={refreshCaracteristicas}/>
+            <h1 className='adm-caracteristicas'>Administración Características</h1>
+            <BasicModalCaracteristicas onCaracteristicaAdded={refreshCaracteristicas} />
             <TableContainer component={Paper} sx={{ width: "80vw", margin: "0 10vw" }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -81,23 +97,27 @@ const AdminCaracteristicas = () => {
                             <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Gestión</TableCell>
                         </TableRow>
                     </TableHead>
-                    {loading ? (
-                        <div className='loading-container'>
-                            <CircularProgress style={{ margin: '2rem 45%', display: "flex", justifyContent: "center" }} color="inherit" />
-                        </div>
-                    ):(
-                       <TableBody>
-                            {caracteristicas.slice(startIndex, endIndex).map((caracteristica, index) => (
+                    <TableBody>
+                        {loading ? (
+                            <TableRow>
+                                <TableCell colSpan={4}>
+                                    <div className='loading-container'>
+                                        <CircularProgress style={{ margin: '2rem auto', display: "block" }} color="inherit" />
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            caracteristicas.slice(startIndex, endIndex).map((caracteristica) => (
                                 <CardCaracteristicaAdmin
-                                    key={index}
+                                    key={caracteristica.id}
                                     iconoUrl={caracteristica.icono}
                                     id={caracteristica.id}
                                     nombre={caracteristica.nombre}
                                     onDelete={refreshCaracteristicas}
                                 />
-                            ))}
-                        </TableBody> 
-                    )}
+                            ))
+                        )}
+                    </TableBody>
                 </Table>
             </TableContainer>
             <div className="pagination-container">
