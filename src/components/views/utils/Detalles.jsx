@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { Grid, Paper } from '@mui/material';
-
+import Calendar from './Calendar'
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
@@ -23,9 +23,27 @@ import Rating from '@mui/material/Rating';
 import config from '../../../config';
 
 const StyledDetalles = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
-  .imagenes{
-    width: 80%
+
+
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+  }
+
+  .descripcion{
+    text-align: left;
+  }
+
+  .titulos{
+    display: flex;
   }
 
   .cont-icons {
@@ -39,32 +57,10 @@ const StyledDetalles = styled.div`
       border-radius: 5px;
     }
 
-  .h2-title {
-    /* Estilos para el título */
-    color: #24306E;
-    padding: 2% 0% 2% 0%;
-    margin: 2% 9% 3% 12%;
-    font-weight: bolder;
-    font: 2rem/1rem "Open Sans", sans-serif;
-    border-bottom: 2px solid rgba(36, 48, 110, 1);
-  }
-
-
-  .h2-caracteristicas {
-    color: #24306E;
-    padding: 2% 0% 2% 0%;
-    margin: 2% 9% 3% 12%;
-    font-weight: bolder;
-    font: 2rem/1rem "Open Sans", sans-serif;
-    border-bottom: 2px solid rgba(36, 48, 110, 1);
-  }
 
   .price {
-    display: flex;
     font-size: 1.2rem;
-    width: 12em;
-    height: 2em;
-    margin: 1% 5% 0% 20%;
+    
   }
 
   .btn-reservar {
@@ -84,13 +80,6 @@ const StyledDetalles = styled.div`
   .button btn-reservar:hover {
     border-color: 2px #79B1D6;
  }
-
-  .description {
-    text-align: left;
-    margin: 2rem 20%;
-    color: #24306E;
-    font-weight: bolder;
-  }
 
   .politicas {
     display: flex;
@@ -115,6 +104,34 @@ const StyledDetalles = styled.div`
   }
 `
 
+const calcularDiasEntreFechas = (fechaInicio, fechaFin) => {
+  const fechasArray = [];
+  const inicio = new Date(fechaInicio);
+  const fin = new Date(fechaFin);
+
+  let fechaActual = new Date(inicio);
+
+  // Convertir todas las fechas a UTC
+  inicio.setUTCHours(0, 0, 0, 0);
+  fin.setUTCHours(0, 0, 0, 0);
+
+  console.log(inicio)
+  console.log(fin)
+  while (fechaActual <= fin) {
+    const fechaUTC = new Date(fechaActual.getTime() + fechaActual.getTimezoneOffset() * 60000);
+    if (fechaUTC.getTime() === inicio.getTime()) {
+      fechasArray.push(new Date(fechaActual));
+    }
+    fechaActual.setUTCDate(fechaActual.getUTCDate() + 1);
+    fechaActual.setUTCHours(0, 0, 0, 0);
+  }
+
+  console.log(fechasArray);
+  return fechasArray;
+};
+
+
+
 const ImageModal = ({ images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -125,6 +142,7 @@ const ImageModal = ({ images, onClose }) => {
   const prevImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
+
 
   return (
     <StyledDetalles>
@@ -154,6 +172,36 @@ const Detalles = () => {
   const [isReservaOpen, setIsReservaOpen] = useState(false);
   const [calificacion, setCalificacion] = useState(0);
 
+
+  const [fechas, setFechas] = useState([]);
+
+  // Suponiendo que obtienes fechaInicio y fechaFin de un endpoint
+  const obtenerFechasDesdeEndpoint = async () => {
+    try {
+      const response = await fetchWithToken(`${config.host}/reserva/fechasOcupadas/${id}`);
+    
+      if (response.ok) {
+        
+        const result = await response.json();
+        
+        console.log(result)
+        const fechaInicio = result[0].fechaInicio
+        const fechaFin= result[0].fechaFin
+        
+        const fechasCalculadas = calcularDiasEntreFechas(fechaInicio, fechaFin);
+        setFechas(fechasCalculadas);
+        console.log(fechaFin)
+        console.log(fechaInicio)
+        console.log(fechasCalculadas)
+      }
+    } catch (error) {
+      console.error('Error al obtener fechas:', error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerFechasDesdeEndpoint();
+  }, []);
   const openGallery = () => {
     setSelectedImage([...tourDetails.linkFotos]);
     setIsModalOpen(true);
@@ -209,6 +257,10 @@ const Detalles = () => {
   setIsReservaOpen(true);
   };
 
+  const handleDateChange = (dates) => {
+    setFechaInicio(dates[0]);
+    setFechaFin(dates[1]);
+};
   return (
     <StyledDetalles>
       {loading ? (
@@ -216,8 +268,9 @@ const Detalles = () => {
           <CircularProgress color="inherit" />
         </div>
       ) : (
-        <div>
-          <div className='cont-icons'>
+        <>
+        <div className='container'>  
+        <div className='cont-icons'>
             <div>
               <FontAwesomeIcon icon={faShareNodes} style={{ color: "#1d5cc9" }} />
             </div>
@@ -237,11 +290,13 @@ const Detalles = () => {
               <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#15933b" }} />
             </a>
           </div>
+        <div >
+          
           <h2 className="h2-title">{tourDetails.titulo}</h2>
           {tourDetails.linkFotos && tourDetails.linkFotos.length > 0 && (
             <div className='imagenes'>
-              <ImageList sx={{ width: '100%', height: '450px' }} cols={4} rowHeight={225}>
-                {/* Imagen grande a la izquierda */}
+              <ImageList sx={{ width: '100%' }} cols={4} rowHeight={225}>
+
                 {tourDetails.linkFotos.slice(0, 1).map((imageSrc, index) => (
                   <ImageListItem key={index} cols={2} rows={2}>
                     <img
@@ -252,7 +307,6 @@ const Detalles = () => {
                   </ImageListItem>
                 ))}
 
-                {/* Dos filas con dos imágenes cada una a la derecha */}
                 {tourDetails.linkFotos.slice(1, 5).map((imageSrc, index) => (
                   <ImageListItem key={index + 1} cols={1} rows={1}>
                     <img
@@ -260,7 +314,7 @@ const Detalles = () => {
                       alt={`Imagen ${index + 2}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
-                    
+
                   </ImageListItem>
                 ))}
               </ImageList>
@@ -269,33 +323,57 @@ const Detalles = () => {
               )}
             </div>
           )}
-          <h2 className='h2-caracteristicas'>Características</h2>
-          <p className="description">{tourDetails.descripcion}</p>
-          <p className="price">{"Precio: $ " + tourDetails.precio}</p>
+          <div>
+            <div>
+              <div className='titulos'>
+                <h2>Sobre {tourDetails.titulo}</h2>
+              </div>
+              <p className='descripcion'>{tourDetails.descripcion}</p>
+              
+            </div>
+            <div>
+              <div className='titulos'>
+                <h2>Disponibilidad y tarifa</h2>
+              </div>
+              <p className="price">{"Precio: $ " + tourDetails.precio}</p>
+              <Calendar style={{display: "flex", justifyContent: 'center',alignItems: 'center' }} tourId={id} onDateChange={handleDateChange} />
+            </div>
+          </div>
           <section>
             <div>
-              <Stack>
-                {tourDetails.caracteristicas &&
-                  tourDetails.caracteristicas.map((caracteristica) => (
-                    <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" icon={<img src={caracteristica.icono} alt="Icono de característica" style={{width: "1.2rem"}}/>}/>
-                  ))}
-              </Stack>
+            <Stack direction="row" spacing={1}>
+                                <h6>Características:</h6>
+                                {tourDetails.caracteristicas &&
+                                    tourDetails.caracteristicas.map((caracteristica) => (
+                                        <Chip key={caracteristica.id} label={caracteristica.nombre} variant="outlined" />
+                                    ))}
+                            </Stack>
             </div>
             <div>
-              <Stack>
-                {tourDetails.categorias &&
-                  tourDetails.categorias.map((categoria) => (
-                    <Chip key={categoria.id} label={categoria.nombre}  />
-                  ))}
-              </Stack>
+              <Stack direction="row" spacing={1}>
+                                <h6>Características:</h6>
+                                {tourDetails.categorias &&
+                                    tourDetails.categorias.map((categoria) => (
+                                        <Chip key={categoria.id} label={categoria.nombre} />
+                                    ))}
+                            </Stack>
             </div>
           </section>
+          
           <Link to={`/reservartour/${id}`}>
           <Button className='btn-reservar'>
             RESERVAR
           </Button>
           </Link>
+
           <div>
+          <h3>Fechas Disponibles</h3>
+          {fechas.map((fecha, index) => (
+            <p key={index}>{fecha.toLocaleDateString()}</p>
+          ))}
+        </div>
+          <div>
+
           <h3 className='politicas'>Políticas</h3>
           <ul>
             {politicasData.map((politica, index) => (
@@ -306,6 +384,8 @@ const Detalles = () => {
           </ul>
           </div>
         </div>
+        </div>
+        </>
       )
       }
     </StyledDetalles>
