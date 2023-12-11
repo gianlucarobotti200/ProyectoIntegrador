@@ -181,7 +181,7 @@ function Header() {
             <nav>
                 <div className='logo-lema'>
                     <Link className='nav-a' to="/inicio">
-                        <img className='logo' src='src\components\img\logo-vector-blanco.png' alt='Logo SectArg tour' />
+                        <img className='logo' src="http://localhost:5173/src/components/img/logo-vector-blanco.png" alt='Logo SectArg tour' />
                     </Link>
                     <p className='lema'>Más que un tour</p>
                 </div>

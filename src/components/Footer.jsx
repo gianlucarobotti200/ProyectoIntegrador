@@ -11,7 +11,7 @@ const StyledFooter = styled.footer`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
+    margin-top: 40px;
 
     .footer-content{
         display: flex;
@@ -60,7 +60,7 @@ const Footer = () => {
     <StyledFooter>
       <div className="footer-content">
         <div>
-          <img src="src\components\img\logo-vector-blanco.png" alt='logo-sectArgTour'/>
+          <img src="http://localhost:5173/src/components/img/logo-vector-blanco.png" alt='logo-sectArgTour'/>
         </div>
         <div>
           <p>© 2023 - Equipo 2</p>

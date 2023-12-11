@@ -42,7 +42,6 @@ const Buscador = ({ value, onChange }) => {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          onChange(e.target.value);
         }}
         placeholder="¿A donde viajás?..."
       />

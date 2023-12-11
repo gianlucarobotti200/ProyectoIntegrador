@@ -28,9 +28,10 @@ const StyledRecomendaciones = styled.div`
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between; 
-      width: 90vw;
       gap: 1px;
       flex-direction: column;
+      width: 100%;
+      max-width: 1225px;
   }
 
     .div-h2{
@@ -52,7 +53,6 @@ const StyledRecomendaciones = styled.div`
 
     .recomendaciones{
       display: flex;
-      width: 90vw;
       flex-wrap: wrap;
       justify-content: space-between;  
       margin: 0% 3% 6% 3%;
@@ -63,46 +63,51 @@ const StyledRecomendaciones = styled.div`
       display: flex;
       width: 100%;
       flex-wrap: wrap;
-      gap: 8%;        
+      gap: 20px;
+      justify-content: center;
   }
     
     .card-item {
       display: flex;
-      width: calc(39vw - 8px);
+      width: calc(50% - 16px);
       flex-wrap: wrap;
       justify-content: space-between;
-      margin: 1% 0% 5% 0%;
-      padding: 0% 0% 0% 0%;
-      border-radius: 5px;
-      box-shadow: #80808047 3px 3px 3px 2px;
+      border-radius: 7px;
+      box-shadow: #00000033 3px 3px 5px 0px;
       border: 1px solid rgba(230, 230, 230);
+      margin-top: 15px;
   }
 
     .card-img{
-      width: 90%;
-      margin: 2% 4% 2% 4%;
-      padding: 0% 0% 0% 0%;
-      border-radius: 20px;
-      box-shadow: #80808047 3px 3px 3px 2px;
-      border: 1px solid rgba(230, 230, 230);
+      border-radius: 0px;
     }
 
-    h6{
-      display: flex;
-      justify-content: flex-start;
-      margin-left: 10px;
+    .card-title{
+      margin: 20px 20px 0px 20px;
       text-align: left;
       font-size: 2rem;
-      margin: 1% 1% 2% 5%;       
-      color: rgba(36, 48, 110, 1);
+      color: #232323;
+      font-weight: bold;
   }
 
+  .card-desc{
+    margin: 20px 20px 0px 20px;
+    text-align: left;
+    font-size: 1rem;
+    color: #232323;
+}
+
+
+
     .precio-duracion{
-      display: flex;
-      width: 90%;
-      flex-direction: row;
-      justify-content: space-between; 
-      margin: 3% 2% 1% 1%; 
+      margin-top: 45px;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      background: #24306E;
+      width: fit-content;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
   }
 
     .cardContent{
@@ -116,9 +121,7 @@ const StyledRecomendaciones = styled.div`
   }
 
   .cabecera-card{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
   }
 
     @media (max-width: 600px) {
@@ -152,6 +155,18 @@ const StyledRecomendaciones = styled.div`
       border-radius: 5px;
       box-shadow: #80808047 3px 3px 3px 2px;
       border: 1px solid rgba(230, 230, 230);
+  }
+
+  .favorite{
+    color: gray;
+    cursor: pointer;
+    font-size: 2rem;
+    position: absolute;
+    z-index: 2;
+    background: white;
+    padding: 5px;
+    border-radius: 50%;
+    border: 1px solid gray;
   }
 }`
 
@@ -295,37 +310,67 @@ function Recomendaciones() {
               {data.map((tour) => (
                   <div key={tour.id} className='card-item'>
                     <Card>
-                      <div className='cabecera-card'>
-                        <StyledLink  to={`/detalles/${tour.id}`}><Typography variant="h6">{tour.titulo}</Typography></StyledLink>
-                        {fetchingFavorite[tour.id] ? (
-                          <CircularProgress size={23} style={{ color: 'gray', cursor: 'default' }} />
+                    <CircularProgress size={23} style={{ color: 'gray', cursor: 'default', position: 'absolute', right: 10, top: 10 }} />
+                      <div style={{position: 'relative'}}>
+                      {fetchingFavorite[tour.id] ? (
+                          <CircularProgress size={23} style={{ color: 'gray', cursor: 'default', position: 'absolute', right: 10, top: 10 }} />
                         ) : (
                           favorites[tour.id] ? (
                             <FavoriteIcon
-                              style={{ color: 'red', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              style={{
+                                color: 'red',
+                                cursor: 'pointer',
+                                fontSize: '1.2rem',
+                                position: 'absolute',
+                                background: 'white',
+                                padding: '5px',
+                                borderRadius: '50%',
+                                right: '5px',
+                                top: '5px',
+                                boxShadow: '0px 3px 7px #00000085',
+                              }}
                               onClick={() => handleFavoriteToggle(tour.id)}
                             />
                           ) : (
                             <FavoriteBorderIcon
-                              style={{ color: 'gray', cursor: 'pointer', margin: "0 2rem", fontSize: "2rem" }}
+                              style={{
+                                color: 'gray',
+                                cursor: 'pointer',
+                                fontSize: '1.2rem',
+                                position: 'absolute',
+                                zIndex: 2,
+                                background: 'white',
+                                padding: '5px',
+                                borderRadius: '50%',
+                                boxShadow: '0px 3px 7px #00000085',
+                                right: 5,
+                                top: 5
+                              }}
                               onClick={() => handleFavoriteToggle(tour.id)}
                             />
                           )
                         )}
-
-                      </div>
-                      <CardMedia className='card-img'
+                        <CardMedia className='card-img'
                         component="img"
                         alt={tour.titulo}
-                        height="140"
+                        height="190"
                         image={tour.linkFotos[0]}
                       />
-                      <CardContent className='cardContent'>
-                        <Typography variant="body3" sx={{ fontSize: "1.3rem" }}>{truncateDescription(tour.descripcion)}</Typography>
-                        <div className='precio-duracion'>
-                          <Typography variant="body1" sx={{ fontWeight: "bolder", fontSize: "1.5rem" }}>$ {tour.precio} c/u</Typography>
-                        </div>
-                      </CardContent>
+                      </div>
+                      
+
+                      <div to={`/detalles/${tour.id}`} className='card-title'>
+                        {tour.titulo}
+                      </div>
+
+                      <div class="card-desc">
+                        {truncateDescription(tour.descripcion)}
+                      </div>
+
+                      <div className='precio-duracion'>
+                        $ {tour.precio} por persona
+                      </div>
+
                     </Card>
                   </div>
               ))}
