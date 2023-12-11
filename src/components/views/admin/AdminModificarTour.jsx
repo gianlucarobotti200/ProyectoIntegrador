@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import fetchWithToken from '../login/Interceptor';
 import config from '../../../config';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -26,6 +27,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const StyledFormModificar = styled(Box)`
+ 
 .row1{
   display: flex;
   flex-direction: row;
@@ -49,10 +51,12 @@ const StyledFormModificar = styled(Box)`
   flex-direction: row;
   justify-content: center ;
   align-items: center;
+  margin: 0 4%;
 }
 .row3{
   display: flex;
   justify-content: center ;
+  margin: 2rem 0;
 }
 
 .row4{
@@ -68,13 +72,28 @@ const StyledFormModificar = styled(Box)`
 }
 
 .update{
-  width: 10vw;
+  justify-content: center;
+  width: 10%;
+  margin: 0 45%;
+}
+
+.loading-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 1; /* Coloca el círculo de carga encima del contenido */
+  height: 100%;
+}
+
+h5{
+  margin: 0;
 }
 `
 
 const AdminModificarTour = () => {
-
-  const [titulo, setTitulo] = useState('')
+  const [titulo, setTitulo] = useState('');
   const [provincia, setProvincia] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
@@ -89,11 +108,7 @@ const AdminModificarTour = () => {
   const [tour, setTour] = useState([]);
   const [imagenesSubidas, setImagenesSubidas] = useState([]);
   const { id } = useParams();
-
-
-
-
-
+  const [loading, setLoading] = useState(true);
 
   const getTour = async () => {
     try {
@@ -121,9 +136,9 @@ const AdminModificarTour = () => {
 
   const getCaracteristicasYCategorias = async () => {
     try {
-      const responseCaracteristica = await fetchWithToken(config.host+"/caracteristicas");
-      const responseCategorias = await fetchWithToken(config.host+"/categorias");
-      const responsePoliticas = await fetchWithToken(config.host+"/politicas");
+      const responseCaracteristica = await fetchWithToken(config.host + "/caracteristicas");
+      const responseCategorias = await fetchWithToken(config.host + "/categorias");
+      const responsePoliticas = await fetchWithToken(config.host + "/politicas");
       const jsonCaracteristica = await responseCaracteristica.json();
       const jsonCategorias = await responseCategorias.json();
       const jsonPoliticas = await responsePoliticas.json();
@@ -140,14 +155,22 @@ const AdminModificarTour = () => {
   };
 
   useEffect(() => {
-    getTour();
-    getCaracteristicasYCategorias();
-  }, [id]);
+    const fetchData = async () => {
+      try {
+        await getTour();
+        await getCaracteristicasYCategorias();
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      } finally {
+        setLoading(false); // Actualiza el estado de carga al finalizar la carga
+      }
+    };
 
+    fetchData();
+  }, [id]);
 
   const handleDeleteImage = async (imagen) => {
     console.log(imagen);
-
 
     try {
       const fileNameToDelete = getFileNameFromUrl(imagen);
@@ -175,8 +198,6 @@ const AdminModificarTour = () => {
     }
   };
 
-
-
   const getFileNameFromUrl = (url) => {
     try {
       const urlObj = new URL(url);
@@ -188,7 +209,6 @@ const AdminModificarTour = () => {
       return null;
     }
   };
-
 
   const handleFileChange = (e) => {
     setFile(e.target.files);
@@ -205,22 +225,14 @@ const AdminModificarTour = () => {
     formData.append('id', id);
     uploadImage();
 
-
-
     try {
-      const response = await fetchWithToken(config.host+'/tours/modificarTour', {
+      const response = await fetchWithToken(config.host + '/tours/modificarTour', {
         method: 'POST',
         body: formData,
-
-
       });
 
-
-
       if (response.ok) {
-        if (response.ok) {
-          console.log('El formulario se ha enviado exitosamente.');
-        }
+        console.log('El formulario se ha enviado exitosamente.');
 
         // Enviar categorías seleccionadas
         await fetchWithToken(`${config.host}/tours/${id}/categorias`, {
@@ -263,15 +275,13 @@ const AdminModificarTour = () => {
         const formData = new FormData();
         formData.append('id', id);
 
-
         for (let i = 0; i < file.length; i++) {
           formData.append('file', file[i]);
         }
 
-        const response = await fetch(config.host+'/s3/uploadFile', {
+        const response = await fetch(config.host + '/s3/uploadFile', {
           method: 'POST',
           body: formData,
-
         });
 
         if (response.ok) {
@@ -285,172 +295,181 @@ const AdminModificarTour = () => {
     } else {
       console.log('No hay nuevas imágenes para subir.');
     }
-  }
-
+  };
 
   return (
     <StyledFormModificar
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-        <h2>Modificar Tour</h2>
-      </div>
-      <div className='row1'>
-        <TextField
-          label="ID"
-          value={id}
-          InputProps={{
-            readOnly: true,
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          variant="outlined"
-        />
-        <TextField
-          label="Titulo"
-          value={titulo}
-          variant="outlined"
-          onChange={(e) => setTitulo(e.target.value)}
-        />
-      </div>
-      <div className='row2'>
-        <TextField
-          label="Provincia"
-          value={provincia}
-          variant="outlined"
-          onChange={(e) => setProvincia(e.target.value)}
-        />
-        <TextField
-          label="Precio"
-          type="number"
-          value={precio}
-          variant="outlined"
-          onChange={(e) => setPrecio(e.target.value)}
-        />
-      </div>
-      <div className='row2'>
-        <TextField
-          id="filled-multiline-flexible"
-          label="Descripcion"
-          multiline
-          maxRows={10}
-          variant="outlined"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
-        <TextField
-          label="Duracion"
-          type="number"
-          value={duracion}
-          variant="outlined"
-          onChange={(e) => setDuracion(e.target.value)}
-        />
-      </div>
-        <div className='row2'>
-          <h5>Categorías</h5>
-          <FormGroup className='borde' style={{ display: 'flex' }}>
-            {categorias.map((categoria) => (
-              <FormControlLabel
-                key={categoria.id}
-                control={
-                  <Checkbox
-                    inputProps={{ 'aria-label': `Checkbox ${categoria.nombre}` }}
-                    checked={categoriasSeleccionadas.some((seleccionada) => seleccionada.id === categoria.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setCategoriasSeleccionadas([...categoriasSeleccionadas, categoria]);
-                      } else {
-                        setCategoriasSeleccionadas(categoriasSeleccionadas.filter((seleccionada) => seleccionada.id !== categoria.id));
-                      }
-                    }}
-                  />
-                }
-                label={categoria.nombre}
-              />
-            ))}
-          </FormGroup>
-        <h5>Características</h5>
-        <FormGroup className='borde'>
-          {caracteristicas.map((caracteristica) => (
-            <FormControlLabel
-              key={caracteristica.id}
-              control={
-                <Checkbox
-                  inputProps={{ 'aria-label': `Checkbox ${caracteristica.nombre}` }}
-                  checked={caracteristicasSeleccionadas.some((seleccionada) => seleccionada.id === caracteristica.id)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setCaracteristicasSeleccionadas([...caracteristicasSeleccionadas, caracteristica]);
-                    } else {
-                      setCaracteristicasSeleccionadas(caracteristicasSeleccionadas.filter((seleccionada) => seleccionada.id !== caracteristica.id));
-                    }
-                  }}
-                />
-              }
-              label={caracteristica.nombre}
-            />
-          ))}
-        </FormGroup>
-        <h5>Politicas</h5>
-        <FormGroup className='borde'>
-          {politicas.map((politica) => (
-            <FormControlLabel
-              key={politica.id}
-              control={
-                <Checkbox
-                  inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
-                  checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
-                    } else {
-                      setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
-                    }
-                  }}
-                />
-              }
-              label={politica.nombre}
-            />
-          ))}
-        </FormGroup>
-      </div>
-      {Array.isArray(imagenesSubidas) && imagenesSubidas.length > 0 && (
-        <div className='row1'>
-          <h3>Imágenes:</h3>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-arund', }}>
-            {imagenesSubidas.map((imagen, index) => (
-              <div key={index} style={{ display: 'flex', flexDirection: 'column', marginRight: '10px', textAlign: 'center' }}>
-                <img src={imagen} alt={`Imagen ${index + 1}`} style={{ width: '250px', height: 'auto' }} />
-                <button onClick={() => handleDeleteImage(imagen)}>Eliminar</button>
-              </div>
-            ))}
-          </div>
+          noValidate
+          autoComplete="off"
+        >
+      {loading ? (
+        <div className='loading-container'>
+          <CircularProgress color="inherit" />
         </div>
-      )}
-      <div className='update'>
-        <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />}>
-          Upload file
-          <VisuallyHiddenInput multiple type="file" name='file' />
-        </Button>
-      </div>
+      ) : (
+        // Contenido principal aquí
+        <>
+          <div>
+            <h2>Modificar Tour</h2>
+          </div>
+          <div className='row1'>
+            <TextField
+              label="ID"
+              value={id}
+              InputProps={{
+                readOnly: true,
+              }}
+              variant="outlined"
+            />
+            <TextField
+              label="Titulo"
+              value={titulo}
+              variant="outlined"
+              onChange={(e) => setTitulo(e.target.value)}
+            />
+          </div>
+          <div className='row2'>
+            <TextField
+              label="Provincia"
+              value={provincia}
+              variant="outlined"
+              onChange={(e) => setProvincia(e.target.value)}
+            />
+            <TextField
+              label="Precio"
+              type="number"
+              value={precio}
+              variant="outlined"
+              onChange={(e) => setPrecio(e.target.value)}
+            />
+          </div>
+          <div className='row2'>
+            <TextField
+              id="filled-multiline-flexible"
+              label="Descripcion"
+              multiline
+              maxRows={10}
+              variant="outlined"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+            />
+            <TextField
+              label="Duracion"
+              type="number"
+              value={duracion}
+              variant="outlined"
+              onChange={(e) => setDuracion(e.target.value)}
+            />
+          </div>
+          <div className='row3'>
+            <FormGroup className='borde' style={{ display: 'flex', flexDirection: "column", margin: "0 1rem" }}>
+              <h5>Categorías</h5>
+              {categorias.map((categoria) => (
+                <FormControlLabel
+                  key={categoria.id}
+                  control={
+                    <Checkbox
+                      inputProps={{ 'aria-label': `Checkbox ${categoria.nombre}` }}
+                      checked={categoriasSeleccionadas.some((seleccionada) => seleccionada.id === categoria.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setCategoriasSeleccionadas([...categoriasSeleccionadas, categoria]);
+                        } else {
+                          setCategoriasSeleccionadas(categoriasSeleccionadas.filter((seleccionada) => seleccionada.id !== categoria.id));
+                        }
+                      }}
+                    />
+                  }
+                  label={categoria.nombre}
+                />
+              ))}
+            </FormGroup>
+            
+            <FormGroup className='borde' style={{ display: 'flex', flexDirection: "column", margin: "0 1rem"}}>
+              <h5>Características</h5>
+              {caracteristicas.map((caracteristica) => (
+                <FormControlLabel
+                  key={caracteristica.id}
+                  control={
+                    <Checkbox
+                      inputProps={{ 'aria-label': `Checkbox ${caracteristica.nombre}` }}
+                      checked={caracteristicasSeleccionadas.some((seleccionada) => seleccionada.id === caracteristica.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setCaracteristicasSeleccionadas([...caracteristicasSeleccionadas, caracteristica]);
+                        } else {
+                          setCaracteristicasSeleccionadas(caracteristicasSeleccionadas.filter((seleccionada) => seleccionada.id !== caracteristica.id));
+                        }
+                      }}
+                    />
+                  }
+                  label={caracteristica.nombre}
+                />
+              ))}
+            </FormGroup>
+            
+            <FormGroup className='borde' style={{ display: 'flex', flexDirection: "column", margin: "0 1rem"}}>
+              <h5>Politicas</h5>
+              {politicas.map((politica) => (
+                <FormControlLabel
+                  key={politica.id}
+                  control={
+                    <Checkbox
+                      inputProps={{ 'aria-label': `Checkbox ${politica.nombre}` }}
+                      checked={politicasSeleccionadas.some((seleccionada) => seleccionada.id === politica.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setPoliticasSeleccionadas([...politicasSeleccionadas, politica]);
+                        } else {
+                          setPoliticasSeleccionadas(politicasSeleccionadas.filter((seleccionada) => seleccionada.id !== politica.id));
+                        }
+                      }}
+                    />
+                  }
+                  label={politica.nombre}
+                />
+              ))}
+            </FormGroup>
+          </div>
+          {Array.isArray(imagenesSubidas) && imagenesSubidas.length > 0 && (
+            <div className='row2'>
+              <h3>Imágenes</h3>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', }}>
+                {imagenesSubidas.map((imagen, index) => (
+                  <div key={index} style={{ display: 'flex', flexDirection: 'column', marginRight: '10px', textAlign: 'center' }}>
+                    <img src={imagen} alt={`Imagen ${index + 1}`} style={{ width: '250px', height: 'auto' }} />
+                    <button onClick={() => handleDeleteImage(imagen)}>Eliminar</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className='update'>
+            <Button component="label" onChange={handleFileChange} variant="contained" startIcon={<CloudUploadIcon />} >
+              Upload file
+              <VisuallyHiddenInput multiple type="file" name='file' />
+            </Button>
+          </div>
 
-      <Button onClick={handleSubmit} variant="contained" color="success">
-        Modificar
-      </Button>
-
-      <div>
-        <Link to={`/admintours`}>
-          <Button variant="outlined" color="error">
-            Cancelar
+          <Button onClick={handleSubmit} variant="contained" color="success">
+            Modificar
           </Button>
-        </Link>
-      </div>
+
+          <div>
+            <Link to={`/admintours`}>
+              <Button variant="outlined" color="error">
+                Cancelar
+              </Button>
+            </Link>
+          </div>
+        </>
+      )}
     </StyledFormModificar>
   );
-
 }
 
-export default AdminModificarTour
+export default AdminModificarTour;
