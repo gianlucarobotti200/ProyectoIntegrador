@@ -8,6 +8,7 @@ import AdminModificarTour from './AdminModificarTour'
 import fetchWithToken from '../login/Interceptor'
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import config from '../../../config'
 
 
 const StyledCardUsuarioAdmin = styled.article`
@@ -51,7 +52,7 @@ const CardTourAdmin = ({ id, linkFotos, titulo, provincia, descripcion, precio, 
         setIsDeleting(true);
 
         try {
-            const response = await fetchWithToken(`http://localhost:8080/tours/eliminarTour/${id}`, {
+            const response = await fetchWithToken(`${config.host}/tours/eliminarTour/${id}`, {
                 method: 'POST',
             });
 

@@ -4,6 +4,7 @@ import Delete from "@mui/icons-material/Delete"
 import fetchWithToken from '../login/Interceptor'
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import config from '../../../config';
 
 const StyledCardUsuarioAdmin = styled.article`
   background-color: #f5f5f5;
@@ -59,7 +60,7 @@ const CardCaracteristicaAdmin = ({ id, iconoUrl, nombre, onDelete }) => {
 
         try {
 
-            const response = await fetchWithToken(`http://localhost:8080/caracteristicas/${id}`, {
+            const response = await fetchWithToken(`${config.host}/caracteristicas/${id}`, {
                 method: 'DELETE',
             });
 

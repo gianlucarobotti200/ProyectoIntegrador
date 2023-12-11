@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import config from '../../../config';
 
 const StyledRegistro = styled.div `
     display: flex;
@@ -54,7 +55,7 @@ export default function OutlinedCard() {
         // setShowMessage(true);
         setError(null);
 
-        fetch('http://localhost:8080/user/signup', {
+        fetch(config.host+'/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import styled from "styled-components"
 import Delete from "@mui/icons-material/Delete"
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import config from '../../../config';
 
 const StyledCardUsuarioAdmin = styled.article`
   background-color: #f5f5f5;
@@ -44,7 +45,7 @@ const CardPoliticaAdmin = ({ id, nombre, contenido, onDelete }) => {
         setIsDeleting(true);
 
         try {
-            const response = await fetchWithToken(`http://localhost:8080/politicas/${id}`, {
+            const response = await fetchWithToken(`${config.host}/politicas/${id}`, {
                 method: 'DELETE',
             });
 

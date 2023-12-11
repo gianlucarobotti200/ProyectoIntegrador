@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import CardProducto from './CardProducto'
 import fetchWithToken from '../login/Interceptor'
+import config from '../../../config';
 
 
 const Productos = () => {
@@ -9,7 +10,7 @@ const Productos = () => {
 
   const getProductos = async () => {
 
-    const res = await fetchWithToken("http://localhost:8080/tours/todos")
+    const res = await fetchWithToken(config.host+"/tours/todos")
     const data = await res.json()
     setProductos(data)
   }

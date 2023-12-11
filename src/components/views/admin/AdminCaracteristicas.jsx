@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
+import config from '../../../config';
 
 const StyledAdministracion = styled.div`
     div.pagination-container {
@@ -35,7 +36,7 @@ const AdminCaracteristicas = () => {
         
         try {
             setLoading(true)
-            const response = await fetchWithToken("http://localhost:8080/caracteristicas");
+            const response = await fetchWithToken(config.host+"/caracteristicas");
             const jsonData = await response.json();
 
             setCaracteristicas(jsonData);

@@ -17,6 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
+import config from '../../../config';
 
 const StyledAdministracion = styled.div`
     
@@ -94,7 +95,7 @@ const AdminTours = () => {
     const getTours = async () => {
         try {
             setLoading(true);
-            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+            const response = await fetchWithToken(config.host+"/tours/todos");
 
             const jsonData = await response.json();
 

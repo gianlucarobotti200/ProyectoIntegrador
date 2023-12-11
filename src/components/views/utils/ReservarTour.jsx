@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import fetchWithToken from '../login/Interceptor';
 import decodeToken from '../login/DecodeToken';
+import config from '../../../config';
 
 const StyledDetalles = styled.div`
   display: flex;
@@ -116,7 +117,7 @@ const ReservaTour = () => {
     useEffect(() => {
         const getTourDetails = async () => {
             try {
-                const response = await fetchWithToken(`http://localhost:8080/tours/${id}`);
+                const response = await fetchWithToken(`${config.host}/tours/${id}`);
                 if (response.ok) {
                     const jsonData = await response.json();
                     setData(jsonData);
@@ -167,7 +168,7 @@ const ReservaTour = () => {
 
 
         try {
-            const response = await fetchWithToken('http://localhost:8080/reserva', {
+            const response = await fetchWithToken(config.host+'/reserva', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

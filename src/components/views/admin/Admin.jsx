@@ -4,7 +4,7 @@ import CardTourAdmin from './CardTourAdmin';
 import BasicModal from './Basicmodal';
 import fetchWithToken from '../login/Interceptor'
 import { useNavigate } from 'react-router-dom';
-
+import config from '../../../config';
 
 const StyledAdministracion = styled.div`
     div.header-table{
@@ -60,7 +60,7 @@ const Admin = () => {
 
     const getTours = async () => {
         try {
-            const response = await fetchWithToken("http://localhost:8080/tours/todos");
+            const response = await fetchWithToken(config.host+"/tours/todos");
             const jsonData = await response.json();
 
             setTours(jsonData);

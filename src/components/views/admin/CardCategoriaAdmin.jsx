@@ -4,6 +4,7 @@ import Delete from "@mui/icons-material/Delete"
 import fetchWithToken from '../login/Interceptor'
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import config from '../../../config';
 
 const StyledButton = styled.button`
     background-color: #FAFAFA;
@@ -30,7 +31,7 @@ const CardCategoriaAdmin = ({ id, nombre, onDelete }) => {
         setIsDeleting(true);
 
         try {
-            const response = await fetchWithToken(`http://localhost:8080/categorias/${id}`, {
+            const response = await fetchWithToken(`${config.host}/categorias/${id}`, {
                 method: 'DELETE',
             });
 

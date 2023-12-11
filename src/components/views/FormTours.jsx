@@ -13,6 +13,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import './EstilosForm.css';
 import fetchWithToken from './login/Interceptor';
+import config from "../../config";
 
 
 const StyledForm = styled.form`
@@ -48,9 +49,9 @@ const FormTours = ({ onCloseModal }) => {
 
     const getCaracteristicasYCategorias = async () => {
         try {
-            const response1 = await fetchWithToken("http://localhost:8080/caracteristicas");
-            const response2 = await fetchWithToken("http://localhost:8080/categorias");
-            const response3 = await fetchWithToken("http://localhost:8080/politicas");
+            const response1 = await fetchWithToken(config.host+"/caracteristicas");
+            const response2 = await fetchWithToken(config.host+"/categorias");
+            const response3 = await fetchWithToken(config.host+"/politicas");
             const jsonData1 = await response1.json();
             const jsonData2 = await response2.json();
             const jsonData3 = await response3.json();
@@ -86,7 +87,7 @@ const FormTours = ({ onCloseModal }) => {
             }
         }
         try {
-            const response = await fetchWithToken('http://localhost:8080/tours/crear', {
+            const response = await fetchWithToken(config.host+'/tours/crear', {
                 method: 'POST',
                 body: formData,
 
@@ -102,7 +103,7 @@ const FormTours = ({ onCloseModal }) => {
                 }
 
                 // Enviar categorías seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/categorias`, {
+                await fetchWithToken(`${config.host}/tours/${tourDto.id}/categorias`, {
 
                     method: 'POST',
                     headers: {
@@ -112,7 +113,7 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/caracteristicas`, {
+                await fetchWithToken(`${config.host}/tours/${tourDto.id}/caracteristicas`, {
 
                     method: 'POST',
                     headers: {
@@ -122,7 +123,7 @@ const FormTours = ({ onCloseModal }) => {
                 });
 
                 // Enviar características seleccionadas
-                await fetchWithToken(`http://localhost:8080/tours/${tourDto.id}/politicas`, {
+                await fetchWithToken(`${config.host}/tours/${tourDto.id}/politicas`, {
 
                     method: 'POST',
                     headers: {

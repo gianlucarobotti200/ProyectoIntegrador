@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
+import config from '../../../config';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -154,8 +155,9 @@ function Favoritos() {
   useEffect(() => {
     const getFavoriteTours = async () => {
       try {
+        
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
-        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesResponse = await fetchWithToken(`${config.host}/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
 
         const favoriteIds = {};
@@ -167,7 +169,7 @@ function Favoritos() {
 
         // Filtrar solo los tours que están marcados como favoritos
         const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
-          const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+          const tourResponse = await fetchWithToken(`${config.host}/tours/${favorite.idTour}`);
           const tourData = await tourResponse.json();
           return tourData;
         }));
@@ -195,7 +197,7 @@ function Favoritos() {
 
       if (favorites[idTour]) {
         // Eliminar de favoritos
-        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+        response = await fetchWithToken(`${config.host}/favoritos/eliminarFavoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -207,7 +209,7 @@ function Favoritos() {
         });
       } else {
         // Agregar a favoritos
-        response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+        response = await fetchWithToken(`${config.host}/favoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +226,7 @@ function Favoritos() {
       }
 
       // Actualizar lista de tours favoritos después de cambiar el estado del favorito
-      const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+      const favoritesResponse = await fetchWithToken(`${config.host}/favoritos/buscarFavoritos/${idUsuario}`);
       const updatedFavoritesData = await favoritesResponse.json();
 
       const updatedFavoriteIds = {};
@@ -236,7 +238,7 @@ function Favoritos() {
 
       // Filtrar y actualizar los tours marcados como favoritos
       const favoriteTours = await Promise.all(updatedFavoritesData.map(async (favorite) => {
-        const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+        const tourResponse = await fetchWithToken(`${config.host}/tours/${favorite.idTour}`);
         const tourData = await tourResponse.json();
         return tourData;
       }));
@@ -274,7 +276,7 @@ function Favoritos() {
 
   //       if (favorites[idTour]) {
 
-  //         response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+  //         response = await fetchWithToken(`${config.host}/favoritos/eliminarFavoritos`, {
   //           method: 'POST',
   //           headers: {
   //             'Content-Type': 'application/json',
@@ -291,7 +293,7 @@ function Favoritos() {
   //           throw new Error('Error al eliminar de favoritos');
   //         }
 
-  //         const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+  //         const favoritesResponse = await fetchWithToken(`${config.host}/favoritos/buscarFavoritos/${idUsuario}`);
   //         const favoritesData = await favoritesResponse.json();
 
   //         const favoriteIds = {};
@@ -303,7 +305,7 @@ function Favoritos() {
 
   //         // Filtramos nuevamente los tours según los favoritos actualizados
   //         const favoriteTours = await Promise.all(favoritesData.map(async (favorite) => {
-  //           const tourResponse = await fetchWithToken(`http://localhost:8080/tours/${favorite.idTour}`);
+  //           const tourResponse = await fetchWithToken(`${config.host}/tours/${favorite.idTour}`);
   //           const tourData = await tourResponse.json();
   //           return tourData;
   //         }));
@@ -311,7 +313,7 @@ function Favoritos() {
   //         setData(favoriteTours);
 
   //       } else {
-  //         response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+  //         response = await fetchWithToken(`${config.host}/favoritos`, {
   //           method: 'POST',
   //           headers: {
   //             'Content-Type': 'application/json',

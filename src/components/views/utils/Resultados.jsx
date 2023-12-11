@@ -12,6 +12,7 @@ import fetchWithToken from '../login/Interceptor';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import decodeToken from '../login/DecodeToken';
+import config from '../../../config';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -159,13 +160,13 @@ const Resultados = () => {
     const fetchTours = async () => {
       try {
         setLoading(true);
-        const response = await fetchWithToken('http://localhost:8080/tours/todos');
+        const response = await fetchWithToken(config.host+'/tours/todos');
         if (!response.ok) {
           throw new Error(`Error al cargar los tours: ${response.statusText}`);
         }
     
         const idUsuario = decodeToken(localStorage.getItem('token')).id;
-        const favoritesResponse = await fetchWithToken(`http://localhost:8080/favoritos/buscarFavoritos/${idUsuario}`);
+        const favoritesResponse = await fetchWithToken(`${config.host}/favoritos/buscarFavoritos/${idUsuario}`);
         const favoritesData = await favoritesResponse.json();
     
         const favoriteIds = {};
@@ -209,7 +210,7 @@ const Resultados = () => {
       }));
 
       if (favorites[idTour]) {
-        response = await fetchWithToken(`http://localhost:8080/favoritos/eliminarFavoritos`, {
+        response = await fetchWithToken(`${config.host}/favoritos/eliminarFavoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ const Resultados = () => {
           throw new Error('Error al eliminar de favoritos');
         }
       } else {
-        response = await fetchWithToken(`http://localhost:8080/favoritos`, {
+        response = await fetchWithToken(`${config.host}/favoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

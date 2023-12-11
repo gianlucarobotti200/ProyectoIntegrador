@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+import config from '../../../config';
 
 const StyledLogin = styled.div `
     display: flex;
@@ -62,7 +63,7 @@ export default function OutlinedCard() {
         setShowMessage(false);
 
         try {
-            const response = await fetch('http://localhost:8080/user/login', {
+            const response = await fetch(config.host+'/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

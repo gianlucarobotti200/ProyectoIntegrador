@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
+import config from "../../../config"
 
 const StyledAdministracion = styled.div`
     div.loading-container{
@@ -32,7 +33,7 @@ const AdminCategorias = () => {
     const getCategorias = async () => {
         try {
             setLoading(true);
-            const response = await fetchWithToken("http://localhost:8080/categorias");
+            const response = await fetchWithToken(config.host+"/categorias");
             const jsonData = await response.json();
 
             setCategorias(jsonData);
